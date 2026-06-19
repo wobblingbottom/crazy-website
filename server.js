@@ -1154,6 +1154,8 @@ app.post("/api/commissions", upload.array("reference", 12), async (req, res) => 
     referenceUrl: referenceUrls[0] || "",
     referenceUrls,
     accessToken,
+    requesterUserId: req.session.user?.id || "",
+    requesterUsername: req.session.user?.username || "",
     status: "new",
     createdAt: now,
     updatedAt: now
@@ -1241,7 +1243,40 @@ app.post("/api/commissions/:token/comments", async (req, res) => {
   commission.comments.unshift(comment);
   commission.updatedAt = new Date().toISOString();
   await writeCommissions(commissions);
-  res.status(201).json({ commission: buildPublicCommission(commission), comment });
+
+  const accessUrl = buildAbsoluteUrl(req, `/commission/${commission.accessToken}`);
+  const notificationMessage = [
+    "New private commission chat message.",
+    `Commission: ${commission.commissionType}`,
+    `From: ${comment.username}`,
+    `Message: ${comment.text}`,
+    `Private link: ${accessUrl}`
+  ].join("\n").slice(0, 1900);
+
+  let adminDelivered = false;
+  let dmDelivered = false;
+
+  try {
+    adminDelivered = await sendDiscordChannelMessage(DISCORD_ADMIN_CHANNEL_ID, notificationMessage);
+  } catch {
+    adminDelivered = false;
+  }
+
+  const isAdminReply = req.session.user?.id && req.session.user.id === ADMIN_DISCORD_ID;
+  const requesterUserId = commission.requesterUserId || "";
+
+  if (isAdminReply && requesterUserId && requesterUserId !== req.session.user.id) {
+    try {
+      dmDelivered = await sendDiscordDm(
+        requesterUserId,
+        `There is a new reply on your commission "${commission.commissionType}".\n${accessUrl}`
+      );
+    } catch {
+      dmDelivered = false;
+    }
+  }
+
+  res.status(201).json({ commission: buildPublicCommission(commission), comment, adminDelivered, dmDelivered });
 });
 
 app.get("/commission/:token", async (req, res) => {
