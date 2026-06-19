@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crazyland</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="frame">
+      <header class="topbar">
+        <h1 class="page-heading">Crazyland</h1>
+        <a class="login-button" href="/login">Login</a>
+      </header>
+
+      <main class="layout">
+        <aside class="sidebar">
+          <nav class="sidebar-nav" aria-label="Sections">
+            <button class="sidebar-link sidebar-link-active" type="button" data-view-target="posts">Posts</button>
+            <button class="sidebar-link" type="button" data-view-target="comics">Comics</button>
+            <button class="sidebar-link" type="button" data-view-target="commissions">Commissions</button>
+          </nav>
+        </aside>
+
+        <section class="content">
+          <section class="content-view content-view-active" data-view="posts">
+            <div class="view-grid">
+              <div class="content-toolbar">
+                <h2 class="section-title">Posts</h2>
+              </div>
+
+              <section class="view-body gallery" aria-label="Posts gallery" data-posts-gallery>
+                <p class="gallery-empty">Loading posts...</p>
+              </section>
+            </div>
+          </section>
+
+          <section class="content-view" data-view="comics">
+            <div class="view-grid">
+              <div class="content-toolbar">
+                <h2 class="section-title">Comics</h2>
+                <div class="toolbar-spacer" aria-hidden="true"></div>
+              </div>
+              <div class="view-body comics-list" data-comics-list>
+                <p class="gallery-empty">Loading comics...</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="content-view" data-view="commissions">
+            <div class="view-grid">
+              <div class="content-toolbar">
+                <h2 class="section-title">Commissions</h2>
+                <div class="toolbar-spacer" aria-hidden="true"></div>
+              </div>
+              <div class="view-body">
+                <div class="commission-types" data-commission-types>
+                  <p class="gallery-empty">Loading commission types...</p>
+                </div>
+              </div>
+              <button class="commission-next-button" type="button" data-commission-next disabled>Next</button>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+    <div class="post-modal" data-post-modal hidden>
+      <div class="post-modal-scrim" data-post-close></div>
+      <div class="post-modal-scroll">
+        <div class="post-modal-panel" role="dialog" aria-modal="true" aria-labelledby="post-modal-title">
+          <div class="post-modal-copy">
+            <h2 class="post-modal-title" id="post-modal-title">Title</h2>
+            <div class="post-modal-rating" data-post-modal-rating aria-label="3 out of 5 stars">
+              <span class="star star-filled">&#9733;</span>
+              <span class="star star-filled">&#9733;</span>
+              <span class="star star-filled">&#9733;</span>
+              <span class="star">&#9733;</span>
+              <span class="star">&#9733;</span>
+            </div>
+            <p class="post-modal-description" data-post-modal-description>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque.
+            </p>
+            <button class="series-back-button" type="button" data-series-back hidden>Back to series</button>
+            <div class="post-modal-episodes" data-post-modal-episodes hidden></div>
+          </div>
+          <div class="post-modal-image image-placeholder" aria-hidden="true">
+            <div class="placeholder-sun"></div>
+            <div class="placeholder-mountain placeholder-mountain-large"></div>
+            <div class="placeholder-mountain placeholder-mountain-small"></div>
+          </div>
+        </div>
+        <section class="comic-reader" data-comic-reader hidden aria-label="Comic episode reader"></section>
+        <section class="post-activity" aria-label="Post comments and ratings">
+          <form class="feedback-form" data-feedback-form>
+            <label>
+              Rating
+              <input type="hidden" data-feedback-rating value="3" />
+              <span class="feedback-stars" data-feedback-stars role="radiogroup" aria-label="Choose rating"></span>
+            </label>
+            <label>
+              Comment
+              <textarea data-feedback-comment maxlength="240" placeholder="Leave a comment"></textarea>
+            </label>
+            <button type="submit">Send feedback</button>
+            <p class="feedback-message" data-feedback-message></p>
+          </form>
+          <div data-activity-list></div>
+        </section>
+      </div>
+    </div>
+    <div class="commission-modal" data-commission-modal hidden>
+      <div class="post-modal-scrim" data-commission-close></div>
+      <div class="post-modal-scroll">
+        <div class="commission-modal-panel" role="dialog" aria-modal="true" aria-labelledby="commission-modal-title">
+          <div class="commission-modal-copy">
+            <p class="commission-request-kicker">Commission request</p>
+            <h2 class="commission-request-title" id="commission-modal-title" data-commission-request-title>Selected commission</h2>
+            <p class="commission-request-price" data-commission-request-price></p>
+            <p class="commission-modal-description" data-commission-modal-description></p>
+            <form class="commission-form" data-commission-form>
+              <label>
+                Discord name
+                <input type="text" name="discordName" maxlength="80" required />
+              </label>
+              <label>
+                Commission details
+                <textarea name="description" maxlength="800" required placeholder="Tell me what you want, pose, colors, mood, deadline, and anything important."></textarea>
+              </label>
+              <label>
+                Reference images
+                <input type="file" name="reference" accept="image/*" multiple />
+              </label>
+              <section class="commission-reference-preview" data-commission-reference-preview hidden>
+                <p class="commission-reference-preview-title" data-commission-reference-count></p>
+                <div class="commission-reference-grid" data-commission-reference-grid></div>
+              </section>
+              <p class="commission-form-message" data-commission-form-message hidden></p>
+              <div class="commission-form-actions">
+                <button class="commission-back-button" type="button" data-commission-close>Back</button>
+                <button class="commission-submit-button" type="submit">Send request</button>
+              </div>
+            </form>
+            <section class="commission-success" data-commission-success hidden>
+              <p class="commission-success-lead">Your commission request has been saved.</p>
+              <p class="commission-success-copy">Here is your private commission link:</p>
+              <div class="commission-success-link-row">
+                <input class="commission-success-link" type="text" data-commission-success-link readonly />
+                <button class="commission-success-copy-button" type="button" data-commission-copy-link>Copy</button>
+              </div>
+              <p class="commission-success-note" data-commission-success-note></p>
+              <div class="commission-form-actions">
+                <button class="commission-submit-button" type="button" data-commission-success-close>Done</button>
+              </div>
+            </section>
+          </div>
+          <div class="commission-modal-image">
+            <img class="commission-modal-preview" data-commission-modal-image hidden alt="" />
+            <div class="image-placeholder commission-modal-placeholder" data-commission-modal-placeholder>
+              <div class="placeholder-sun"></div>
+              <div class="placeholder-mountain placeholder-mountain-large"></div>
+              <div class="placeholder-mountain placeholder-mountain-small"></div>
+            </div>
+            <div class="commission-modal-thumbnails" data-commission-modal-thumbnails hidden></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
