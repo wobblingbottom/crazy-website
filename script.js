@@ -54,6 +54,7 @@ let selectedCommissionOfferingId = '';
 let commissionOfferings = [];
 let commissionReferencePreviewUrls = [];
 let commissionReferenceFiles = [];
+let logoutPending = false;
 const BACKGROUND_MUSIC_VOLUME = 0.25;
 const MUSIC_FADE_STEP_MS = 80;
 const MUSIC_FADE_DURATION_MS = 1200;
@@ -73,6 +74,24 @@ function updateLoginTarget() {
   }
 
   loginButton.href = currentUserIsAdmin ? getDashboardPath() : '/logout';
+}
+
+function setLogoutConfirmation(isPending) {
+  if (!loginButton || !currentUser || currentUserIsAdmin) {
+    return;
+  }
+
+  logoutPending = isPending;
+  const username = loginButton.querySelector('.login-username');
+
+  if (username) {
+    username.textContent = logoutPending ? 'Log out?' : currentUser.username;
+  }
+
+  loginButton.setAttribute(
+    'aria-label',
+    logoutPending ? 'Click again to log out' : `Signed in as ${currentUser.username}`
+  );
 }
 
 function getDiscordAvatarUrl(user) {
@@ -99,6 +118,7 @@ function renderLoginUserButton() {
   `;
   loginButton.setAttribute('aria-label', `Signed in as ${currentUser.username}`);
   loginButton.classList.add('login-button-user');
+  logoutPending = false;
   updateLoginTarget();
 }
 
@@ -124,6 +144,7 @@ function setActiveView(viewName) {
   });
 
   updateLoginTarget();
+  setLogoutConfirmation(false);
 }
 
 function getInitialView() {
@@ -387,6 +408,27 @@ navButtons.forEach((button) => {
       setActiveView(viewName);
     }
   });
+});
+
+if (loginButton) {
+  loginButton.addEventListener('click', (event) => {
+    if (!currentUser || currentUserIsAdmin) {
+      return;
+    }
+
+    if (!logoutPending) {
+      event.preventDefault();
+      setLogoutConfirmation(true);
+    }
+  });
+}
+
+document.addEventListener('click', (event) => {
+  if (!logoutPending || !loginButton || loginButton.contains(event.target)) {
+    return;
+  }
+
+  setLogoutConfirmation(false);
 });
 
 window.addEventListener('hashchange', () => {
