@@ -1744,6 +1744,11 @@ app.get(["/admin/comissions", "/admin/commission"], (req, res) => {
 
 app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
   const username = escapeHtml(req.session.user.username);
+  const storageWarningMarkup = storageDir
+    ? ""
+    : `<div class="storage-warning">
+        Persistent storage is not configured. Add a Railway volume mounted at /data and set STORAGE_DIR=/data, or dashboard uploads will reset on redeploy.
+      </div>`;
 
   res.send(`<!DOCTYPE html>
 <html lang="en">
@@ -2004,6 +2009,14 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         color: #c8c8c8;
         text-align: center;
       }
+      .storage-warning {
+        border: 1px solid #8c5f28;
+        border-radius: 8px;
+        background: #332515;
+        color: #ffd99f;
+        padding: 12px 14px;
+        line-height: 1.45;
+      }
       @media (max-width: 760px) {
         .topbar,
         .commission-card,
@@ -2036,6 +2049,8 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         <a class="button secondary" href="/admin/comics">Comics dashboard</a>
         <a class="button" href="/admin/commissions">Commissions dashboard</a>
       </nav>
+
+      ${storageWarningMarkup}
 
       <nav class="section-tabs" aria-label="Commission admin views">
         <button class="button section-tab-active" type="button" data-section-target="offerings">Offerings</button>
@@ -2466,6 +2481,11 @@ app.get(["/admin", "/admin/posts", "/admin/comics"], ensureConfigured, requireAd
   const isComicsDashboard = dashboardSection === "comics";
   const dashboardItemName = isComicsDashboard ? "comic" : "post";
   const dashboardTitle = isComicsDashboard ? "Comics" : "Posts";
+  const storageWarningMarkup = storageDir
+    ? ""
+    : `<div class="storage-warning">
+        Persistent storage is not configured. Add a Railway volume mounted at /data and set STORAGE_DIR=/data, or dashboard uploads will reset on redeploy.
+      </div>`;
 
   res.send(`<!DOCTYPE html>
 <html lang="en">
@@ -2806,6 +2826,14 @@ app.get(["/admin", "/admin/posts", "/admin/comics"], ensureConfigured, requireAd
         color: #c8c8c8;
         text-align: center;
       }
+      .storage-warning {
+        border: 1px solid #8c5f28;
+        border-radius: 8px;
+        background: #332515;
+        color: #ffd99f;
+        padding: 12px 14px;
+        line-height: 1.45;
+      }
       .dashboard-note {
         color: #d8d8d8;
         line-height: 1.5;
@@ -2891,6 +2919,8 @@ app.get(["/admin", "/admin/posts", "/admin/comics"], ensureConfigured, requireAd
         <a class="button ${isComicsDashboard ? "" : "secondary"}" href="/admin/comics">Comics dashboard</a>
         <a class="button secondary" href="/admin/commissions">Commissions dashboard</a>
       </nav>
+
+      ${storageWarningMarkup}
 
       <div class="dashboard-grid">
         <section class="panel">
