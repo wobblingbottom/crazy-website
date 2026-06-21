@@ -1920,17 +1920,21 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
       }
       .offering-image-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
-        gap: 10px;
-        margin-top: 12px;
+        grid-template-columns: repeat(auto-fill, minmax(116px, 1fr));
+        gap: 12px;
+        align-content: start;
+        padding: 16px;
+        border: 1px solid #cdbfa7;
+        border-radius: 12px;
+        background: #fbfffe;
       }
       .offering-image-thumb {
         position: relative;
         display: block;
         width: 100%;
         aspect-ratio: 1;
-        border: 1px solid #5a5a5a;
-        border-radius: 7px;
+        border: 1px solid #cdbfa7;
+        border-radius: 10px;
         background: #ececeb;
         cursor: grab;
         overflow: hidden;
@@ -1949,18 +1953,19 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
       }
       .offering-image-remove {
         position: absolute;
-        top: 5px;
-        right: 5px;
-        display: grid;
-        place-items: center;
-        width: 24px;
-        height: 24px;
+        top: 8px;
+        right: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
         min-width: 0;
         padding: 0;
-        border: 1px solid #f5f5f5;
+        border: 0;
         border-radius: 999px;
-        background: #202020;
-        color: #f5f5f5;
+        background: rgba(255, 244, 245, 0.92);
+        color: #b74a5b;
         font-size: 16px;
         line-height: 1;
         cursor: pointer;
