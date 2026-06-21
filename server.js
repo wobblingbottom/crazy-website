@@ -1948,20 +1948,22 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
       }
       .offering-image-remove {
         position: absolute;
-        top: 8px;
-        right: 8px;
+        top: 5px;
+        right: 5px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 20px;
-        height: 20px;
+        box-sizing: border-box;
+        width: 16px;
+        height: 16px;
         min-width: 0;
+        min-height: 0;
         padding: 0;
         border: 0;
         border-radius: 999px;
         background: rgba(255, 244, 245, 0.92);
         color: #b74a5b;
-        font-size: 13px;
+        font-size: 11px;
         line-height: 1;
         cursor: pointer;
       }
