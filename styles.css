@@ -322,7 +322,7 @@ button {
 
 .image-watermark {
   position: absolute;
-  top: 6px;
+  top: 2px;
   left: 10px;
   z-index: 2;
   width: 54px;
