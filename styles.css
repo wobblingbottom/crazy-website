@@ -337,7 +337,7 @@ button {
 .post-card:focus-visible .image-watermark,
 .comic-card:hover .image-watermark,
 .comic-card:focus-visible .image-watermark {
-  opacity: 0.5;
+  opacity: 0.3;
 }
 
 .gallery-empty {
