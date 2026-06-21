@@ -11,12 +11,13 @@ dotenv.config();
 
 const app = express();
 const port = Number.parseInt(process.env.PORT || "3000", 10);
-const dataDir = path.join(__dirname, "data");
+const storageDir = process.env.STORAGE_DIR || "";
+const dataDir = process.env.DATA_DIR || (storageDir ? path.join(storageDir, "data") : path.join(__dirname, "data"));
 const postsFile = path.join(dataDir, "posts.json");
 const comicsFile = path.join(dataDir, "comics.json");
 const commissionsFile = path.join(dataDir, "commissions.json");
 const commissionOfferingsFile = path.join(dataDir, "commission-offerings.json");
-const uploadsDir = path.join(__dirname, "uploads");
+const uploadsDir = process.env.UPLOADS_DIR || (storageDir ? path.join(storageDir, "uploads") : path.join(__dirname, "uploads"));
 const COMMENT_MAX_LENGTH = 240;
 
 fsSync.mkdirSync(uploadsDir, { recursive: true });
@@ -180,25 +181,7 @@ async function ensurePostsFile() {
   try {
     await fs.access(postsFile);
   } catch {
-    const starterPosts = [
-      {
-        id: crypto.randomUUID(),
-        title: "Title",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque.",
-        rating: 3,
-        status: "published",
-        imageAlt: "Placeholder image",
-        imageUrl: "",
-        musicUrl: "",
-        comments: [],
-        ratings: [],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      }
-    ];
-
-    await fs.writeFile(postsFile, JSON.stringify(starterPosts, null, 2));
+    await fs.writeFile(postsFile, JSON.stringify([], null, 2));
   }
 }
 
