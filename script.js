@@ -59,6 +59,7 @@ const BACKGROUND_MUSIC_VOLUME = 0.25;
 const MUSIC_FADE_STEP_MS = 80;
 const MUSIC_FADE_DURATION_MS = 1200;
 const VALID_VIEWS = new Set(['posts', 'comics', 'commissions']);
+const WATERMARK_IMAGE_URL = 'assets/crazyland-watermark.png';
 
 function getDashboardPath() {
   if (currentView === 'commissions') {
@@ -614,9 +615,19 @@ function createPostCard(post) {
     media.appendChild(image);
   }
 
+  media.appendChild(createImageWatermark());
   media.appendChild(createRatingOverlay(post.rating, post.averageRating || post.rating));
   card.appendChild(media);
   return card;
+}
+
+function createImageWatermark() {
+  const watermark = document.createElement('img');
+  watermark.className = 'image-watermark';
+  watermark.src = WATERMARK_IMAGE_URL;
+  watermark.alt = '';
+  watermark.setAttribute('aria-hidden', 'true');
+  return watermark;
 }
 
 function createComicRow(comic) {
@@ -638,6 +649,7 @@ function createComicRow(comic) {
     media.appendChild(image);
   }
 
+  media.appendChild(createImageWatermark());
   media.appendChild(createRatingOverlay(comic.rating, comic.averageRating || comic.rating));
 
   const copy = document.createElement('div');
