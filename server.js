@@ -22,6 +22,20 @@ const COMMENT_MAX_LENGTH = 240;
 
 fsSync.mkdirSync(uploadsDir, { recursive: true });
 
+function buildStorageStatusMarkup() {
+  const statusClass = storageDir ? "storage-warning storage-warning-ok" : "storage-warning";
+  const statusText = storageDir
+    ? "Persistent storage is configured."
+    : "Persistent storage is not configured. Add a Railway volume mounted at /data and set STORAGE_DIR=/data, or dashboard uploads will reset on redeploy.";
+
+  return `<div class="${statusClass}">
+    <strong>${statusText}</strong>
+    <span>STORAGE_DIR: ${escapeHtml(storageDir || "not set")}</span>
+    <span>Data path: ${escapeHtml(dataDir)}</span>
+    <span>Uploads path: ${escapeHtml(uploadsDir)}</span>
+  </div>`;
+}
+
 const {
   DISCORD_CLIENT_ID,
   DISCORD_CLIENT_SECRET,
@@ -1744,11 +1758,7 @@ app.get(["/admin/comissions", "/admin/commission"], (req, res) => {
 
 app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
   const username = escapeHtml(req.session.user.username);
-  const storageWarningMarkup = storageDir
-    ? ""
-    : `<div class="storage-warning">
-        Persistent storage is not configured. Add a Railway volume mounted at /data and set STORAGE_DIR=/data, or dashboard uploads will reset on redeploy.
-      </div>`;
+  const storageStatusMarkup = buildStorageStatusMarkup();
 
   res.send(`<!DOCTYPE html>
 <html lang="en">
@@ -2015,12 +2025,19 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         text-align: center;
       }
       .storage-warning {
+        display: grid;
+        gap: 4px;
         border: 1px solid #8c5f28;
         border-radius: 8px;
         background: #332515;
         color: #ffd99f;
         padding: 12px 14px;
         line-height: 1.45;
+      }
+      .storage-warning-ok {
+        border-color: #426d46;
+        background: #162716;
+        color: #bce7bd;
       }
       @media (max-width: 760px) {
         .topbar,
@@ -2055,7 +2072,7 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         <a class="button" href="/admin/commissions">Commissions dashboard</a>
       </nav>
 
-      ${storageWarningMarkup}
+      ${storageStatusMarkup}
 
       <nav class="section-tabs" aria-label="Commission admin views">
         <button class="button section-tab-active" type="button" data-section-target="offerings">Offerings</button>
@@ -2486,11 +2503,7 @@ app.get(["/admin", "/admin/posts", "/admin/comics"], ensureConfigured, requireAd
   const isComicsDashboard = dashboardSection === "comics";
   const dashboardItemName = isComicsDashboard ? "comic" : "post";
   const dashboardTitle = isComicsDashboard ? "Comics" : "Posts";
-  const storageWarningMarkup = storageDir
-    ? ""
-    : `<div class="storage-warning">
-        Persistent storage is not configured. Add a Railway volume mounted at /data and set STORAGE_DIR=/data, or dashboard uploads will reset on redeploy.
-      </div>`;
+  const storageStatusMarkup = buildStorageStatusMarkup();
 
   res.send(`<!DOCTYPE html>
 <html lang="en">
@@ -2832,12 +2845,19 @@ app.get(["/admin", "/admin/posts", "/admin/comics"], ensureConfigured, requireAd
         text-align: center;
       }
       .storage-warning {
+        display: grid;
+        gap: 4px;
         border: 1px solid #8c5f28;
         border-radius: 8px;
         background: #332515;
         color: #ffd99f;
         padding: 12px 14px;
         line-height: 1.45;
+      }
+      .storage-warning-ok {
+        border-color: #426d46;
+        background: #162716;
+        color: #bce7bd;
       }
       .dashboard-note {
         color: #d8d8d8;
@@ -2925,7 +2945,7 @@ app.get(["/admin", "/admin/posts", "/admin/comics"], ensureConfigured, requireAd
         <a class="button secondary" href="/admin/commissions">Commissions dashboard</a>
       </nav>
 
-      ${storageWarningMarkup}
+      ${storageStatusMarkup}
 
       <div class="dashboard-grid">
         <section class="panel">
