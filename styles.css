@@ -323,9 +323,9 @@ button {
 .image-watermark {
   position: absolute;
   top: 2px;
-  left: 10px;
+  left: 4px;
   z-index: 2;
-  width: 54px;
+  width: 27px;
   height: auto;
   border-radius: 0;
   opacity: 0.75;
