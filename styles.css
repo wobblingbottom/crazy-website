@@ -328,7 +328,7 @@ button {
   width: 54px;
   height: auto;
   border-radius: 0;
-  opacity: 1;
+  opacity: 0.25;
   pointer-events: none;
   transition: opacity 160ms ease;
 }
