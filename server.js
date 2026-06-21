@@ -1658,10 +1658,26 @@ app.put("/api/admin/commission-offerings/:id", ensureConfigured, requireAdmin, u
       : offering.exampleImageUrl
         ? [offering.exampleImageUrl]
         : [];
+  let requestedExampleImageOrder = [];
+
+  try {
+    const parsedOrder = JSON.parse(String(req.body.exampleImageOrder || "[]"));
+    requestedExampleImageOrder = Array.isArray(parsedOrder) ? parsedOrder.filter(Boolean) : [];
+  } catch {
+    requestedExampleImageOrder = [];
+  }
+
+  const orderedExistingExampleImageUrls =
+    requestedExampleImageOrder.length > 0
+      ? [
+          ...requestedExampleImageOrder.filter((url) => existingExampleImageUrls.includes(url)),
+          ...existingExampleImageUrls.filter((url) => !requestedExampleImageOrder.includes(url))
+        ]
+      : existingExampleImageUrls;
   const nextExampleImageUrls =
     uploadedExampleImageUrls.length > 0
-      ? [...existingExampleImageUrls, ...uploadedExampleImageUrls]
-      : existingExampleImageUrls;
+      ? [...orderedExistingExampleImageUrls, ...uploadedExampleImageUrls]
+      : orderedExistingExampleImageUrls;
 
   Object.assign(offering, result.offering, {
     exampleImageUrl: nextExampleImageUrls[0] || "",
@@ -1879,6 +1895,9 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         background: #202020;
         padding: 16px;
       }
+      .offering-card {
+        grid-template-columns: minmax(260px, 360px) minmax(0, 1fr) auto;
+      }
       .commission-reference,
       .offering-image {
         width: 120px;
@@ -1893,6 +1912,34 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         place-items: center;
         color: #777777;
         font-size: 12px;
+      }
+      .offering-image-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .offering-image-thumb {
+        display: block;
+        width: 100%;
+        aspect-ratio: 1;
+        border: 1px solid #5a5a5a;
+        border-radius: 7px;
+        background: #ececeb;
+        cursor: grab;
+        overflow: hidden;
+      }
+      .offering-image-thumb:active {
+        cursor: grabbing;
+      }
+      .offering-image-thumb.is-dragging {
+        opacity: 0.45;
+      }
+      .offering-image-thumb img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
       .commission-title,
       .offering-title {
@@ -2130,6 +2177,36 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
           .join("");
       }
 
+      function getOfferingImages(offering) {
+        if (Array.isArray(offering.exampleImageUrls) && offering.exampleImageUrls.length > 0) {
+          return offering.exampleImageUrls.filter(Boolean);
+        }
+
+        return offering.exampleImageUrl ? [offering.exampleImageUrl] : [];
+      }
+
+      function renderOfferingImageGrid(offering) {
+        const images = getOfferingImages(offering);
+
+        if (images.length === 0) {
+          return '<div class="offering-image commission-placeholder">No image</div>';
+        }
+
+        return \`
+          <div class="offering-image-grid" data-offering-image-grid data-id="\${escapeText(offering.id)}">
+            \${images
+              .map(
+                (imageUrl) => \`
+                  <div class="offering-image-thumb" draggable="true" data-image-url="\${escapeText(imageUrl)}" title="Drag to reorder">
+                    <img src="\${escapeText(imageUrl)}" alt="Example for \${escapeText(offering.title)}" />
+                  </div>
+                \`
+              )
+              .join("")}
+          </div>
+        \`;
+      }
+
       function renderOfferings() {
         if (offerings.length === 0) {
           offeringList.innerHTML = '<div class="empty">No commission offerings yet.</div>';
@@ -2139,17 +2216,13 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         offeringList.innerHTML = offerings
           .map((offering) => \`
             <article class="offering-card">
-              \${
-                (offering.exampleImageUrls?.[0] || offering.exampleImageUrl)
-                  ? \`<img class="offering-image" src="\${escapeText(offering.exampleImageUrls?.[0] || offering.exampleImageUrl)}" alt="Example for \${escapeText(offering.title)}" />\`
-                  : '<div class="offering-image commission-placeholder">No image</div>'
-              }
+              \${renderOfferingImageGrid(offering)}
               <div class="offering-content">
                 <h2 class="offering-title">\${escapeText(offering.title)}</h2>
                 <p class="offering-meta">
                   <span>\${escapeText(offering.status)}</span>
                   <span>\${escapeText(offering.estimatePrice)}</span>
-                  <span>\${(offering.exampleImageUrls?.length || (offering.exampleImageUrl ? 1 : 0))} image(s)</span>
+                  <span>\${getOfferingImages(offering).length} image(s)</span>
                 </p>
                 <p class="offering-description">\${escapeText(offering.description)}</p>
                 \${offering.notes ? \`<p class="offering-meta">Notes: \${escapeText(offering.notes)}</p>\` : ""}
@@ -2161,6 +2234,54 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
             </article>
           \`)
           .join("");
+      }
+
+      function getOfferingImageOrder(grid) {
+        return [...grid.querySelectorAll("[data-image-url]")].map((item) => item.dataset.imageUrl);
+      }
+
+      function getOfferingDragAfterElement(container, x) {
+        const draggableElements = [...container.querySelectorAll(".offering-image-thumb:not(.is-dragging)")];
+
+        return draggableElements.reduce(
+          (closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = x - box.left - box.width / 2;
+
+            if (offset < 0 && offset > closest.offset) {
+              return { offset, element: child };
+            }
+
+            return closest;
+          },
+          { offset: Number.NEGATIVE_INFINITY, element: null }
+        ).element;
+      }
+
+      async function saveOfferingImageOrder(grid) {
+        const offering = offerings.find((item) => item.id === grid.dataset.id);
+
+        if (!offering) return;
+
+        const payload = new FormData();
+        payload.append("title", offering.title);
+        payload.append("description", offering.description);
+        payload.append("estimatePrice", offering.estimatePrice);
+        payload.append("notes", offering.notes || "");
+        payload.append("status", offering.status);
+        payload.append("exampleImageOrder", JSON.stringify(getOfferingImageOrder(grid)));
+
+        const response = await fetch(\`/api/admin/commission-offerings/\${offering.id}\`, {
+          method: "PUT",
+          body: payload
+        });
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          throw new Error(data.error || "Could not save image order.");
+        }
+
+        offerings = offerings.map((item) => (item.id === offering.id ? data.offering : item));
       }
 
       async function loadCommissions() {
@@ -2199,6 +2320,47 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
       });
 
       clearOfferingForm.addEventListener("click", resetOfferingForm);
+
+      offeringList.addEventListener("dragstart", (event) => {
+        const thumb = event.target.closest(".offering-image-thumb");
+
+        if (!thumb) return;
+
+        thumb.classList.add("is-dragging");
+      });
+
+      offeringList.addEventListener("dragend", async (event) => {
+        const thumb = event.target.closest(".offering-image-thumb");
+        const grid = thumb?.closest("[data-offering-image-grid]");
+
+        thumb?.classList.remove("is-dragging");
+
+        if (!grid) return;
+
+        try {
+          await saveOfferingImageOrder(grid);
+          offeringMessage.textContent = "Image order saved.";
+        } catch (error) {
+          offeringMessage.textContent = error.message || "Could not save image order.";
+          await loadCommissions();
+        }
+      });
+
+      offeringList.addEventListener("dragover", (event) => {
+        const grid = event.target.closest("[data-offering-image-grid]");
+        const dragging = offeringList.querySelector(".offering-image-thumb.is-dragging");
+
+        if (!grid || !dragging || !grid.contains(dragging)) return;
+
+        event.preventDefault();
+        const afterElement = getOfferingDragAfterElement(grid, event.clientX);
+
+        if (afterElement) {
+          grid.insertBefore(dragging, afterElement);
+        } else {
+          grid.appendChild(dragging);
+        }
+      });
 
       offeringList.addEventListener("click", async (event) => {
         const button = event.target.closest("[data-offering-action]");
