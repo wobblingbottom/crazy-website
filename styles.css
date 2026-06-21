@@ -317,6 +317,7 @@ button {
   background: #e2dad4;
   border-radius: 8px;
   object-fit: cover;
+  pointer-events: none;
 }
 
 .gallery-empty {
