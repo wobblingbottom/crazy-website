@@ -1915,10 +1915,10 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
       }
       .offering-image-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(116px, 1fr));
-        gap: 12px;
+        grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+        gap: 8px;
         align-content: start;
-        padding: 16px;
+        padding: 12px;
         border: 1px solid #cdbfa7;
         border-radius: 12px;
         background: #fbfffe;
@@ -1953,15 +1953,15 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 28px;
-        height: 28px;
+        width: 20px;
+        height: 20px;
         min-width: 0;
         padding: 0;
         border: 0;
         border-radius: 999px;
         background: rgba(255, 244, 245, 0.92);
         color: #b74a5b;
-        font-size: 16px;
+        font-size: 13px;
         line-height: 1;
         cursor: pointer;
       }
