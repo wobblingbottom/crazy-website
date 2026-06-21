@@ -362,8 +362,10 @@ function openCommissionModal() {
   }
 
   if (commissionModalDescription) {
-    commissionModalDescription.textContent =
-      selectedOffering.description || 'Tell me about your idea and I will follow up with the details.';
+    renderFormattedDescription(
+      commissionModalDescription,
+      selectedOffering.description || 'Tell me about your idea and I will follow up with the details.'
+    );
   }
 
   renderCommissionModalImages(selectedOffering);
@@ -469,6 +471,33 @@ function escapeAttribute(value) {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
+}
+
+function formatDescription(value) {
+  let html = escapeAttribute(value);
+
+  html = html.replace(/&lt;color(?:=([#a-zA-Z0-9(),.%\s-]+))?&gt;([\s\S]*?)&lt;\/color&gt;/g, (_match, colorValue, text) => {
+    const color = String(colorValue || '#f45f77').trim();
+    const safeColor = /^#[0-9a-fA-F]{3,8}$/.test(color) ? color : '#f45f77';
+    return `<span class="formatted-color" style="color: ${safeColor};">${text}</span>`;
+  });
+
+  html = html
+    .replace(/\*\*([\s\S]+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/__([\s\S]+?)__/g, '<strong>$1</strong>')
+    .replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>')
+    .replace(/(^|[^_])_([^_\n]+)_/g, '$1<em>$2</em>')
+    .replace(/\r?\n/g, '<br>');
+
+  return html;
+}
+
+function renderFormattedDescription(element, value) {
+  if (!element) {
+    return;
+  }
+
+  element.innerHTML = formatDescription(value || '');
 }
 
 function renderFeedbackStars(value) {
@@ -661,7 +690,7 @@ function createComicRow(comic) {
 
   const text = document.createElement('p');
   text.className = 'comic-text';
-  text.textContent = comic.description;
+  renderFormattedDescription(text, comic.description);
 
   copy.append(heading, text);
   row.append(media, copy);
@@ -706,7 +735,7 @@ function renderModalEpisodes(item) {
     title.textContent = episode.title;
 
     const description = document.createElement('p');
-    description.textContent = episode.description;
+    renderFormattedDescription(description, episode.description);
 
     copy.append(title, description);
     episodeElement.append(thumb, copy);
@@ -787,7 +816,7 @@ function showSeriesCover() {
   }
 
   postModalTitle.textContent = currentSeries.title;
-  postModalDescription.textContent = currentSeries.description;
+  renderFormattedDescription(postModalDescription, currentSeries.description);
   setModalImage(currentSeries.imageUrl, currentSeries.imageAlt || currentSeries.title);
   hideComicReader();
   setSeriesBackVisible(false);
@@ -801,7 +830,7 @@ function showEpisode(episodeId) {
   }
 
   postModalTitle.textContent = episode.title;
-  postModalDescription.textContent = episode.description;
+  renderFormattedDescription(postModalDescription, episode.description);
   setModalImage(episode.imageUrl, episode.imageAlt || episode.title);
   renderComicReader(episode);
   setSeriesBackVisible(true);
@@ -1062,7 +1091,7 @@ function createCommissionTypeCard(offering) {
 
   const description = document.createElement('span');
   description.className = 'commission-type-description';
-  description.textContent = offering.description || '';
+  renderFormattedDescription(description, offering.description || '');
   copy.appendChild(description);
 
   card.appendChild(copy);
@@ -1216,9 +1245,10 @@ function openPostModal(card) {
   }
 
   postModalTitle.textContent = card.getAttribute('data-post-title') || 'Title';
-  postModalDescription.textContent =
-    card.getAttribute('data-post-description') ||
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+  renderFormattedDescription(
+    postModalDescription,
+    card.getAttribute('data-post-description') || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+  );
   renderRating(card.getAttribute('data-post-rating'), card.getAttribute('data-post-average-rating'));
   currentPostId = card.getAttribute('data-post-id') || '';
   currentContentType = card.getAttribute('data-content-type') || 'posts';
