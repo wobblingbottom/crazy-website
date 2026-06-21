@@ -1920,6 +1920,7 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         margin-top: 12px;
       }
       .offering-image-thumb {
+        position: relative;
         display: block;
         width: 100%;
         aspect-ratio: 1;
@@ -1940,6 +1941,24 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         width: 100%;
         height: 100%;
         object-fit: cover;
+      }
+      .offering-image-remove {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        min-width: 0;
+        padding: 0;
+        border: 1px solid #f5f5f5;
+        border-radius: 999px;
+        background: #202020;
+        color: #f5f5f5;
+        font-size: 16px;
+        line-height: 1;
+        cursor: pointer;
       }
       .commission-title,
       .offering-title {
@@ -2199,6 +2218,7 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
                 (imageUrl) => \`
                   <div class="offering-image-thumb" draggable="true" data-image-url="\${escapeText(imageUrl)}" title="Drag to reorder">
                     <img src="\${escapeText(imageUrl)}" alt="Example for \${escapeText(offering.title)}" />
+                    <button class="offering-image-remove" type="button" data-offering-action="remove-image" aria-label="Remove image">x</button>
                   </div>
                 \`
               )
@@ -2324,7 +2344,7 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
       offeringList.addEventListener("dragstart", (event) => {
         const thumb = event.target.closest(".offering-image-thumb");
 
-        if (!thumb) return;
+        if (!thumb || event.target.closest(".offering-image-remove")) return;
 
         thumb.classList.add("is-dragging");
       });
@@ -2366,6 +2386,25 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         const button = event.target.closest("[data-offering-action]");
 
         if (!button) return;
+
+        if (button.dataset.offeringAction === "remove-image") {
+          const thumb = button.closest(".offering-image-thumb");
+          const grid = thumb?.closest("[data-offering-image-grid]");
+
+          if (!thumb || !grid) return;
+
+          thumb.remove();
+
+          try {
+            await saveOfferingImageOrder(grid);
+            offeringMessage.textContent = "Image removed.";
+          } catch (error) {
+            offeringMessage.textContent = error.message || "Could not remove image.";
+            await loadCommissions();
+          }
+
+          return;
+        }
 
         const offering = offerings.find((item) => item.id === button.dataset.id);
 
