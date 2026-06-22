@@ -1938,7 +1938,8 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         cursor: grabbing;
       }
       .offering-image-thumb.is-dragging {
-        opacity: 0.45;
+        opacity: 0.75;
+        transform: scale(0.96);
       }
       .offering-image-thumb img {
         display: block;
@@ -2383,9 +2384,9 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         event.preventDefault();
         const afterElement = getOfferingDragAfterElement(grid, event.clientX);
 
-        if (afterElement) {
+        if (afterElement && afterElement !== dragging.nextElementSibling) {
           grid.insertBefore(dragging, afterElement);
-        } else {
+        } else if (!afterElement && dragging !== grid.lastElementChild) {
           grid.appendChild(dragging);
         }
       });
