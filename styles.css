@@ -1307,6 +1307,20 @@ button {
   object-fit: cover;
 }
 
+.commission-type-slide-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 420ms ease;
+}
+
+.commission-type-slide {
+  display: block;
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+}
+
 .commission-type-image-placeholder {
   display: block;
 }
@@ -1465,6 +1479,10 @@ button {
   .commission-sparkle {
     animation: none;
     display: none;
+  }
+
+  .commission-type-slide-track {
+    transition: none;
   }
 }
 

@@ -313,18 +313,18 @@ function startCommissionSlideshows() {
     return;
   }
 
-  const slideImages = [...commissionTypes.querySelectorAll('[data-commission-slide-images]')];
+  const slideTracks = [...commissionTypes.querySelectorAll('[data-commission-slide-track]')];
 
-  if (slideImages.length === 0) {
+  if (slideTracks.length === 0) {
     return;
   }
 
   commissionSlideshowTimer = window.setInterval(() => {
-    slideImages.forEach((image) => {
+    slideTracks.forEach((track) => {
       let images = [];
 
       try {
-        images = JSON.parse(image.dataset.commissionSlideImages || '[]');
+        images = JSON.parse(track.dataset.commissionSlideImages || '[]');
       } catch {
         images = [];
       }
@@ -333,9 +333,9 @@ function startCommissionSlideshows() {
         return;
       }
 
-      const nextIndex = (Number.parseInt(image.dataset.commissionSlideIndex, 10) + 1 || 1) % images.length;
-      image.dataset.commissionSlideIndex = String(nextIndex);
-      image.src = images[nextIndex];
+      const nextIndex = (Number.parseInt(track.dataset.commissionSlideIndex, 10) + 1 || 1) % images.length;
+      track.dataset.commissionSlideIndex = String(nextIndex);
+      track.style.transform = `translateX(-${nextIndex * 100}%)`;
     });
   }, COMMISSION_SLIDE_INTERVAL_MS);
 }
@@ -1104,14 +1104,27 @@ function createCommissionTypeCard(offering) {
     const imageFrame = document.createElement('span');
     imageFrame.className = 'commission-type-image';
 
-    const image = document.createElement('img');
-    image.src = previewImageUrl;
-    image.alt = `${offering.title} example`;
+    const slideTrack = document.createElement('span');
+    slideTrack.className = 'commission-type-slide-track';
+
     if (offeringImages.length > 1) {
-      image.dataset.commissionSlideImages = JSON.stringify(offeringImages);
-      image.dataset.commissionSlideIndex = '0';
+      slideTrack.dataset.commissionSlideImages = JSON.stringify(offeringImages);
+      slideTrack.dataset.commissionSlideIndex = '0';
     }
-    imageFrame.appendChild(image);
+
+    offeringImages.forEach((imageUrl) => {
+      const slide = document.createElement('span');
+      slide.className = 'commission-type-slide';
+
+      const image = document.createElement('img');
+      image.src = imageUrl;
+      image.alt = `${offering.title} example`;
+
+      slide.appendChild(image);
+      slideTrack.appendChild(slide);
+    });
+
+    imageFrame.appendChild(slideTrack);
     card.appendChild(imageFrame);
   } else {
     const placeholder = document.createElement('span');
