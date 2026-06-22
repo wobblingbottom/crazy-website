@@ -1945,6 +1945,7 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        pointer-events: none;
       }
       .offering-image-remove {
         position: absolute;
@@ -2224,7 +2225,7 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
               .map(
                 (imageUrl) => \`
                   <div class="offering-image-thumb" draggable="true" data-image-url="\${escapeText(imageUrl)}" title="Drag to reorder">
-                    <img src="\${escapeText(imageUrl)}" alt="Example for \${escapeText(offering.title)}" />
+                    <img src="\${escapeText(imageUrl)}" alt="Example for \${escapeText(offering.title)}" draggable="false" />
                     <button class="offering-image-remove" type="button" data-offering-action="remove-image" aria-label="Remove image">x</button>
                   </div>
                 \`
@@ -2375,7 +2376,7 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
 
       offeringList.addEventListener("dragover", (event) => {
         const grid = event.target.closest("[data-offering-image-grid]");
-        const dragging = offeringList.querySelector(".offering-image-thumb.is-dragging");
+        const dragging = grid?.querySelector(".offering-image-thumb.is-dragging");
 
         if (!grid || !dragging || !grid.contains(dragging)) return;
 
