@@ -313,7 +313,7 @@ function startCommissionSlideshows() {
     return;
   }
 
-  const slideTracks = [...commissionTypes.querySelectorAll('[data-commission-slide-track]')];
+  const slideTracks = [...commissionTypes.querySelectorAll('[data-commission-slide-images]')];
 
   if (slideTracks.length === 0) {
     return;
