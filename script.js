@@ -55,9 +55,11 @@ let commissionOfferings = [];
 let commissionReferencePreviewUrls = [];
 let commissionReferenceFiles = [];
 let logoutPending = false;
+let commissionSlideshowTimer = null;
 const BACKGROUND_MUSIC_VOLUME = 0.25;
 const MUSIC_FADE_STEP_MS = 80;
 const MUSIC_FADE_DURATION_MS = 1200;
+const COMMISSION_SLIDE_INTERVAL_MS = 2600;
 const VALID_VIEWS = new Set(['posts', 'comics', 'commissions']);
 const WATERMARK_IMAGE_URL = 'assets/crazyland-watermark.png';
 
@@ -297,6 +299,45 @@ function getCommissionOfferingImages(offering) {
   }
 
   return offering.exampleImageUrl ? [offering.exampleImageUrl] : [];
+}
+
+function stopCommissionSlideshows() {
+  if (commissionSlideshowTimer) {
+    window.clearInterval(commissionSlideshowTimer);
+    commissionSlideshowTimer = null;
+  }
+}
+
+function startCommissionSlideshows() {
+  if (!commissionTypes || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return;
+  }
+
+  const slideImages = [...commissionTypes.querySelectorAll('[data-commission-slide-images]')];
+
+  if (slideImages.length === 0) {
+    return;
+  }
+
+  commissionSlideshowTimer = window.setInterval(() => {
+    slideImages.forEach((image) => {
+      let images = [];
+
+      try {
+        images = JSON.parse(image.dataset.commissionSlideImages || '[]');
+      } catch {
+        images = [];
+      }
+
+      if (images.length < 2) {
+        return;
+      }
+
+      const nextIndex = (Number.parseInt(image.dataset.commissionSlideIndex, 10) + 1 || 1) % images.length;
+      image.dataset.commissionSlideIndex = String(nextIndex);
+      image.src = images[nextIndex];
+    });
+  }, COMMISSION_SLIDE_INTERVAL_MS);
 }
 
 function setCommissionModalPreview(imageUrl, title) {
@@ -1056,14 +1097,22 @@ function createCommissionTypeCard(offering) {
   card.className = 'commission-type-card';
   card.type = 'button';
   card.dataset.commissionId = offering.id;
-  const previewImageUrl = getCommissionOfferingImages(offering)[0] || '';
+  const offeringImages = getCommissionOfferingImages(offering);
+  const previewImageUrl = offeringImages[0] || '';
 
   if (previewImageUrl) {
+    const imageFrame = document.createElement('span');
+    imageFrame.className = 'commission-type-image';
+
     const image = document.createElement('img');
-    image.className = 'commission-type-image';
     image.src = previewImageUrl;
     image.alt = `${offering.title} example`;
-    card.appendChild(image);
+    if (offeringImages.length > 1) {
+      image.dataset.commissionSlideImages = JSON.stringify(offeringImages);
+      image.dataset.commissionSlideIndex = '0';
+    }
+    imageFrame.appendChild(image);
+    card.appendChild(imageFrame);
   } else {
     const placeholder = document.createElement('span');
     placeholder.className = 'commission-type-image commission-type-image-placeholder';
@@ -1104,6 +1153,7 @@ function renderCommissionTypes(offerings) {
   }
 
   commissionOfferings = offerings;
+  stopCommissionSlideshows();
   commissionTypes.innerHTML = '';
   selectedCommissionOfferingId = '';
 
@@ -1125,6 +1175,8 @@ function renderCommissionTypes(offerings) {
   offerings.forEach((offering) => {
     commissionTypes.appendChild(createCommissionTypeCard(offering));
   });
+
+  startCommissionSlideshows();
 }
 
 function launchCommissionSparkles(card) {

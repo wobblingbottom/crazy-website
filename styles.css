@@ -1292,10 +1292,18 @@ button {
 }
 
 .commission-type-image {
+  display: block;
+  overflow: hidden;
   width: var(--placeholder-size);
   height: var(--placeholder-size);
   border-radius: 10px;
   background: #e2dad4;
+}
+
+.commission-type-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
