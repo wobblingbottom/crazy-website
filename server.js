@@ -1931,15 +1931,12 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         border: 1px solid #cdbfa7;
         border-radius: 10px;
         background: #ececeb;
-        cursor: grab;
+        cursor: pointer;
         overflow: hidden;
       }
-      .offering-image-thumb:active {
-        cursor: grabbing;
-      }
-      .offering-image-thumb.is-dragging {
-        opacity: 0.75;
-        transform: scale(0.96);
+      .offering-image-thumb.is-selected {
+        border-color: #f45f77;
+        box-shadow: 0 0 0 3px rgba(244, 95, 119, 0.18);
       }
       .offering-image-thumb img {
         display: block;
@@ -2225,7 +2222,7 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
             \${images
               .map(
                 (imageUrl) => \`
-                  <div class="offering-image-thumb" draggable="true" data-image-url="\${escapeText(imageUrl)}" title="Drag to reorder">
+                  <div class="offering-image-thumb" data-image-url="\${escapeText(imageUrl)}" title="Click to select, then click another image to move it">
                     <img src="\${escapeText(imageUrl)}" alt="Example for \${escapeText(offering.title)}" draggable="false" />
                     <button class="offering-image-remove" type="button" data-offering-action="remove-image" aria-label="Remove image">x</button>
                   </div>
@@ -2267,24 +2264,6 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
 
       function getOfferingImageOrder(grid) {
         return [...grid.querySelectorAll("[data-image-url]")].map((item) => item.dataset.imageUrl);
-      }
-
-      function getOfferingDragAfterElement(container, x) {
-        const draggableElements = [...container.querySelectorAll(".offering-image-thumb:not(.is-dragging)")];
-
-        return draggableElements.reduce(
-          (closest, child) => {
-            const box = child.getBoundingClientRect();
-            const offset = x - box.left - box.width / 2;
-
-            if (offset < 0 && offset > closest.offset) {
-              return { offset, element: child };
-            }
-
-            return closest;
-          },
-          { offset: Number.NEGATIVE_INFINITY, element: null }
-        ).element;
       }
 
       async function saveOfferingImageOrder(grid) {
@@ -2350,53 +2329,10 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
 
       clearOfferingForm.addEventListener("click", resetOfferingForm);
 
-      offeringList.addEventListener("dragstart", (event) => {
-        const thumb = event.target.closest(".offering-image-thumb");
-
-        if (!thumb || event.target.closest(".offering-image-remove")) return;
-
-        thumb.classList.add("is-dragging");
-      });
-
-      offeringList.addEventListener("dragend", async (event) => {
-        const thumb = event.target.closest(".offering-image-thumb");
-        const grid = thumb?.closest("[data-offering-image-grid]");
-
-        thumb?.classList.remove("is-dragging");
-
-        if (!grid) return;
-
-        try {
-          await saveOfferingImageOrder(grid);
-          offeringMessage.textContent = "Image order saved.";
-        } catch (error) {
-          offeringMessage.textContent = error.message || "Could not save image order.";
-          await loadCommissions();
-        }
-      });
-
-      offeringList.addEventListener("dragover", (event) => {
-        const grid = event.target.closest("[data-offering-image-grid]");
-        const dragging = grid?.querySelector(".offering-image-thumb.is-dragging");
-
-        if (!grid || !dragging || !grid.contains(dragging)) return;
-
-        event.preventDefault();
-        const afterElement = getOfferingDragAfterElement(grid, event.clientX);
-
-        if (afterElement && afterElement !== dragging.nextElementSibling) {
-          grid.insertBefore(dragging, afterElement);
-        } else if (!afterElement && dragging !== grid.lastElementChild) {
-          grid.appendChild(dragging);
-        }
-      });
-
       offeringList.addEventListener("click", async (event) => {
         const button = event.target.closest("[data-offering-action]");
 
-        if (!button) return;
-
-        if (button.dataset.offeringAction === "remove-image") {
+        if (button?.dataset.offeringAction === "remove-image") {
           const thumb = button.closest(".offering-image-thumb");
           const grid = thumb?.closest("[data-offering-image-grid]");
 
@@ -2414,6 +2350,45 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
 
           return;
         }
+
+        const targetThumb = event.target.closest(".offering-image-thumb");
+
+        if (targetThumb) {
+          const grid = targetThumb.closest("[data-offering-image-grid]");
+          const selectedThumb = grid?.querySelector(".offering-image-thumb.is-selected");
+
+          if (!grid) return;
+
+          if (!selectedThumb) {
+            targetThumb.classList.add("is-selected");
+            offeringMessage.textContent = "Select where to move this image.";
+            return;
+          }
+
+          if (selectedThumb === targetThumb) {
+            selectedThumb.classList.remove("is-selected");
+            offeringMessage.textContent = "";
+            return;
+          }
+
+          const targetWasAfterSelection = Boolean(
+            selectedThumb.compareDocumentPosition(targetThumb) & Node.DOCUMENT_POSITION_FOLLOWING
+          );
+          grid.insertBefore(selectedThumb, targetWasAfterSelection ? targetThumb.nextSibling : targetThumb);
+          selectedThumb.classList.remove("is-selected");
+
+          try {
+            await saveOfferingImageOrder(grid);
+            offeringMessage.textContent = "Image order saved.";
+          } catch (error) {
+            offeringMessage.textContent = error.message || "Could not save image order.";
+            await loadCommissions();
+          }
+
+          return;
+        }
+
+        if (!button) return;
 
         const offering = offerings.find((item) => item.id === button.dataset.id);
 
