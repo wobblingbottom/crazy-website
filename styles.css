@@ -1334,7 +1334,7 @@ button {
   color: #000000;
   min-width: 0;
   width: 100%;
-  height: 193px;
+  height: 216px;
   max-width: none;
   overflow: visible;
   padding: 14px 22px;
@@ -1418,10 +1418,10 @@ button {
 
 .commission-type-heading {
   display: block;
-  margin: 0 0 14px;
-  padding-right: 170px;
+  margin: 0 0 18px;
+  padding-right: 190px;
   color: #000000;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 400;
 }
 
@@ -1435,23 +1435,23 @@ button {
   border-radius: 10px;
   background: #f45f77;
   color: #ffffff;
-  font-size: 1rem;
-  padding: 8px 14px;
+  font-size: 1.15rem;
+  padding: 10px 18px;
 }
 
 .commission-type-description-title {
   display: block;
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   color: #000000;
-  font-size: 0.95rem;
+  font-size: 1.25rem;
 }
 
 .commission-type-description {
   display: block;
   margin: 0;
   color: #000000;
-  font-size: 0.8125rem;
-  line-height: 1.32;
+  font-size: 1.05rem;
+  line-height: 1.38;
 }
 
 .commission-next-button {
