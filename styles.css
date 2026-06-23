@@ -488,9 +488,26 @@ button {
 
 .post-modal-description {
   margin: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  scrollbar-color: #f45f77 transparent;
+  scrollbar-width: thin;
   font-size: 15px;
   line-height: 1.3;
   word-spacing: 8px;
+}
+
+.post-modal-description::-webkit-scrollbar {
+  width: 8px;
+}
+
+.post-modal-description::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.post-modal-description::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #f45f77;
 }
 
 .post-modal-episodes {
