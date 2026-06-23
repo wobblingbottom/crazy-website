@@ -1559,7 +1559,34 @@ button {
 
   .gallery {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 14px;
+    row-gap: 44px;
     padding: 0;
+  }
+
+  .gallery-card {
+    min-width: 0;
+  }
+
+  .post-card,
+  .post-media,
+  .image-placeholder {
+    width: 100%;
+  }
+
+  .post-media,
+  .image-placeholder {
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .rating-overlay .star {
+    width: clamp(24px, 7vw, 30px);
+    height: clamp(24px, 7vw, 30px);
+  }
+
+  .image-watermark {
+    width: 34px;
   }
 
   .comics-list {
