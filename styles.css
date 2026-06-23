@@ -1709,21 +1709,39 @@ button {
 
   .post-modal-title {
     order: 1;
-    font-size: 40px;
+    font-size: 34px;
     padding: 28px 20px 0;
   }
 
   .post-modal-rating {
     order: 2;
-    font-size: 36px;
+    font-size: 30px;
     padding: 0 20px;
   }
 
   .post-modal-description {
     order: 3;
-    font-size: 20px;
+    max-height: min(190px, 24vh);
+    overflow-y: auto;
+    scrollbar-color: #f45f77 transparent;
+    scrollbar-width: thin;
+    font-size: 17px;
+    line-height: 1.35;
     padding: 0 20px;
     word-spacing: 0;
+  }
+
+  .post-modal-description::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .post-modal-description::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .post-modal-description::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: #f45f77;
   }
 
   .post-modal-image {
