@@ -1744,8 +1744,19 @@ button {
     scrollbar-width: thin;
     font-size: 17px;
     line-height: 1.35;
-    padding: 0 20px;
+    padding: 0 34px 0 20px;
     word-spacing: 0;
+  }
+
+  .post-modal-description.is-scrollable {
+    background:
+      radial-gradient(circle, #f45f77 98%, transparent) no-repeat
+      right 20px top var(--description-scroll-top, 0) / 6px 6px,
+      linear-gradient(#f45f77, #f45f77) no-repeat
+      right 20px top calc(var(--description-scroll-top, 0px) + 3px) / 6px
+      calc(var(--description-scroll-thumb-height, 32px) - 6px),
+      radial-gradient(circle, #f45f77 98%, transparent) no-repeat
+      right 20px top calc(var(--description-scroll-top, 0px) + var(--description-scroll-thumb-height, 32px) - 6px) / 6px 6px;
   }
 
   .post-modal-description::-webkit-scrollbar {

@@ -858,9 +858,11 @@ function showSeriesCover() {
 
   postModalTitle.textContent = currentSeries.title;
   renderFormattedDescription(postModalDescription, currentSeries.description);
+  postModalDescription.scrollTop = 0;
   setModalImage(currentSeries.imageUrl, currentSeries.imageAlt || currentSeries.title);
   hideComicReader();
   setSeriesBackVisible(false);
+  requestAnimationFrame(updatePostDescriptionScrollIndicator);
 }
 
 function showEpisode(episodeId) {
@@ -872,9 +874,11 @@ function showEpisode(episodeId) {
 
   postModalTitle.textContent = episode.title;
   renderFormattedDescription(postModalDescription, episode.description);
+  postModalDescription.scrollTop = 0;
   setModalImage(episode.imageUrl, episode.imageAlt || episode.title);
   renderComicReader(episode);
   setSeriesBackVisible(true);
+  requestAnimationFrame(updatePostDescriptionScrollIndicator);
 }
 
 function renderPosts(posts) {
@@ -1304,6 +1308,32 @@ function playPostMusic(musicUrl) {
   }, MUSIC_FADE_STEP_MS);
 }
 
+function updatePostDescriptionScrollIndicator() {
+  if (!postModalDescription) {
+    return;
+  }
+
+  const scrollableHeight = postModalDescription.scrollHeight - postModalDescription.clientHeight;
+
+  if (scrollableHeight <= 1) {
+    postModalDescription.classList.remove('is-scrollable');
+    postModalDescription.style.removeProperty('--description-scroll-top');
+    postModalDescription.style.removeProperty('--description-scroll-thumb-height');
+    return;
+  }
+
+  const thumbHeight = Math.max(
+    32,
+    (postModalDescription.clientHeight / postModalDescription.scrollHeight) * postModalDescription.clientHeight
+  );
+  const scrollProgress = postModalDescription.scrollTop / scrollableHeight;
+  const thumbTop = scrollProgress * (postModalDescription.clientHeight - thumbHeight);
+
+  postModalDescription.classList.add('is-scrollable');
+  postModalDescription.style.setProperty('--description-scroll-top', `${thumbTop}px`);
+  postModalDescription.style.setProperty('--description-scroll-thumb-height', `${thumbHeight}px`);
+}
+
 function openPostModal(card) {
   if (!postModal || !postModalTitle || !postModalDescription) {
     return;
@@ -1314,6 +1344,7 @@ function openPostModal(card) {
     postModalDescription,
     card.getAttribute('data-post-description') || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
   );
+  postModalDescription.scrollTop = 0;
   renderRating(card.getAttribute('data-post-rating'), card.getAttribute('data-post-average-rating'));
   currentPostId = card.getAttribute('data-post-id') || '';
   currentContentType = card.getAttribute('data-content-type') || 'posts';
@@ -1339,6 +1370,7 @@ function openPostModal(card) {
   postModal.hidden = false;
   postModal.classList.toggle('comics-modal', currentContentType === 'comics');
   document.body.classList.add('modal-open');
+  requestAnimationFrame(updatePostDescriptionScrollIndicator);
   playPostMusic(card.getAttribute('data-post-music-url'));
 }
 
@@ -1495,6 +1527,11 @@ if (commissionSuccessClose) {
 postModalCloseTargets.forEach((target) => {
   target.addEventListener('click', closePostModal);
 });
+
+if (postModalDescription) {
+  postModalDescription.addEventListener('scroll', updatePostDescriptionScrollIndicator, { passive: true });
+  window.addEventListener('resize', updatePostDescriptionScrollIndicator);
+}
 
 if (postModalEpisodes) {
   postModalEpisodes.addEventListener('click', (event) => {
