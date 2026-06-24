@@ -1668,16 +1668,69 @@ button {
   }
 
   .commission-modal-panel {
-    grid-template-columns: 1fr;
+    display: block;
     min-height: auto;
+    overflow: hidden;
   }
 
   .commission-modal-copy {
+    min-width: 0;
     padding: 20px;
   }
 
   .commission-modal-image {
-    min-height: 240px;
+    position: absolute;
+    top: 48px;
+    right: 20px;
+    width: 88px;
+    height: 88px;
+    min-height: 0;
+    padding: 0;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .commission-modal-preview,
+  .commission-modal-placeholder {
+    width: 88px;
+    height: 88px;
+    min-height: 0;
+    flex: 0 0 auto;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  .commission-modal-thumbnails {
+    display: none;
+  }
+
+  .commission-request-title,
+  .commission-request-price {
+    max-width: calc(100% - 112px);
+    text-align: left;
+  }
+
+  .commission-request-title {
+    font-size: 1.35rem;
+    line-height: 1.1;
+  }
+
+  .commission-modal-description {
+    max-height: 72px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-top: 24px;
+    font-size: 0.9rem;
+    overflow-wrap: break-word;
+  }
+
+  .commission-form {
+    min-width: 0;
+  }
+
+  .commission-form input,
+  .commission-form textarea {
+    min-width: 0;
   }
 
   .commission-form-actions {
@@ -1765,6 +1818,11 @@ button {
   .post-modal,
   .commission-modal {
     padding: 24px 0;
+  }
+
+  .commission-modal .post-modal-scroll {
+    width: min(520px, calc(100vw - 24px));
+    overflow-x: hidden;
   }
 
   .post-modal-scroll {
