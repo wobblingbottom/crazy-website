@@ -1473,8 +1473,15 @@ app.get("/commission/:token", async (req, res) => {
       .feedback-form[hidden] { display: none; }
       .feedback-form label { display: grid; gap: 5px; font-size: 13px; }
       .feedback-form textarea { width: 100%; min-height: 70px; border: 1px solid #cdbfa7; border-radius: 10px; background: #fbfffe; color: #1b1b1b; font: inherit; padding: 7px; resize: vertical; }
-      .feedback-form input[type="file"] { width: 100%; border: 1px solid #cdbfa7; border-radius: 10px; background: #f8f3ef; color: #1b1b1b; font: inherit; padding: 7px; }
       .feedback-form button { justify-self: start; min-height: 30px; border: 1px solid #574d44; border-radius: 7px; background: #badfe8; cursor: pointer; font: inherit; padding: 0 12px; }
+      .chat-toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+      .chat-image-input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+      .chat-tool-button { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; border: 1px solid #574d44; border-radius: 8px; background: #323232; color: #ffffff; cursor: pointer; font: inherit; padding: 0 10px; }
+      .chat-tool-button svg { width: 20px; height: 20px; flex: 0 0 auto; }
+      .chat-image-chip[hidden] { display: none; }
+      .chat-image-chip { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; max-width: 100%; border: 1px solid #cdbfa7; border-radius: 999px; background: #f8f3ef; color: #5d5047; font-size: 13px; padding: 0 8px 0 12px; }
+      .chat-image-chip span { max-width: min(260px, 52vw); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .chat-image-clear { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; min-height: 0; border: 0; border-radius: 999px; background: rgba(244, 95, 119, 0.12); color: #b74a5b; cursor: pointer; font: inherit; line-height: 1; padding: 0; }
       .feedback-message, .activity-empty { margin: 0 10px 14px; color: #555555; font-size: 13px; }
       .feedback-message a { text-decoration: underline; color: inherit; }
       .activity-row { display: flex; gap: 10px; align-items: flex-start; min-height: 44px; padding: 10px; border-bottom: 1px solid #dccfb9; font-size: 15px; line-height: 1.28; }
@@ -1510,10 +1517,19 @@ app.get("/commission/:token", async (req, res) => {
             Message
             <textarea id="chat-input" maxlength="${COMMENT_MAX_LENGTH}" placeholder="Write a message about your commission"></textarea>
           </label>
-          <label>
-            Image
-            <input id="chat-image" type="file" accept="image/*" />
-          </label>
+          <div class="chat-toolbar" aria-label="Chat attachments">
+            <input class="chat-image-input" id="chat-image" type="file" accept="image/*" />
+            <button class="chat-tool-button" id="chat-image-button" type="button" aria-label="Attach image">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Zm0 15.2-4.5-4.5a1 1 0 0 0-1.4 0L11 15.8 8.9 13.7a1 1 0 0 0-1.4 0L5 16.2V5h14v13.2ZM8.5 10A1.5 1.5 0 1 0 7 8.5 1.5 1.5 0 0 0 8.5 10Z"/>
+              </svg>
+              Image
+            </button>
+            <span class="chat-image-chip" id="chat-image-chip" hidden>
+              <span id="chat-image-name"></span>
+              <button class="chat-image-clear" id="chat-image-clear" type="button" aria-label="Remove selected image">x</button>
+            </span>
+          </div>
           <button type="submit">Send message</button>
         </form>
         <p class="feedback-message" id="chat-message"></p>
@@ -1525,6 +1541,10 @@ app.get("/commission/:token", async (req, res) => {
       const chatForm = document.querySelector("#chat-form");
       const chatInput = document.querySelector("#chat-input");
       const chatImage = document.querySelector("#chat-image");
+      const chatImageButton = document.querySelector("#chat-image-button");
+      const chatImageChip = document.querySelector("#chat-image-chip");
+      const chatImageName = document.querySelector("#chat-image-name");
+      const chatImageClear = document.querySelector("#chat-image-clear");
       const chatMessage = document.querySelector("#chat-message");
       const chatList = document.querySelector("#chat-list");
       const referenceGrid = document.querySelector("#reference-grid");
@@ -1583,6 +1603,23 @@ app.get("/commission/:token", async (req, res) => {
         renderComments(data.commission);
       }
 
+      function updateImageChip() {
+        const image = chatImage.files && chatImage.files[0];
+        chatImageChip.hidden = !image;
+        chatImageName.textContent = image ? image.name : '';
+      }
+
+      chatImageButton.addEventListener('click', () => {
+        chatImage.click();
+      });
+
+      chatImage.addEventListener('change', updateImageChip);
+
+      chatImageClear.addEventListener('click', () => {
+        chatImage.value = '';
+        updateImageChip();
+      });
+
       chatForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const comment = chatInput.value.trim();
@@ -1610,6 +1647,7 @@ app.get("/commission/:token", async (req, res) => {
           }
           chatInput.value = '';
           chatImage.value = '';
+          updateImageChip();
           chatMessage.textContent = 'Message sent.';
           renderComments(data.commission);
         } catch (error) {
