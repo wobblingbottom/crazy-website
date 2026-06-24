@@ -14,6 +14,9 @@ const commissionModalDescription = document.querySelector('[data-commission-moda
 const commissionModalImage = document.querySelector('[data-commission-modal-image]');
 const commissionModalPlaceholder = document.querySelector('[data-commission-modal-placeholder]');
 const commissionModalThumbnails = document.querySelector('[data-commission-modal-thumbnails]');
+const commissionImageLightbox = document.querySelector('[data-commission-image-lightbox]');
+const commissionImageLightboxImage = document.querySelector('[data-commission-image-lightbox-image]');
+const commissionImageLightboxClose = document.querySelector('[data-commission-image-lightbox-close]');
 const commissionReferencePreview = document.querySelector('[data-commission-reference-preview]');
 const commissionReferenceCount = document.querySelector('[data-commission-reference-count]');
 const commissionReferenceGrid = document.querySelector('[data-commission-reference-grid]');
@@ -387,6 +390,31 @@ function renderCommissionModalImages(offering) {
   });
 }
 
+function openCommissionImageLightbox() {
+  if (
+    !commissionImageLightbox ||
+    !(commissionImageLightboxImage instanceof HTMLImageElement) ||
+    !(commissionModalImage instanceof HTMLImageElement) ||
+    commissionModalImage.hidden ||
+    !commissionModalImage.currentSrc
+  ) {
+    return;
+  }
+
+  commissionImageLightboxImage.src = commissionModalImage.currentSrc;
+  commissionImageLightboxImage.alt = commissionModalImage.alt || 'Commission example image';
+  commissionImageLightbox.hidden = false;
+}
+
+function closeCommissionImageLightbox() {
+  if (!commissionImageLightbox || !(commissionImageLightboxImage instanceof HTMLImageElement)) {
+    return;
+  }
+
+  commissionImageLightbox.hidden = true;
+  commissionImageLightboxImage.removeAttribute('src');
+}
+
 function openCommissionModal() {
   const selectedOffering = getSelectedCommissionOffering();
 
@@ -434,6 +462,7 @@ function closeCommissionModal() {
     return;
   }
 
+  closeCommissionImageLightbox();
   commissionModal.hidden = true;
   document.body.classList.remove('modal-open');
 
@@ -1461,6 +1490,22 @@ commissionCloseTargets.forEach((target) => {
   target.addEventListener('click', closeCommissionModal);
 });
 
+if (commissionModalImage) {
+  commissionModalImage.addEventListener('click', openCommissionImageLightbox);
+}
+
+if (commissionImageLightbox) {
+  commissionImageLightbox.addEventListener('click', (event) => {
+    if (event.target === commissionImageLightbox) {
+      closeCommissionImageLightbox();
+    }
+  });
+}
+
+if (commissionImageLightboxClose) {
+  commissionImageLightboxClose.addEventListener('click', closeCommissionImageLightbox);
+}
+
 if (commissionModalThumbnails) {
   commissionModalThumbnails.addEventListener('click', (event) => {
     const button = event.target.closest('[data-image-url]');
@@ -1565,6 +1610,7 @@ if (seriesBackButton) {
 
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
+    closeCommissionImageLightbox();
     closePostModal();
     closeCommissionModal();
   }
