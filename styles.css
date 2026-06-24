@@ -1683,11 +1683,10 @@ button {
     top: 48px;
     right: 20px;
     width: 88px;
-    height: 88px;
+    height: auto;
     min-height: 0;
     padding: 0;
     background: transparent;
-    pointer-events: none;
   }
 
   .commission-modal-preview,
@@ -1701,11 +1700,18 @@ button {
   }
 
   .commission-modal-thumbnails {
-    display: none;
+    display: flex;
+    gap: 6px;
+    max-width: 88px;
+    margin-top: 6px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    pointer-events: auto;
   }
 
   .commission-request-title,
-  .commission-request-price {
+  .commission-request-price,
+  .commission-modal-description {
     max-width: calc(100% - 112px);
     text-align: left;
   }
@@ -1719,9 +1725,16 @@ button {
     max-height: 72px;
     overflow-y: auto;
     overflow-x: hidden;
-    margin-top: 24px;
+    margin-top: 20px;
     font-size: 0.9rem;
     overflow-wrap: break-word;
+  }
+
+  .commission-modal-thumbnail {
+    width: 34px;
+    height: 34px;
+    border-width: 1px;
+    border-radius: 7px;
   }
 
   .commission-form {
