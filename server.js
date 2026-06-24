@@ -1473,10 +1473,10 @@ app.get("/commission/:token", async (req, res) => {
       .feedback-form[hidden] { display: none; }
       .feedback-form label { display: grid; gap: 5px; font-size: 13px; }
       .feedback-form textarea { width: 100%; min-height: 70px; border: 1px solid #cdbfa7; border-radius: 10px; background: #fbfffe; color: #1b1b1b; font: inherit; padding: 7px; resize: vertical; }
-      .feedback-form button { justify-self: start; min-height: 30px; border: 1px solid #574d44; border-radius: 7px; background: #badfe8; cursor: pointer; font: inherit; padding: 0 12px; }
+      .feedback-form button { justify-self: start; min-height: 30px; border: 1px solid #1b1b1b; border-radius: 7px; background: #ffffff; color: #000000; cursor: pointer; font: inherit; padding: 0 12px; }
       .chat-toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
       .chat-image-input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-      .chat-tool-button { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; border: 1px solid #574d44; border-radius: 8px; background: #323232; color: #ffffff; cursor: pointer; font: inherit; padding: 0 10px; }
+      .chat-tool-button { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; border: 1px solid #1b1b1b; border-radius: 8px; background: #ffffff; color: #000000; cursor: pointer; font: inherit; padding: 0 10px; }
       .chat-tool-button svg { width: 20px; height: 20px; flex: 0 0 auto; }
       .chat-image-chip[hidden] { display: none; }
       .chat-image-chip { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; max-width: 100%; border: 1px solid #cdbfa7; border-radius: 999px; background: #f8f3ef; color: #5d5047; font-size: 13px; padding: 0 8px 0 12px; }
