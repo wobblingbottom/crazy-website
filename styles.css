@@ -1698,33 +1698,47 @@ button {
   }
 
   .commission-type-card {
-    grid-template-columns: 1fr;
+    display: block;
     width: auto;
-    gap: 0;
+    border: 1px solid #f45f77;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 0 28px rgba(244, 95, 119, 0.12);
+    overflow: hidden;
   }
 
   .commission-type-image {
-    width: 100%;
-    max-width: 193px;
-    height: 193px;
-    margin: 0 auto;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 1;
+    width: 112px;
+    height: 112px;
+    margin: 0;
+    border: 1px solid #cdbfa7;
   }
 
   .commission-type-copy {
     width: auto;
     max-width: none;
     height: auto;
-    min-height: 180px;
-    padding: 14px 22px;
+    min-height: 230px;
+    border: 0;
+    border-radius: 0;
+    padding: 28px 146px 28px 22px;
   }
 
   .commission-price {
     position: static;
-    margin: 0 0 14px;
+    margin: 0 0 24px;
   }
 
   .commission-type-heading {
     padding-right: 0;
+  }
+
+  .commission-type-description {
+    max-height: 108px;
   }
 
   .post-modal,
