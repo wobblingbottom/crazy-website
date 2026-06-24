@@ -1698,20 +1698,23 @@ button {
   }
 
   .commission-type-card {
-    display: block;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 96px;
+    gap: 14px;
+    align-items: start;
     width: auto;
     border: 1px solid #f45f77;
     border-radius: 14px;
     background: #ffffff;
     box-shadow: 0 0 28px rgba(244, 95, 119, 0.12);
     overflow: hidden;
+    padding: 18px;
   }
 
   .commission-type-image {
-    position: absolute;
-    top: 18px;
-    right: 18px;
-    z-index: 1;
+    position: static;
+    grid-column: 2;
+    grid-row: 1 / span 2;
     width: 96px;
     height: 96px;
     margin: 0;
@@ -1719,37 +1722,44 @@ button {
   }
 
   .commission-type-copy {
-    width: auto;
-    max-width: none;
-    height: auto;
-    min-height: 240px;
-    border: 0;
-    border-radius: 0;
-    padding: 24px 22px 28px;
+    display: contents;
   }
 
   .commission-price {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
     position: static;
-    margin: 0 116px 22px 0;
+    margin: 0;
     font-size: 1rem;
     padding: 9px 14px;
   }
 
   .commission-type-heading {
-    max-width: calc(100% - 116px);
-    margin-bottom: 44px;
+    grid-column: 1;
+    grid-row: 1;
+    align-self: end;
+    max-width: none;
+    margin: 0;
     padding-right: 0;
-    font-size: 1.75rem;
+    font-size: clamp(1.35rem, 7vw, 1.75rem);
+    line-height: 1.08;
   }
 
   .commission-type-description-title {
+    grid-column: 1 / -1;
+    margin: 16px 0 6px;
     font-size: 1.08rem;
   }
 
   .commission-type-description {
+    grid-column: 1 / -1;
     max-height: 108px;
     font-size: 0.95rem;
     line-height: 1.42;
+    text-align: left;
+    overflow-wrap: normal;
+    word-break: normal;
   }
 
   .post-modal,

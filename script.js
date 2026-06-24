@@ -1140,15 +1140,15 @@ function createCommissionTypeCard(offering) {
   const copy = document.createElement('span');
   copy.className = 'commission-type-copy';
 
-  const price = document.createElement('span');
-  price.className = 'commission-price';
-  price.textContent = offering.estimatePrice || 'Ask';
-  copy.appendChild(price);
-
   const title = document.createElement('span');
   title.className = 'commission-type-heading';
   title.textContent = offering.title;
   copy.appendChild(title);
+
+  const price = document.createElement('span');
+  price.className = 'commission-price';
+  price.textContent = offering.estimatePrice || 'Ask';
+  copy.appendChild(price);
 
   const descriptionTitle = document.createElement('span');
   descriptionTitle.className = 'commission-type-description-title';
