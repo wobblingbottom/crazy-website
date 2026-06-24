@@ -84,6 +84,7 @@ const upload = multer({
         file.fieldname === "episodePanels" ||
         file.fieldname === "exampleImage" ||
         file.fieldname === "exampleImages" ||
+        file.fieldname === "chatImage" ||
         file.fieldname === "reference") &&
       file.mimetype.startsWith("image/")
     ) {
@@ -439,6 +440,7 @@ function buildPublicCommission(commission) {
       userId: comment.userId,
       username: comment.username,
       text: comment.text,
+      imageUrl: comment.imageUrl || "",
       createdAt: comment.createdAt
     }))
   };
@@ -1199,11 +1201,12 @@ app.get("/api/commissions/:token", async (req, res) => {
   res.json({ commission: buildPublicCommission(commission) });
 });
 
-app.post("/api/commissions/:token/comments", async (req, res) => {
+app.post("/api/commissions/:token/comments", upload.single("chatImage"), async (req, res) => {
   const text = String(req.body.comment || "").trim().slice(0, COMMENT_MAX_LENGTH);
+  const imageUrl = getUploadedFileUrl(req.file);
 
-  if (!text) {
-    res.status(400).json({ error: "Comment is required." });
+  if (!text && !imageUrl) {
+    res.status(400).json({ error: "Message or image is required." });
     return;
   }
 
@@ -1220,6 +1223,7 @@ app.post("/api/commissions/:token/comments", async (req, res) => {
     userId: req.session.user?.id || "",
     username: req.session.user?.username || commission.discordName || "Commissioner",
     text,
+    imageUrl,
     createdAt: new Date().toISOString()
   };
 
@@ -1232,9 +1236,10 @@ app.post("/api/commissions/:token/comments", async (req, res) => {
     "New private commission chat message.",
     `Commission: ${commission.commissionType}`,
     `From: ${comment.username}`,
-    `Message: ${comment.text}`,
+    comment.text ? `Message: ${comment.text}` : "",
+    comment.imageUrl ? `Image: ${buildAbsoluteUrl(req, comment.imageUrl)}` : "",
     `Private link: ${accessUrl}`
-  ].join("\n").slice(0, 1900);
+  ].filter(Boolean).join("\n").slice(0, 1900);
 
   let adminDelivered = false;
   let dmDelivered = false;
@@ -1468,12 +1473,15 @@ app.get("/commission/:token", async (req, res) => {
       .feedback-form[hidden] { display: none; }
       .feedback-form label { display: grid; gap: 5px; font-size: 13px; }
       .feedback-form textarea { width: 100%; min-height: 70px; border: 1px solid #cdbfa7; border-radius: 10px; background: #fbfffe; color: #1b1b1b; font: inherit; padding: 7px; resize: vertical; }
+      .feedback-form input[type="file"] { width: 100%; border: 1px solid #cdbfa7; border-radius: 10px; background: #f8f3ef; color: #1b1b1b; font: inherit; padding: 7px; }
       .feedback-form button { justify-self: start; min-height: 30px; border: 1px solid #574d44; border-radius: 7px; background: #badfe8; cursor: pointer; font: inherit; padding: 0 12px; }
       .feedback-message, .activity-empty { margin: 0 10px 14px; color: #555555; font-size: 13px; }
       .feedback-message a { text-decoration: underline; color: inherit; }
       .activity-row { display: flex; gap: 10px; align-items: flex-start; min-height: 44px; padding: 10px; border-bottom: 1px solid #dccfb9; font-size: 15px; line-height: 1.28; }
       .activity-row:last-child { border-bottom: 0; }
       .activity-text { min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
+      .activity-content { min-width: 0; display: grid; gap: 8px; }
+      .chat-image { display: block; max-width: min(260px, 100%); border: 1px solid #cdbfa7; border-radius: 12px; background: #ececeb; }
       .activity-row time { flex: 0 0 auto; margin-left: auto; padding-left: 8px; color: #808080; font-size: 12px; white-space: nowrap; }
       .mention { color: #f45f77; }
       @media (max-width: 720px) { .shell { width: calc(100vw - 24px); margin: 16px auto; } .panel, .chat { padding: 18px; } .activity-row { flex-direction: column; } .activity-row time { margin-left: 0; padding-left: 0; } }
@@ -1502,6 +1510,10 @@ app.get("/commission/:token", async (req, res) => {
             Message
             <textarea id="chat-input" maxlength="${COMMENT_MAX_LENGTH}" placeholder="Write a message about your commission"></textarea>
           </label>
+          <label>
+            Image
+            <input id="chat-image" type="file" accept="image/*" />
+          </label>
           <button type="submit">Send message</button>
         </form>
         <p class="feedback-message" id="chat-message"></p>
@@ -1512,6 +1524,7 @@ app.get("/commission/:token", async (req, res) => {
       const token = ${JSON.stringify(commission.accessToken)};
       const chatForm = document.querySelector("#chat-form");
       const chatInput = document.querySelector("#chat-input");
+      const chatImage = document.querySelector("#chat-image");
       const chatMessage = document.querySelector("#chat-message");
       const chatList = document.querySelector("#chat-list");
       const referenceGrid = document.querySelector("#reference-grid");
@@ -1551,7 +1564,10 @@ app.get("/commission/:token", async (req, res) => {
 
         chatList.innerHTML = comments.map((comment) => \`
           <div class="activity-row">
-            <span class="activity-text"><span style="color:#f45f77;">\${escapeHtml(comment.username)}</span>: \${escapeHtml(comment.text)}</span>
+            <span class="activity-content">
+              <span class="activity-text"><span style="color:#f45f77;">\${escapeHtml(comment.username)}</span>:\${comment.text ? ' ' + escapeHtml(comment.text) : ''}</span>
+              \${comment.imageUrl ? '<img class="chat-image" src="' + escapeHtml(comment.imageUrl) + '" alt="Chat image from ' + escapeHtml(comment.username) + '" />' : ''}
+            </span>
             <time>\${escapeHtml(formatTime(comment.createdAt))}</time>
           </div>
         \`).join("");
@@ -1570,23 +1586,30 @@ app.get("/commission/:token", async (req, res) => {
       chatForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const comment = chatInput.value.trim();
+        const image = chatImage.files && chatImage.files[0];
 
-        if (!comment) {
-          chatMessage.textContent = 'Write a message first.';
+        if (!comment && !image) {
+          chatMessage.textContent = 'Write a message or choose an image first.';
           return;
         }
 
         try {
+          const body = new FormData();
+          body.append('comment', comment);
+          if (image) {
+            body.append('chatImage', image);
+          }
+
           const response = await fetch('/api/commissions/' + encodeURIComponent(token) + '/comments', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ comment })
+            body
           });
           const data = await response.json();
           if (!response.ok) {
             throw new Error(data.error || 'Could not send message.');
           }
           chatInput.value = '';
+          chatImage.value = '';
           chatMessage.textContent = 'Message sent.';
           renderComments(data.commission);
         } catch (error) {
