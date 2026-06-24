@@ -1359,9 +1359,9 @@ button {
   color: #000000;
   min-width: 0;
   width: 100%;
-  height: 216px;
+  height: var(--placeholder-size);
   max-width: none;
-  overflow: visible;
+  overflow: hidden;
   padding: 14px 22px;
   z-index: 0;
 }
@@ -1474,9 +1474,26 @@ button {
 .commission-type-description {
   display: block;
   margin: 0;
+  max-height: 70px;
+  overflow-y: auto;
+  scrollbar-color: #f45f77 transparent;
+  scrollbar-width: thin;
   color: #000000;
   font-size: 1.05rem;
   line-height: 1.38;
+}
+
+.commission-type-description::-webkit-scrollbar {
+  width: 8px;
+}
+
+.commission-type-description::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.commission-type-description::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #f45f77;
 }
 
 .commission-next-button {
