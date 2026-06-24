@@ -486,6 +486,10 @@ button {
   line-height: 1;
 }
 
+.post-modal-description-shell {
+  position: relative;
+}
+
 .post-modal-description {
   margin: 0;
   max-height: 240px;
@@ -495,6 +499,10 @@ button {
   font-size: 15px;
   line-height: 1.3;
   word-spacing: 8px;
+}
+
+.post-modal-description-thumb {
+  display: none;
 }
 
 .post-modal-description::-webkit-scrollbar {
@@ -1737,39 +1745,37 @@ button {
   }
 
   .post-modal-description {
-    order: 3;
     max-height: min(190px, 24vh);
     overflow-y: auto;
-    scrollbar-color: #f45f77 transparent;
-    scrollbar-width: thin;
+    scrollbar-width: none;
     font-size: 17px;
     line-height: 1.35;
-    padding: 0 34px 0 20px;
+    padding: 0 14px 0 0;
     word-spacing: 0;
   }
 
-  .post-modal-description.is-scrollable {
-    background:
-      radial-gradient(circle, #f45f77 98%, transparent) no-repeat
-      right 20px top var(--description-scroll-top, 0) / 6px 6px,
-      linear-gradient(#f45f77, #f45f77) no-repeat
-      right 20px top calc(var(--description-scroll-top, 0px) + 3px) / 6px
-      calc(var(--description-scroll-thumb-height, 32px) - 6px),
-      radial-gradient(circle, #f45f77 98%, transparent) no-repeat
-      right 20px top calc(var(--description-scroll-top, 0px) + var(--description-scroll-thumb-height, 32px) - 6px) / 6px 6px;
+  .post-modal-description-shell {
+    order: 3;
+    padding: 0 34px 0 20px;
+  }
+
+  .post-modal-description-shell.is-scrollable .post-modal-description-thumb {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    display: block;
+    width: 6px;
+    height: var(--description-scroll-thumb-height, 32px);
+    border-radius: 999px;
+    background: #f45f77;
+    transform: translateY(var(--description-scroll-top, 0));
+    pointer-events: none;
   }
 
   .post-modal-description::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  .post-modal-description::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .post-modal-description::-webkit-scrollbar-thumb {
-    border-radius: 999px;
-    background: #f45f77;
+    display: none;
+    width: 0;
+    height: 0;
   }
 
   .post-modal-image {

@@ -1313,12 +1313,13 @@ function updatePostDescriptionScrollIndicator() {
     return;
   }
 
+  const indicatorHost = postModalDescription.parentElement;
   const scrollableHeight = postModalDescription.scrollHeight - postModalDescription.clientHeight;
 
   if (scrollableHeight <= 1) {
-    postModalDescription.classList.remove('is-scrollable');
-    postModalDescription.style.removeProperty('--description-scroll-top');
-    postModalDescription.style.removeProperty('--description-scroll-thumb-height');
+    indicatorHost?.classList.remove('is-scrollable');
+    indicatorHost?.style.removeProperty('--description-scroll-top');
+    indicatorHost?.style.removeProperty('--description-scroll-thumb-height');
     return;
   }
 
@@ -1329,9 +1330,9 @@ function updatePostDescriptionScrollIndicator() {
   const scrollProgress = postModalDescription.scrollTop / scrollableHeight;
   const thumbTop = scrollProgress * (postModalDescription.clientHeight - thumbHeight);
 
-  postModalDescription.classList.add('is-scrollable');
-  postModalDescription.style.setProperty('--description-scroll-top', `${thumbTop}px`);
-  postModalDescription.style.setProperty('--description-scroll-thumb-height', `${thumbHeight}px`);
+  indicatorHost?.classList.add('is-scrollable');
+  indicatorHost?.style.setProperty('--description-scroll-top', `${thumbTop}px`);
+  indicatorHost?.style.setProperty('--description-scroll-thumb-height', `${thumbHeight}px`);
 }
 
 function openPostModal(card) {
