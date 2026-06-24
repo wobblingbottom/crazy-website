@@ -983,6 +983,14 @@ button {
   line-height: 1.45;
 }
 
+.commission-modal-description-shell {
+  position: relative;
+}
+
+.commission-modal-description-thumb {
+  display: none;
+}
+
 .commission-modal-image {
   display: flex;
   flex-direction: column;
@@ -1705,13 +1713,20 @@ button {
     max-width: 88px;
     margin-top: 6px;
     overflow-x: auto;
+    scrollbar-width: none;
     padding-bottom: 2px;
     pointer-events: auto;
   }
 
+  .commission-modal-thumbnails::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
   .commission-request-title,
   .commission-request-price,
-  .commission-modal-description {
+  .commission-modal-description-shell {
     max-width: calc(100% - 112px);
     text-align: left;
   }
@@ -1725,9 +1740,31 @@ button {
     max-height: 72px;
     overflow-y: auto;
     overflow-x: hidden;
+    scrollbar-width: none;
     margin-top: 20px;
+    margin-bottom: 0;
     font-size: 0.9rem;
     overflow-wrap: break-word;
+    padding-right: 12px;
+  }
+
+  .commission-modal-description-shell.is-scrollable .commission-modal-description-thumb {
+    position: absolute;
+    top: 20px;
+    right: 0;
+    display: block;
+    width: 6px;
+    height: var(--description-scroll-thumb-height, 32px);
+    border-radius: 999px;
+    background: #f45f77;
+    transform: translateY(var(--description-scroll-top, 0));
+    pointer-events: none;
+  }
+
+  .commission-modal-description::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
   }
 
   .commission-modal-thumbnail {

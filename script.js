@@ -407,6 +407,7 @@ function openCommissionModal() {
       commissionModalDescription,
       selectedOffering.description || 'Tell me about your idea and I will follow up with the details.'
     );
+    commissionModalDescription.scrollTop = 0;
   }
 
   renderCommissionModalImages(selectedOffering);
@@ -425,6 +426,7 @@ function openCommissionModal() {
   setCommissionMessage('');
   commissionModal.hidden = false;
   document.body.classList.add('modal-open');
+  requestAnimationFrame(() => updateDescriptionScrollIndicator(commissionModalDescription));
 }
 
 function closeCommissionModal() {
@@ -1308,13 +1310,13 @@ function playPostMusic(musicUrl) {
   }, MUSIC_FADE_STEP_MS);
 }
 
-function updatePostDescriptionScrollIndicator() {
-  if (!postModalDescription) {
+function updateDescriptionScrollIndicator(descriptionElement) {
+  if (!descriptionElement) {
     return;
   }
 
-  const indicatorHost = postModalDescription.parentElement;
-  const scrollableHeight = postModalDescription.scrollHeight - postModalDescription.clientHeight;
+  const indicatorHost = descriptionElement.parentElement;
+  const scrollableHeight = descriptionElement.scrollHeight - descriptionElement.clientHeight;
 
   if (scrollableHeight <= 1) {
     indicatorHost?.classList.remove('is-scrollable');
@@ -1325,14 +1327,22 @@ function updatePostDescriptionScrollIndicator() {
 
   const thumbHeight = Math.max(
     32,
-    (postModalDescription.clientHeight / postModalDescription.scrollHeight) * postModalDescription.clientHeight
+    (descriptionElement.clientHeight / descriptionElement.scrollHeight) * descriptionElement.clientHeight
   );
-  const scrollProgress = postModalDescription.scrollTop / scrollableHeight;
-  const thumbTop = scrollProgress * (postModalDescription.clientHeight - thumbHeight);
+  const scrollProgress = descriptionElement.scrollTop / scrollableHeight;
+  const thumbTop = scrollProgress * (descriptionElement.clientHeight - thumbHeight);
 
   indicatorHost?.classList.add('is-scrollable');
   indicatorHost?.style.setProperty('--description-scroll-top', `${thumbTop}px`);
   indicatorHost?.style.setProperty('--description-scroll-thumb-height', `${thumbHeight}px`);
+}
+
+function updatePostDescriptionScrollIndicator() {
+  updateDescriptionScrollIndicator(postModalDescription);
+}
+
+function updateCommissionDescriptionScrollIndicator() {
+  updateDescriptionScrollIndicator(commissionModalDescription);
 }
 
 function openPostModal(card) {
@@ -1532,6 +1542,11 @@ postModalCloseTargets.forEach((target) => {
 if (postModalDescription) {
   postModalDescription.addEventListener('scroll', updatePostDescriptionScrollIndicator, { passive: true });
   window.addEventListener('resize', updatePostDescriptionScrollIndicator);
+}
+
+if (commissionModalDescription) {
+  commissionModalDescription.addEventListener('scroll', updateCommissionDescriptionScrollIndicator, { passive: true });
+  window.addEventListener('resize', updateCommissionDescriptionScrollIndicator);
 }
 
 if (postModalEpisodes) {
