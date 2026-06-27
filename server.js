@@ -3126,6 +3126,20 @@ app.get(["/admin", "/admin/posts", "/admin/comics"], ensureConfigured, requireAd
         label.textContent = text || "No file chosen";
       }
 
+      async function readResponseData(response) {
+        const text = await response.text();
+
+        if (!text) {
+          return {};
+        }
+
+        try {
+          return JSON.parse(text);
+        } catch {
+          return { error: text.replace(/<[^>]*>/g, " ").replace(/\\s+/g, " ").trim() };
+        }
+      }
+
       function getSelectedPost() {
         return posts.find((item) => item.id === fields.id.value);
       }
@@ -3477,30 +3491,36 @@ app.get(["/admin", "/admin/posts", "/admin/comics"], ensureConfigured, requireAd
         const isEditing = Boolean(fields.id.value);
         const url = isEditing ? \`/api/admin/\${resourceType}/\${fields.id.value}\` : \`/api/admin/\${resourceType}\`;
         const method = isEditing ? "PUT" : "POST";
-        const response = await fetch(url, {
-          method,
-          body: payload
-        });
-        const data = response.status === 204 ? {} : await response.json();
+        try {
+          const response = await fetch(url, {
+            method,
+            body: payload
+          });
+          const data = response.status === 204 ? {} : await readResponseData(response);
 
-        if (!response.ok) {
-          setMessage(data.error || "Something went wrong.");
-          return;
+          if (!response.ok) {
+            setMessage(data.error || "Something went wrong.");
+            return;
+          }
+
+          resetForm();
+          await loadPosts();
+          setMessage(isEditing ? \`\${resourceSingular[0].toUpperCase()}\${resourceSingular.slice(1)} updated.\` : \`\${resourceSingular[0].toUpperCase()}\${resourceSingular.slice(1)} created.\`);
+        } catch (error) {
+          setMessage(error.message || "Could not save. Please try again.");
         }
-
-        resetForm();
-        await loadPosts();
-        setMessage(isEditing ? \`\${resourceSingular[0].toUpperCase()}\${resourceSingular.slice(1)} updated.\` : \`\${resourceSingular[0].toUpperCase()}\${resourceSingular.slice(1)} created.\`);
       });
 
       fields.image.addEventListener("change", () => {
         fields.removeImage.value = "false";
         setFileLabel(imageFileName, fields.image.files[0]?.name || "");
+        setRemoveButton(removeImageButton, Boolean(fields.image.files[0] || getSelectedPost()?.imageUrl));
       });
 
       fields.music.addEventListener("change", () => {
         fields.removeMusic.value = "false";
         setFileLabel(musicFileName, fields.music.files[0]?.name || "");
+        setRemoveButton(removeMusicButton, Boolean(fields.music.files[0] || getSelectedPost()?.musicUrl));
       });
 
       removeImageButton.addEventListener("click", () => {
@@ -3629,6 +3649,24 @@ app.get(["/admin", "/admin/posts", "/admin/comics"], ensureConfigured, requireAd
     </script>
   </body>
 </html>`);
+});
+
+app.use((error, req, res, next) => {
+  if (error instanceof multer.MulterError) {
+    const message =
+      error.code === "LIMIT_FILE_SIZE"
+        ? "Upload is too large. Images and audio must be 15 MB or smaller."
+        : error.message || "Upload failed.";
+    res.status(400).json({ error: message });
+    return;
+  }
+
+  if (error?.message === "Only image and audio uploads are allowed.") {
+    res.status(400).json({ error: error.message });
+    return;
+  }
+
+  next(error);
 });
 
 app.listen(port, () => {
