@@ -1470,9 +1470,7 @@ app.get("/commission/:token", async (req, res) => {
       .grid img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border: 1px solid #cdbfa7; border-radius: 12px; background: #ececeb; }
       .chat { min-height: 518px; margin-top: 42px; padding: 24px 10px; background: #f8fffd; border: 0; border-radius: 14px; }
       .chat h2 { margin: 0 10px 18px; font-size: 28px; color: #5d5047; }
-      .payment { margin: 0 10px 22px; padding: 16px; border: 1px solid #dccfb9; border-radius: 12px; background: #ffffff; }
-      .payment h3 { margin: 0 0 6px; color: #5d5047; font-size: 20px; font-weight: 400; }
-      .payment p { margin: 0 0 12px; color: #5d5047; font-size: 13px; line-height: 1.4; }
+      .paypal-button-container { margin: 0 10px 22px; }
       .feedback-form { display: grid; gap: 10px; margin: 0 0 18px; padding: 0 10px 18px; border-bottom: 1px solid #dccfb9; }
       .feedback-form[hidden] { display: none; }
       .feedback-form label { display: grid; gap: 5px; font-size: 13px; }
@@ -1515,16 +1513,7 @@ app.get("/commission/:token", async (req, res) => {
         <div class="grid" id="reference-grid"></div>
       </section>
       <section class="chat">
-        <section class="payment" aria-label="Commission payment">
-          <h3>Payment</h3>
-          <p>Use this button to pay for your commission once the details have been agreed.</p>
-          <div id="paypal-container-3UHWK9Z7DE8WY"></div>
-          <script>
-            paypal.HostedButtons({
-              hostedButtonId: "3UHWK9Z7DE8WY"
-            }).render("#paypal-container-3UHWK9Z7DE8WY");
-          </script>
-        </section>
+        <div class="paypal-button-container" id="paypal-container-3UHWK9Z7DE8WY" hidden></div>
         <h2>Chat</h2>
         <form class="feedback-form" id="chat-form">
           <label>
@@ -1562,6 +1551,7 @@ app.get("/commission/:token", async (req, res) => {
       const chatMessage = document.querySelector("#chat-message");
       const chatList = document.querySelector("#chat-list");
       const referenceGrid = document.querySelector("#reference-grid");
+      const paypalContainer = document.querySelector("#paypal-container-3UHWK9Z7DE8WY");
 
       function escapeHtml(value) {
         return String(value)
@@ -1607,6 +1597,20 @@ app.get("/commission/:token", async (req, res) => {
         \`).join("");
       }
 
+      function renderPayment(commission) {
+        const isAccepted = String(commission.status || "").toLowerCase() === "accepted";
+        paypalContainer.hidden = !isAccepted;
+
+        if (!isAccepted || paypalContainer.dataset.rendered || !window.paypal) {
+          return;
+        }
+
+        paypalContainer.dataset.rendered = "true";
+        window.paypal.HostedButtons({
+          hostedButtonId: "3UHWK9Z7DE8WY"
+        }).render("#paypal-container-3UHWK9Z7DE8WY");
+      }
+
       async function loadCommission() {
         const response = await fetch('/api/commissions/' + encodeURIComponent(token));
         const data = await response.json();
@@ -1615,6 +1619,7 @@ app.get("/commission/:token", async (req, res) => {
         }
         renderReferences(data.commission);
         renderComments(data.commission);
+        renderPayment(data.commission);
       }
 
       function updateImageChip() {
