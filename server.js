@@ -1376,7 +1376,7 @@ app.get("/commission/:token", async (req, res) => {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${escapeHtml(commission.commissionType)} Commission</title>
-    <script src="https://www.paypal.com/sdk/js?client-id=BAA1811bAD4gWiOeeiHFp77qW3g0DrVUIi3OccZqde7JfgUEy3jeG5duNjAeiOI4z1Rb5HpJaa9MyuQID4&components=buttons&disable-funding=venmo&currency=EUR"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=BAAl8llbAD4gWiOeeiHFp77qW3g0DrVUIi3OccZqde7JfgUEy3jeG5duNjAeiOI4z1Rb5HpJaa9MyuQlD4&components=hosted-buttons&disable-funding=venmo&currency=EUR"></script>
     <style>
       @font-face {
         font-family: "Rayman";
