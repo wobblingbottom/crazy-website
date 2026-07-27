@@ -1470,7 +1470,7 @@ app.get("/commission/:token", async (req, res) => {
       .grid img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border: 1px solid #cdbfa7; border-radius: 12px; background: #ececeb; }
       .chat { min-height: 518px; margin-top: 42px; padding: 24px 10px; background: #f8fffd; border: 0; border-radius: 14px; }
       .chat h2 { margin: 0 10px 18px; font-size: 28px; color: #5d5047; }
-      .paypal-button-container { margin: 0 10px 22px; }
+      .payment { margin-top: 28px; padding: 24px 20px; background: #f8fffd; border: 0; border-radius: 14px; }
       .feedback-form { display: grid; gap: 10px; margin: 0 0 18px; padding: 0 10px 18px; border-bottom: 1px solid #dccfb9; }
       .feedback-form[hidden] { display: none; }
       .feedback-form label { display: grid; gap: 5px; font-size: 13px; }
@@ -1513,7 +1513,6 @@ app.get("/commission/:token", async (req, res) => {
         <div class="grid" id="reference-grid"></div>
       </section>
       <section class="chat">
-        <div class="paypal-button-container" id="paypal-container-3UHWK9Z7DE8WY" hidden></div>
         <h2>Chat</h2>
         <form class="feedback-form" id="chat-form">
           <label>
@@ -1538,6 +1537,7 @@ app.get("/commission/:token", async (req, res) => {
         <p class="feedback-message" id="chat-message"></p>
         <div id="chat-list"></div>
       </section>
+      <section class="payment" id="paypal-container-3UHWK9Z7DE8WY" aria-label="Commission payment" hidden></section>
     </main>
     <script>
       const token = ${JSON.stringify(commission.accessToken)};
