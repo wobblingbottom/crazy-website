@@ -1468,7 +1468,7 @@ app.get("/commission/:token", async (req, res) => {
       .notice { margin: 0 0 24px; color: #5d5047; }
       .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
       .grid img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border: 1px solid #cdbfa7; border-radius: 12px; background: #ececeb; }
-      .chat { min-height: 518px; margin-top: 42px; padding: 24px 10px; background: #f8fffd; border: 0; border-radius: 14px; }
+      .chat { display: flex; flex-direction: column; height: min(680px, calc(100vh - 32px)); min-height: 518px; margin-top: 42px; padding: 24px 10px; background: #f8fffd; border: 0; border-radius: 14px; }
       .chat h2 { margin: 0 10px 18px; font-size: 28px; color: #5d5047; }
       .payment { margin-top: 28px; padding: 24px 20px; background: #f8fffd; border: 0; border-radius: 14px; }
       .feedback-form { display: grid; gap: 10px; margin: 0 0 18px; padding: 0 10px 18px; border-bottom: 1px solid #dccfb9; }
@@ -1486,6 +1486,7 @@ app.get("/commission/:token", async (req, res) => {
       .chat-image-clear { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; min-height: 0; border: 0; border-radius: 999px; background: rgba(244, 95, 119, 0.12); color: #b74a5b; cursor: pointer; font: inherit; line-height: 1; padding: 0; }
       .feedback-message, .activity-empty { margin: 0 10px 14px; color: #555555; font-size: 13px; }
       .feedback-message a { text-decoration: underline; color: inherit; }
+      #chat-list { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
       .activity-row { display: flex; gap: 10px; align-items: flex-start; min-height: 44px; padding: 10px; border-bottom: 1px solid #dccfb9; font-size: 15px; line-height: 1.28; }
       .activity-row:last-child { border-bottom: 0; }
       .activity-text { min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
