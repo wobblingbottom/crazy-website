@@ -1468,7 +1468,7 @@ app.get("/commission/:token", async (req, res) => {
       .notice { margin: 0 0 24px; color: #5d5047; }
       .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
       .grid img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border: 1px solid #cdbfa7; border-radius: 12px; background: #ececeb; }
-      .chat { display: flex; flex-direction: column; height: min(680px, calc(100vh - 32px)); min-height: 518px; margin-top: 42px; padding: 24px 10px; background: #f8fffd; border: 0; border-radius: 14px; }
+      .chat { display: flex; flex-direction: column; height: min(560px, calc(100vh - 32px)); min-height: 440px; margin-top: 42px; padding: 24px 10px; background: #f8fffd; border: 0; border-radius: 14px; }
       .chat h2 { margin: 0 10px 18px; font-size: 28px; color: #5d5047; }
       .payment { margin-top: 28px; padding: 24px 20px; background: #f8fffd; border: 0; border-radius: 14px; }
       .feedback-form { display: grid; gap: 10px; margin: 0 0 18px; padding: 0 10px 18px; border-bottom: 1px solid #dccfb9; }
