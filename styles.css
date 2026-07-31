@@ -1722,8 +1722,8 @@ button {
 
   .gallery {
     grid-template-columns: repeat(auto-fill, minmax(150px, 170px));
-    column-gap: 14px;
-    row-gap: 44px;
+    column-gap: 34px;
+    row-gap: 72px;
     padding: 0;
   }
 
