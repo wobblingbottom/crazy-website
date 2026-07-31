@@ -293,6 +293,12 @@ button {
   margin: 0;
   appearance: none;
   padding: 0;
+  transition: transform 220ms cubic-bezier(0.22, 0.75, 0.3, 1);
+}
+
+.post-card:hover,
+.post-card:focus-visible {
+  transform: translateY(-8px);
 }
 
 .image-placeholder {
@@ -318,12 +324,12 @@ button {
   border-radius: 8px;
   object-fit: cover;
   pointer-events: none;
-  transition: transform 180ms ease;
+  transition: transform 220ms cubic-bezier(0.22, 0.75, 0.3, 1);
 }
 
 .post-card:hover .post-image,
 .post-card:focus-visible .post-image {
-  transform: scale(1.045);
+  transform: scale(1.025);
 }
 
 .post-frame {
@@ -334,6 +340,12 @@ button {
   height: 140%;
   object-fit: contain;
   pointer-events: none;
+  transition: transform 220ms cubic-bezier(0.22, 0.75, 0.3, 1);
+}
+
+.post-card:hover .post-frame,
+.post-card:focus-visible .post-frame {
+  transform: scale(1.025);
 }
 
 .image-watermark {
@@ -349,8 +361,6 @@ button {
   transition: opacity 160ms ease;
 }
 
-.post-card:hover .image-watermark,
-.post-card:focus-visible .image-watermark,
 .comic-card:hover .image-watermark,
 .comic-card:focus-visible .image-watermark {
   opacity: 0.3;
