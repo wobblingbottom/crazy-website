@@ -2067,13 +2067,9 @@ button {
 
   .post-modal-image {
     order: 4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: transparent;
-    height: min(520px, calc(100vw - 48px));
-    min-height: min(520px, calc(100vw - 48px));
-    padding: 0;
+    height: 360px;
+    min-height: 360px;
   }
 
   .post-modal-episodes {
