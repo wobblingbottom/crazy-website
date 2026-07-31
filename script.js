@@ -70,6 +70,7 @@ const POST_FRAME_IMAGE_URLS = [
   'assets/post-frame-2.png',
   'assets/post-frame-3.png'
 ];
+const POST_OPEN_FLASH_DURATION_MS = 300;
 
 function getDashboardPath() {
   if (currentView === 'commissions') {
@@ -1437,12 +1438,24 @@ function closePostModal() {
   }
 }
 
+function openPostWithFlash(card) {
+  if (card.classList.contains('post-card-opening')) {
+    return;
+  }
+
+  card.classList.add('post-card-opening');
+  window.setTimeout(() => {
+    card.classList.remove('post-card-opening');
+    openPostModal(card);
+  }, POST_OPEN_FLASH_DURATION_MS);
+}
+
 if (postsGallery) {
   postsGallery.addEventListener('click', (event) => {
     const card = event.target.closest('.post-card');
 
     if (card) {
-      openPostModal(card);
+      openPostWithFlash(card);
     }
   });
 }

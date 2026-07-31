@@ -316,6 +316,20 @@ button {
   overflow: visible;
 }
 
+.post-media::after {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #ffffff;
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+}
+
+.post-card-opening .post-media::after {
+  animation: post-image-flash 300ms ease-out both;
+}
+
 .post-image {
   display: block;
   width: 100%;
@@ -346,6 +360,7 @@ button {
 .post-media .post-image {
   position: absolute;
   inset: 0;
+  z-index: 0;
   width: 100%;
   height: 100%;
   border-radius: 0;
@@ -355,6 +370,12 @@ button {
 .post-card:hover .post-frame,
 .post-card:focus-visible .post-frame {
   transform: scale(1.025);
+}
+
+@keyframes post-image-flash {
+  0% { opacity: 0; }
+  35% { opacity: 0.9; }
+  100% { opacity: 0; }
 }
 
 .image-watermark {
