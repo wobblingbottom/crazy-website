@@ -70,7 +70,7 @@ const POST_FRAME_IMAGE_URLS = [
   'assets/post-frame-2.png',
   'assets/post-frame-3.png'
 ];
-const POST_OPEN_FLASH_DURATION_MS = 300;
+const POST_OPEN_FLASH_DURATION_MS = 720;
 
 function getDashboardPath() {
   if (currentView === 'commissions') {

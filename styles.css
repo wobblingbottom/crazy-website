@@ -327,7 +327,7 @@ button {
 }
 
 .post-card-opening .post-media::after {
-  animation: post-image-flash 300ms ease-out both;
+  animation: post-image-develop-overlay 720ms ease-out both;
 }
 
 .post-image {
@@ -344,6 +344,10 @@ button {
 .post-card:hover .post-image,
 .post-card:focus-visible .post-image {
   transform: scale(1.025);
+}
+
+.post-card-opening .post-image {
+  animation: post-image-develop 720ms ease-out both;
 }
 
 .post-frame {
@@ -372,10 +376,18 @@ button {
   transform: scale(1.025);
 }
 
-@keyframes post-image-flash {
-  0% { opacity: 0; }
-  35% { opacity: 0.9; }
+@keyframes post-image-develop-overlay {
+  0% { opacity: 1; }
+  30% { opacity: 0.58; }
+  65% { opacity: 0.14; }
   100% { opacity: 0; }
+}
+
+@keyframes post-image-develop {
+  0% { filter: grayscale(1) saturate(0) contrast(0.08) brightness(2.3); }
+  30% { filter: grayscale(1) saturate(0.04) contrast(0.42) brightness(1.45); }
+  65% { filter: grayscale(0.42) saturate(0.4) contrast(0.8) brightness(1.08); }
+  100% { filter: grayscale(0) saturate(1) contrast(1) brightness(1); }
 }
 
 .image-watermark {
