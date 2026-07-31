@@ -1721,10 +1721,11 @@ button {
   }
 
   .gallery {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 170px));
-    column-gap: 34px;
+    grid-template-columns: repeat(2, min(40vw, 170px));
+    column-gap: min(6vw, 24px);
     row-gap: 72px;
     padding: 0;
+    justify-content: center;
   }
 
   .gallery-card {
@@ -1734,7 +1735,7 @@ button {
   .post-card,
   .post-media,
   .image-placeholder {
-    width: 170px;
+    width: min(40vw, 170px);
   }
 
   .post-media,
