@@ -1721,8 +1721,8 @@ button {
   }
 
   .gallery {
-    grid-template-columns: repeat(2, min(30vw, 140px));
-    column-gap: min(4vw, 16px);
+    grid-template-columns: repeat(2, min(32vw, 150px));
+    column-gap: min(5vw, 20px);
     row-gap: 72px;
     padding: 0;
     justify-content: center;
@@ -1735,7 +1735,7 @@ button {
   .post-card,
   .post-media,
   .image-placeholder {
-    width: min(30vw, 140px);
+    width: min(32vw, 150px);
   }
 
   .post-media,
