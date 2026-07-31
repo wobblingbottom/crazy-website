@@ -345,9 +345,10 @@ button {
 
 .post-media .post-image {
   position: absolute;
-  inset: 16%;
-  width: 68%;
-  height: 68%;
+  inset: 12%;
+  width: 76%;
+  height: 76%;
+  border-radius: 0;
   object-fit: contain;
 }
 
