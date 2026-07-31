@@ -65,6 +65,11 @@ const MUSIC_FADE_DURATION_MS = 1200;
 const COMMISSION_SLIDE_INTERVAL_MS = 2600;
 const VALID_VIEWS = new Set(['posts', 'comics', 'commissions']);
 const WATERMARK_IMAGE_URL = 'assets/crazyland-watermark.png';
+const POST_FRAME_IMAGE_URLS = [
+  'assets/post-frame-1.png',
+  'assets/post-frame-2.png',
+  'assets/post-frame-3.png'
+];
 
 function getDashboardPath() {
   if (currentView === 'commissions') {
@@ -714,6 +719,15 @@ function createPostCard(post) {
     image.src = post.imageUrl;
     image.alt = post.imageAlt || post.title;
     media.appendChild(image);
+
+    const frame = document.createElement('img');
+    const identity = String(post.id || post.title || '');
+    const frameIndex = [...identity].reduce((total, character) => total + character.charCodeAt(0), 0) % POST_FRAME_IMAGE_URLS.length;
+    frame.className = 'post-frame';
+    frame.src = POST_FRAME_IMAGE_URLS[frameIndex];
+    frame.alt = '';
+    frame.setAttribute('aria-hidden', 'true');
+    media.appendChild(frame);
   }
 
   media.appendChild(createImageWatermark());
