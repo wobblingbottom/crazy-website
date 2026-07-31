@@ -318,6 +318,12 @@ button {
   border-radius: 8px;
   object-fit: cover;
   pointer-events: none;
+  transition: transform 180ms ease;
+}
+
+.post-card:hover .post-image,
+.post-card:focus-visible .post-image {
+  transform: scale(1.045);
 }
 
 .post-frame {
