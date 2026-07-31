@@ -1389,7 +1389,7 @@ function updateCommissionDescriptionScrollIndicator() {
   updateDescriptionScrollIndicator(commissionModalDescription);
 }
 
-function openPostModal(card) {
+function openPostModal(card, keepMusicPlaying = false) {
   if (!postModal || !postModalTitle || !postModalDescription) {
     return;
   }
@@ -1403,7 +1403,9 @@ function openPostModal(card) {
   renderRating(card.getAttribute('data-post-rating'), card.getAttribute('data-post-average-rating'));
   currentPostId = card.getAttribute('data-post-id') || '';
   currentContentType = card.getAttribute('data-content-type') || 'posts';
-  stopPostMusic();
+  if (!keepMusicPlaying) {
+    stopPostMusic();
+  }
 
   setModalImage(card.getAttribute('data-post-image-url'), card.getAttribute('data-post-image-alt') || '');
 
@@ -1426,7 +1428,9 @@ function openPostModal(card) {
   postModal.classList.toggle('comics-modal', currentContentType === 'comics');
   document.body.classList.add('modal-open');
   requestAnimationFrame(updatePostDescriptionScrollIndicator);
-  playPostMusic(card.getAttribute('data-post-music-url'));
+  if (!keepMusicPlaying) {
+    playPostMusic(card.getAttribute('data-post-music-url'));
+  }
 }
 
 function closePostModal() {
@@ -1443,10 +1447,13 @@ function openPostWithFlash(card) {
     return;
   }
 
+  const musicUrl = card.getAttribute('data-post-music-url');
+  stopPostMusic();
+  playPostMusic(musicUrl);
   card.classList.add('post-card-opening');
   window.setTimeout(() => {
     card.classList.remove('post-card-opening');
-    openPostModal(card);
+    openPostModal(card, Boolean(musicUrl));
   }, POST_OPEN_FLASH_DURATION_MS);
 }
 
