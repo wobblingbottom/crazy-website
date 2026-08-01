@@ -526,7 +526,7 @@ function renderRating(ratingValue, averageRatingValue = ratingValue) {
   postModalRating.setAttribute('aria-label', `${averageRatingValue} average out of 5 stars`);
 
   for (let index = 0; index < 5; index += 1) {
-    postModalRating.appendChild(createStar(index < rating));
+    postModalRating.appendChild(createPostStar(index < rating));
   }
 }
 
@@ -534,6 +534,14 @@ function createStar(isFilled) {
   const star = document.createElement('span');
   star.className = isFilled ? 'star star-filled' : 'star star-empty';
   const imageSrc = isFilled ? 'assets/star-rating.png' : 'assets/graystar.png';
+  star.innerHTML = `<img src="${imageSrc}" alt="" aria-hidden="true" />`;
+  return star;
+}
+
+function createPostStar(isFilled) {
+  const star = document.createElement('span');
+  star.className = isFilled ? 'star star-filled' : 'star star-empty';
+  const imageSrc = isFilled ? 'assets/star-rating-border.png' : 'assets/graystar.png';
   star.innerHTML = `<img src="${imageSrc}" alt="" aria-hidden="true" />`;
   return star;
 }
@@ -682,7 +690,7 @@ function createRatingOverlay(ratingValue, averageRatingValue = ratingValue) {
   rating.setAttribute('aria-label', `${averageRatingValue} average out of 5 stars`);
 
   for (let index = 0; index < 5; index += 1) {
-    rating.appendChild(createStar(index < ratingValue));
+    rating.appendChild(createPostStar(index < ratingValue));
   }
 
   return rating;
