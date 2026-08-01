@@ -460,8 +460,8 @@ button {
 }
 
 .rating-overlay .star {
-  width: 34px;
-  height: 34px;
+  width: 17px;
+  height: 17px;
   transition: filter 140ms ease, transform 140ms ease;
 }
 
@@ -803,8 +803,8 @@ button {
 }
 
 .feedback-star-button {
-  width: 28px;
-  height: 28px;
+  width: 14px;
+  height: 14px;
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -829,8 +829,8 @@ button {
 }
 
 .feedback-star-button .star {
-  width: 28px;
-  height: 28px;
+  width: 14px;
+  height: 14px;
 }
 
 .feedback-form textarea {
@@ -939,7 +939,7 @@ button {
   display: inline-flex;
   gap: 0;
   margin-left: 0;
-  font-size: 19px;
+  font-size: 9.5px;
   line-height: 1;
 }
 
@@ -1745,8 +1745,8 @@ button {
   }
 
   .rating-overlay .star {
-    width: clamp(24px, 7vw, 30px);
-    height: clamp(24px, 7vw, 30px);
+    width: clamp(12px, 3.5vw, 15px);
+    height: clamp(12px, 3.5vw, 15px);
   }
 
   .image-watermark {
@@ -2144,6 +2144,6 @@ button {
 
   .activity-stars {
     margin-left: 0;
-    font-size: 16px;
+    font-size: 8px;
   }
 }
