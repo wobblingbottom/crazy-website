@@ -541,7 +541,7 @@ function createStar(isFilled) {
 function createPostStar(isFilled) {
   const star = document.createElement('span');
   star.className = isFilled ? 'star star-filled' : 'star star-empty';
-  const imageSrc = isFilled ? 'assets/star-rating-border.png' : 'assets/graystar.png';
+  const imageSrc = isFilled ? 'assets/star-rating-border.png' : 'assets/star-rating-border-gray.png';
   star.innerHTML = `<img src="${imageSrc}" alt="" aria-hidden="true" />`;
   return star;
 }
