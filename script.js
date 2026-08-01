@@ -533,7 +533,7 @@ function renderRating(ratingValue, averageRatingValue = ratingValue) {
 function createStar(isFilled) {
   const star = document.createElement('span');
   star.className = isFilled ? 'star star-filled' : 'star star-empty';
-  const imageSrc = isFilled ? 'assets/star.png' : 'assets/graystar.png';
+  const imageSrc = isFilled ? 'assets/star-rating.png' : 'assets/graystar.png';
   star.innerHTML = `<img src="${imageSrc}" alt="" aria-hidden="true" />`;
   return star;
 }
@@ -603,7 +603,7 @@ function renderFeedbackStars(value) {
 
     button.setAttribute('aria-checked', String(Number.parseInt(button.dataset.rating, 10) === rating));
     star.className = isFilled ? 'star star-filled' : 'star star-empty';
-    image.src = isFilled ? 'assets/star.png' : 'assets/graystar.png';
+    image.src = isFilled ? 'assets/star-rating.png' : 'assets/graystar.png';
   });
 }
 
