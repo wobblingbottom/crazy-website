@@ -65,11 +65,7 @@ const MUSIC_FADE_DURATION_MS = 1200;
 const COMMISSION_SLIDE_INTERVAL_MS = 2600;
 const VALID_VIEWS = new Set(['posts', 'comics', 'commissions']);
 const WATERMARK_IMAGE_URL = 'assets/crazyland-watermark.png';
-const POST_FRAME_IMAGE_URLS = [
-  'assets/post-frame-1.png',
-  'assets/post-frame-2.png',
-  'assets/post-frame-3.png'
-];
+const POST_FRAME_IMAGE_URL = 'assets/post-frame.png';
 const POST_OPEN_FLASH_DURATION_MS = 720;
 
 function getDashboardPath() {
@@ -722,10 +718,8 @@ function createPostCard(post) {
     media.appendChild(image);
 
     const frame = document.createElement('img');
-    const identity = String(post.id || post.title || '');
-    const frameIndex = [...identity].reduce((total, character) => total + character.charCodeAt(0), 0) % POST_FRAME_IMAGE_URLS.length;
     frame.className = 'post-frame';
-    frame.src = POST_FRAME_IMAGE_URLS[frameIndex];
+    frame.src = POST_FRAME_IMAGE_URL;
     frame.alt = '';
     frame.setAttribute('aria-hidden', 'true');
     media.appendChild(frame);
