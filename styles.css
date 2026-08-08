@@ -1476,6 +1476,10 @@ button {
 
 .commission-type-copy {
   position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 8px 16px;
   border: 1px solid #9f948c;
   border-radius: 10px;
   background: #ffffff;
@@ -1485,7 +1489,7 @@ button {
   height: var(--commission-card-height);
   max-width: none;
   overflow: hidden;
-  padding: 14px 22px;
+  padding: 12px 18px;
   z-index: 0;
 }
 
@@ -1566,17 +1570,21 @@ button {
 
 .commission-type-heading {
   display: block;
-  margin: 0 0 18px;
-  padding-right: 190px;
+  grid-column: 1;
+  grid-row: 1;
+  margin: 0;
+  padding: 0;
   color: #000000;
   font-size: 1.5rem;
   font-weight: 400;
 }
 
 .commission-price {
-  position: absolute;
-  top: 14px;
-  right: 22px;
+  position: static;
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  align-self: start;
   display: inline-flex;
   align-items: center;
   width: fit-content;
@@ -1584,26 +1592,26 @@ button {
   background: #f45f77;
   color: #ffffff;
   font-size: 0.95rem;
-  padding: 10px 18px;
+  padding: 5px 12px;
 }
 
 .commission-type-description-title {
-  display: block;
-  margin: 0 0 10px;
-  color: #000000;
-  font-size: 1rem;
+  display: none;
 }
 
 .commission-type-description {
   display: block;
+  grid-column: 1 / -1;
+  grid-row: 2;
   margin: 0;
-  max-height: 70px;
-  overflow-y: auto;
-  scrollbar-color: #f45f77 transparent;
-  scrollbar-width: thin;
+  max-height: none;
+  overflow: hidden;
   color: #000000;
   font-size: 0.85rem;
   line-height: 1.38;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
 }
 
 .commission-type-description::-webkit-scrollbar {
