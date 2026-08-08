@@ -748,6 +748,11 @@ button {
   border-radius: 8px 8px 0 0;
 }
 
+.comic-reader-header,
+.comic-reader-footer {
+  width: min(450px, 100%);
+}
+
 .comic-reader-panel {
   background: #ececeb;
   border-radius: 0;
