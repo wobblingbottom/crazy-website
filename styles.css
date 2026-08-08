@@ -738,7 +738,7 @@ button {
 .comic-reader-panel,
 .comic-reader-footer {
   display: block;
-  width: min(460px, 100%);
+  width: min(500px, 100%);
   margin: 0 auto;
 }
 
