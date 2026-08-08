@@ -735,7 +735,8 @@ button {
 }
 
 .comic-reader-header,
-.comic-reader-panel {
+.comic-reader-panel,
+.comic-reader-footer {
   display: block;
   width: min(720px, 100%);
   margin: 0 auto;
@@ -751,6 +752,10 @@ button {
 }
 
 .comic-reader-panel:last-child {
+  border-radius: 0 0 8px 8px;
+}
+
+.comic-reader-footer {
   border-radius: 0 0 8px 8px;
 }
 

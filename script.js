@@ -846,8 +846,8 @@ function renderComicReader(episode) {
 
   const header = document.createElement('img');
   header.className = 'comic-reader-header';
-  header.src = 'assets/comictop.png';
-  header.alt = '';
+  header.src = 'assets/comic-reader-top.jpg';
+  header.alt = 'Crazyland Stories';
   comicReader.appendChild(header);
 
   const panels = episode.panels?.length ? episode.panels : [];
@@ -866,6 +866,12 @@ function renderComicReader(episode) {
     empty.textContent = 'No episode panels uploaded yet.';
     comicReader.appendChild(empty);
   }
+
+  const footer = document.createElement('img');
+  footer.className = 'comic-reader-footer';
+  footer.src = 'assets/comic-reader-bottom.jpg';
+  footer.alt = 'Thank you for reading!';
+  comicReader.appendChild(footer);
 
   comicReader.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
