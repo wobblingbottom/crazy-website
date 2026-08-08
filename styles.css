@@ -1440,6 +1440,7 @@ button {
 }
 
 .commission-type-image {
+  position: relative;
   display: block;
   overflow: hidden;
   width: var(--placeholder-size);
@@ -1468,6 +1469,43 @@ button {
   flex: 0 0 100%;
   width: 100%;
   height: 100%;
+}
+
+.commission-slide-control {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.commission-slide-control-previous {
+  left: 4px;
+}
+
+.commission-slide-control-next {
+  right: 4px;
+}
+
+.commission-slide-control img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.commission-slide-control-previous img {
+  transform: scaleX(-1);
+}
+
+.commission-slide-control:focus-visible {
+  border-radius: 999px;
+  outline: 2px solid #f45f77;
+  outline-offset: 2px;
 }
 
 .commission-type-image-placeholder {
@@ -1952,7 +1990,6 @@ button {
   }
 
   .commission-type-image {
-    position: static;
     grid-column: 2;
     grid-row: 1 / span 2;
     width: 96px;
