@@ -750,7 +750,7 @@ button {
 
 .comic-reader-header,
 .comic-reader-footer {
-  width: min(450px, 100%);
+  width: min(720px, 100%);
 }
 
 .comic-reader-panel {
