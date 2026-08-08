@@ -632,6 +632,23 @@ function getAdminContentApiBase() {
   return currentContentType === 'comics' ? '/api/admin/comics' : '/api/admin/posts';
 }
 
+async function getSaveError(response, fallbackMessage) {
+  let message = fallbackMessage;
+
+  try {
+    const data = await response.json();
+    message = data.error || fallbackMessage;
+  } catch {
+    // A non-JSON response should still show a useful fallback message.
+  }
+
+  if (response.status === 401) {
+    return 'Your login has expired. Please log in with Discord again.';
+  }
+
+  return message;
+}
+
 function updateCurrentCollection(updatedItem) {
   if (currentContentType === 'comics') {
     comics = comics.map((comic) => (comic.id === updatedItem.id ? updatedItem : comic));
@@ -656,7 +673,7 @@ async function saveRating(value) {
     });
 
     if (!ratingResponse.ok) {
-      throw new Error('Rating failed.');
+      throw new Error(await getSaveError(ratingResponse, 'Could not save rating.'));
     }
 
     const data = await ratingResponse.json();
@@ -666,8 +683,8 @@ async function saveRating(value) {
     renderActivity(updatedPost);
     setFeedbackState(updatedPost);
     feedbackMessage.textContent = 'Rating saved.';
-  } catch {
-    feedbackMessage.textContent = 'Could not save rating.';
+  } catch (error) {
+    feedbackMessage.textContent = error.message || 'Could not save rating.';
   }
 }
 
@@ -1714,7 +1731,7 @@ if (feedbackForm) {
       });
 
       if (!commentResponse.ok) {
-        throw new Error('Comment failed.');
+        throw new Error(await getSaveError(commentResponse, 'Could not save feedback.'));
       }
 
       const data = await commentResponse.json();
@@ -1724,8 +1741,8 @@ if (feedbackForm) {
       renderActivity(updatedPost);
       setFeedbackState(updatedPost);
       feedbackMessage.textContent = 'Feedback saved.';
-    } catch {
-      feedbackMessage.textContent = 'Could not save feedback.';
+    } catch (error) {
+      feedbackMessage.textContent = error.message || 'Could not save feedback.';
     }
   });
 }
