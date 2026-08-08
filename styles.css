@@ -1406,6 +1406,7 @@ button {
   align-items: stretch;
   justify-content: start;
   width: 100%;
+  height: var(--placeholder-size);
   border: 0;
   background: transparent;
   color: #000000;
