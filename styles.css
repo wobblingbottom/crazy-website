@@ -46,6 +46,7 @@ body.modal-open {
   --content-left: 33px;
   --content-top: 18px;
   --placeholder-size: 193px;
+  --commission-card-height: 96px;
   --placeholder-gap: 39px;
   font-size: 14px;
 }
@@ -1406,7 +1407,7 @@ button {
   align-items: stretch;
   justify-content: start;
   width: 100%;
-  height: var(--placeholder-size);
+  height: var(--commission-card-height);
   border: 0;
   background: transparent;
   color: #000000;
@@ -1442,7 +1443,7 @@ button {
   display: block;
   overflow: hidden;
   width: var(--placeholder-size);
-  height: var(--placeholder-size);
+  height: var(--commission-card-height);
   border-radius: 10px;
   background: #e2dad4;
 }
@@ -1481,7 +1482,7 @@ button {
   color: #000000;
   min-width: 0;
   width: 100%;
-  height: var(--placeholder-size);
+  height: var(--commission-card-height);
   max-width: none;
   overflow: hidden;
   padding: 14px 22px;
