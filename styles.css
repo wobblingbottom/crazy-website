@@ -740,6 +740,8 @@ button {
   display: block;
   width: min(500px, 100%);
   margin: 0 auto;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .comic-reader-header {

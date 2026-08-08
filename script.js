@@ -848,6 +848,7 @@ function renderComicReader(episode) {
   header.className = 'comic-reader-header';
   header.src = 'assets/comic-reader-top.jpg';
   header.alt = 'Crazyland Stories';
+  header.draggable = false;
   comicReader.appendChild(header);
 
   const panels = episode.panels?.length ? episode.panels : [];
@@ -858,6 +859,7 @@ function renderComicReader(episode) {
       panel.className = 'comic-reader-panel';
       panel.src = episodePanel.imageUrl;
       panel.alt = episodePanel.imageAlt || episode.title;
+      panel.draggable = false;
       comicReader.appendChild(panel);
     });
   } else {
@@ -871,6 +873,7 @@ function renderComicReader(episode) {
   footer.className = 'comic-reader-footer';
   footer.src = 'assets/comic-reader-bottom.jpg';
   footer.alt = 'Thank you for reading!';
+  footer.draggable = false;
   comicReader.appendChild(footer);
 
   comicReader.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1549,6 +1552,14 @@ if (commissionTypes) {
 
     event.preventDefault();
     slideControl.click();
+  });
+}
+
+if (comicReader) {
+  comicReader.addEventListener('contextmenu', (event) => {
+    if (event.target.matches('img')) {
+      event.preventDefault();
+    }
   });
 }
 
