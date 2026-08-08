@@ -200,7 +200,9 @@ async function readPosts() {
 }
 
 async function writePosts(posts) {
-  await fs.writeFile(postsFile, JSON.stringify(posts, null, 2));
+  const temporaryFile = `${postsFile}.${crypto.randomUUID()}.tmp`;
+  await fs.writeFile(temporaryFile, JSON.stringify(posts, null, 2));
+  await fs.rename(temporaryFile, postsFile);
 }
 
 async function ensureComicsFile() {
@@ -229,7 +231,9 @@ async function readComics() {
 }
 
 async function writeComics(comics) {
-  await fs.writeFile(comicsFile, JSON.stringify(comics, null, 2));
+  const temporaryFile = `${comicsFile}.${crypto.randomUUID()}.tmp`;
+  await fs.writeFile(temporaryFile, JSON.stringify(comics, null, 2));
+  await fs.rename(temporaryFile, comicsFile);
 }
 
 async function ensureCommissionsFile() {
