@@ -25,6 +25,10 @@ const commissionSuccessLink = document.querySelector('[data-commission-success-l
 const commissionSuccessNote = document.querySelector('[data-commission-success-note]');
 const commissionCopyLinkButton = document.querySelector('[data-commission-copy-link]');
 const commissionSuccessClose = document.querySelector('[data-commission-success-close]');
+const discordWidget = document.querySelector('[data-discord-widget]');
+const discordWidgetStatus = document.querySelector('[data-discord-widget-status]');
+const discordWidgetMembers = document.querySelector('[data-discord-widget-members]');
+const discordWidgetJoin = document.querySelector('[data-discord-widget-join]');
 const loginButton = document.querySelector('.login-button');
 const postModal = document.querySelector('[data-post-modal]');
 const postModalTitle = document.querySelector('[data-post-modal] .post-modal-title');
@@ -65,6 +69,7 @@ const VALID_VIEWS = new Set(['posts', 'comics', 'commissions']);
 const WATERMARK_IMAGE_URL = 'assets/crazyland-watermark.png';
 const POST_FRAME_IMAGE_URL = 'assets/post-frame.png';
 const POST_OPEN_FLASH_DURATION_MS = 720;
+const DISCORD_WIDGET_URL = 'https://discord.com/api/guilds/950028939890413578/widget.json';
 
 function getDashboardPath() {
   if (currentView === 'commissions') {
@@ -1462,6 +1467,51 @@ function closePostModal() {
   }
 }
 
+async function loadDiscordWidget() {
+  if (!discordWidget || !discordWidgetStatus || !discordWidgetMembers || !discordWidgetJoin) {
+    return;
+  }
+
+  try {
+    const response = await fetch(DISCORD_WIDGET_URL);
+
+    if (!response.ok) {
+      throw new Error('Widget unavailable.');
+    }
+
+    const data = await response.json();
+    const onlineCount = Number.parseInt(data.presence_count, 10) || 0;
+    const members = Array.isArray(data.members) ? data.members.slice(0, 4) : [];
+
+    discordWidgetStatus.textContent = `${onlineCount} member${onlineCount === 1 ? '' : 's'} online`;
+    discordWidgetMembers.innerHTML = '';
+
+    members.forEach((member) => {
+      const avatar = document.createElement('img');
+      avatar.className = 'discord-widget-avatar';
+      avatar.src = member.avatar_url;
+      avatar.alt = member.username || 'Discord member';
+      avatar.title = member.username || 'Discord member';
+      avatar.loading = 'lazy';
+      discordWidgetMembers.appendChild(avatar);
+    });
+
+    if (members.length === 0 && onlineCount > 0) {
+      const more = document.createElement('span');
+      more.className = 'discord-widget-more';
+      more.textContent = `+${onlineCount}`;
+      discordWidgetMembers.appendChild(more);
+    }
+
+    if (data.instant_invite) {
+      discordWidgetJoin.href = data.instant_invite;
+    }
+  } catch {
+    discordWidgetStatus.textContent = 'Server status unavailable.';
+    discordWidgetMembers.innerHTML = '';
+  }
+}
+
 function openPostWithFlash(card) {
   if (card.classList.contains('post-card-opening')) {
     return;
@@ -1907,6 +1957,7 @@ if (commissionForm) {
 }
 
 loadCurrentUser();
+loadDiscordWidget();
 setActiveView(getInitialView());
 loadPosts();
 loadComics();
