@@ -22,13 +22,16 @@
             <button class="sidebar-link" type="button" data-view-target="commissions">Commissions</button>
           </nav>
           <section class="discord-widget" data-discord-widget aria-labelledby="discord-widget-title">
-            <div class="discord-widget-heading">
-              <span class="discord-widget-mark" aria-hidden="true">✦</span>
-              <h2 id="discord-widget-title">Crazyland Discord</h2>
-            </div>
-            <p class="discord-widget-status" data-discord-widget-status>Loading server...</p>
-            <div class="discord-widget-members" data-discord-widget-members aria-label="Online members"></div>
-            <a class="discord-widget-join" data-discord-widget-join href="https://discord.com/channels/950028939890413578" target="_blank" rel="noopener noreferrer">Join Discord</a>
+            <h2 id="discord-widget-title" class="visually-hidden">Crazyland Discord</h2>
+            <iframe
+              class="discord-widget-frame"
+              data-discord-widget-frame
+              src="https://discord.com/widget?id=950028939890413578&theme=dark"
+              title="Crazyland Discord server"
+              allowtransparency="true"
+              frameborder="0"
+              sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+            ></iframe>
           </section>
         </aside>
 
