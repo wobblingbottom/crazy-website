@@ -1117,6 +1117,36 @@ button {
   width: 100%;
 }
 
+.commission-policy {
+  margin: var(--content-top) var(--content-left) 0;
+  border: 1px solid #9f948c;
+  border-radius: 12px;
+  background: #f8fffd;
+  color: #000000;
+  padding: 14px 18px;
+}
+
+.commission-policy h3,
+.commission-policy p {
+  margin: 0;
+}
+
+.commission-policy h3 {
+  margin-bottom: 8px;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.commission-policy p {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.commission-policy-tos {
+  margin-top: 8px !important;
+  color: #5d5047;
+}
+
 .commission-modal[hidden] {
   display: none;
 }
@@ -1954,6 +1984,10 @@ button {
 
   .commission-types {
     padding: 0 0 70px;
+  }
+
+  .commission-policy {
+    margin: 0 0 20px;
   }
 
   .commission-modal-panel {
