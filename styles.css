@@ -103,6 +103,67 @@ button {
   font-weight: 400;
 }
 
+.topbar .page-heading {
+  margin-right: auto;
+}
+
+.sidebar-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+  height: 44px;
+  margin-right: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.sidebar-toggle:hover {
+  background: #fff0f3;
+  color: #a82d43;
+}
+
+.sidebar-toggle:focus-visible {
+  outline: 2px solid #f45f77;
+  outline-offset: 2px;
+}
+
+.layout.sidebar-collapsed {
+  grid-template-columns: 0px minmax(0, 1fr);
+}
+
+.sidebar-shell {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sidebar-shell .sidebar {
+  width: 223px;
+  height: 100%;
+  transition: transform 280ms ease, visibility 0s;
+}
+
+.sidebar-collapsed .sidebar {
+  transform: translateX(-100%);
+  visibility: hidden;
+  transition: transform 280ms ease, visibility 0s 280ms;
+}
+
+@media (max-width: 480px) {
+  .topbar {
+    padding-inline: 12px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .sidebar-toggle {
+    margin-right: 0;
+  }
+}
+
 .login-button {
   position: relative;
   display: inline-flex;
@@ -110,9 +171,9 @@ button {
   justify-content: center;
   min-width: 103px;
   height: 29px;
-  border: 1px solid #574d44;
+  border: 1px solid #f45f77;
   border-radius: 7px;
-  background: #fbfffe;
+  background: #fff5f7;
   font-size: 1rem;
   cursor: pointer;
 }
@@ -144,6 +205,7 @@ button {
   display: grid;
   grid-template-columns: 223px minmax(0, 1fr);
   min-height: 575px;
+  transition: grid-template-columns 280ms ease;
 }
 
 .sidebar {
@@ -179,8 +241,11 @@ button {
   box-shadow: none;
 }
 
+.sidebar-link:hover,
+.sidebar-link:focus-visible,
 .sidebar-link-active {
-  background: #bdb3ab;
+  background: #fff0f3;
+  color: #a82d43;
   border-color: transparent;
   box-shadow: none;
 }
@@ -530,8 +595,8 @@ button {
   height: 518px;
   min-height: 0;
   margin: 0;
-  background: #f8fffd;
-  border: 1px solid #2f2a25;
+  background: #fff5f7;
+  border: 1px solid #f45f77;
   border-radius: 16px;
   overflow: hidden;
 }
@@ -622,9 +687,9 @@ button {
 .series-back-button {
   min-height: 26px;
   margin-top: 14px;
-  border: 1px solid #574d44;
+  border: 1px solid #f45f77;
   border-radius: 7px;
-  background: #badfe8;
+  background: #f45f77;
   color: #1b1b1b;
   cursor: pointer;
   font: inherit;
@@ -638,9 +703,9 @@ button {
   gap: 8px;
   align-items: center;
   width: 100%;
-  border: 1px solid #cdbfa7;
+  border: 1px solid #f45f77;
   border-radius: 10px;
-  background: #fbfffe;
+  background: #fff5f7;
   color: inherit;
   cursor: pointer;
   font: inherit;
@@ -650,8 +715,8 @@ button {
 
 .modal-episode:hover,
 .modal-episode:focus-visible {
-  border-color: #574d44;
-  background: #badfe8;
+  border-color: #f45f77;
+  background: #f45f77;
 }
 
 .modal-episode-thumb {
@@ -686,7 +751,7 @@ button {
   width: 100%;
   height: 100%;
   min-height: 0;
-  background: #f8fffd;
+  background: #fff5f7;
   border-radius: inherit;
   overflow: hidden;
   padding: 14px;
@@ -731,8 +796,8 @@ button {
 .comic-reader {
   margin-top: 24px;
   padding: 24px;
-  background: #f8fffd;
-  border: 1px solid #2f2a25;
+  background: #fff5f7;
+  border: 1px solid #f45f77;
   border-radius: 14px;
 }
 
@@ -749,9 +814,9 @@ button {
 .discord-widget {
   width: 100%;
   margin-top: auto;
-  border: 1px solid #9f948c;
+  border: 1px solid #f45f77;
   border-radius: 12px;
-  background: #f8fffd;
+  background: #fff5f7;
   padding: 12px;
 }
 
@@ -795,7 +860,7 @@ button {
 .discord-widget-more {
   width: 26px;
   height: 26px;
-  border: 2px solid #f8fffd;
+  border: 2px solid #fff5f7;
   border-radius: 999px;
   background: #bdb3ab;
 }
@@ -822,9 +887,9 @@ button {
   align-items: center;
   justify-content: center;
   margin-top: 10px;
-  border: 1px solid #574d44;
+  border: 1px solid #f45f77;
   border-radius: 7px;
-  background: #fbfffe;
+  background: #fff5f7;
   color: #000000;
   font-size: 0.75rem;
 }
@@ -835,7 +900,7 @@ button {
 }
 
 .discord-widget-join:focus-visible {
-  outline: 1px solid #574d44;
+  outline: 1px solid #f45f77;
   outline-offset: 2px;
 }
 
@@ -871,8 +936,8 @@ button {
   min-height: 518px;
   margin-top: 42px;
   padding: 24px 10px;
-  background: #f8fffd;
-  border: 1px solid #2f2a25;
+  background: #fff5f7;
+  border: 1px solid #f45f77;
   border-radius: 14px;
 }
 
@@ -881,7 +946,7 @@ button {
   gap: 10px;
   margin: 0 0 18px;
   padding: 0 10px 18px;
-  border-bottom: 1px solid #dccfb9;
+  border-bottom: 1px solid #f45f77;
 }
 
 .feedback-form[hidden] {
@@ -896,9 +961,9 @@ button {
 
 .feedback-form textarea {
   width: 100%;
-  border: 1px solid #cdbfa7;
+  border: 1px solid #f45f77;
   border-radius: 10px;
-  background: #fbfffe;
+  background: #fff5f7;
   color: #1b1b1b;
   font: inherit;
   padding: 7px;
@@ -949,9 +1014,9 @@ button {
 .feedback-form button {
   justify-self: start;
   min-height: 30px;
-  border: 1px solid #574d44;
+  border: 1px solid #f45f77;
   border-radius: 7px;
-  background: #badfe8;
+  background: #f45f77;
   cursor: pointer;
   font: inherit;
   padding: 0 12px;
@@ -988,7 +1053,7 @@ button {
   align-items: flex-start;
   min-height: 44px;
   padding: 10px;
-  border-bottom: 1px solid #dccfb9;
+  border-bottom: 1px solid #f45f77;
   font-size: 15px;
   line-height: 1.28;
 }
@@ -1033,9 +1098,9 @@ button {
 
 .activity-action {
   min-height: 24px;
-  border: 1px solid #574d44;
+  border: 1px solid #f45f77;
   border-radius: 7px;
-  background: #badfe8;
+  background: #f45f77;
   color: #1b1b1b;
   cursor: pointer;
   font: inherit;
@@ -1093,7 +1158,7 @@ button {
 }
 
 .comic-copy {
-  border: 1px solid #9f948c;
+  border: 1px solid #f45f77;
   border-radius: 10px;
   background: #ffffff;
   color: #000000;
@@ -1126,9 +1191,9 @@ button {
 
 .commission-policy {
   margin: var(--content-top) var(--content-left) 0;
-  border: 1px solid #9f948c;
+  border: 1px solid #f45f77;
   border-radius: 12px;
-  background: #f8fffd;
+  background: #fff5f7;
   color: #000000;
   padding: 14px 18px;
 }
@@ -1173,8 +1238,8 @@ button {
   width: 100%;
   min-height: 518px;
   margin: 0;
-  background: #f8fffd;
-  border: 1px solid #2f2a25;
+  background: #fff5f7;
+  border: 1px solid #f45f77;
   border-radius: 16px;
   overflow: hidden;
 }
@@ -1203,7 +1268,7 @@ button {
   flex-direction: column;
   gap: 12px;
   min-height: 0;
-  background: #f8fffd;
+  background: #fff5f7;
   padding: 14px;
 }
 
@@ -1258,7 +1323,7 @@ button {
   width: 76px;
   height: 76px;
   flex: 0 0 auto;
-  border: 2px solid #cdbfa7;
+  border: 2px solid #f45f77;
   border-radius: 10px;
   background: #ffffff;
   cursor: pointer;
@@ -1312,7 +1377,7 @@ button {
   height: 40px;
   border: 0;
   border-radius: 999px;
-  background: #f8fffd;
+  background: #fff5f7;
   color: #5d5047;
   cursor: pointer;
   font: inherit;
@@ -1383,9 +1448,9 @@ button {
 .commission-form input,
 .commission-form textarea {
   width: 100%;
-  border: 1px solid #cdbfa7;
+  border: 1px solid #f45f77;
   border-radius: 10px;
-  background: #fbfffe;
+  background: #fff5f7;
   color: #1b1b1b;
   font: inherit;
   padding: 10px 12px;
@@ -1406,9 +1471,9 @@ button {
   gap: 12px;
   margin-top: -4px;
   padding: 16px;
-  border: 1px solid #cdbfa7;
+  border: 1px solid #f45f77;
   border-radius: 12px;
-  background: #fbfffe;
+  background: #fff5f7;
 }
 
 .commission-reference-preview[hidden] {
@@ -1436,7 +1501,7 @@ button {
   display: block;
   width: 100%;
   aspect-ratio: 1 / 1;
-  border: 1px solid #cdbfa7;
+  border: 1px solid #f45f77;
   border-radius: 10px;
   background: #ececeb;
   object-fit: cover;
@@ -1670,7 +1735,7 @@ button {
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-rows: auto minmax(0, 1fr);
   gap: 8px 16px;
-  border: 1px solid #9f948c;
+  border: 1px solid #f45f77;
   border-radius: 10px;
   background: #ffffff;
   color: #000000;
@@ -1687,7 +1752,7 @@ button {
   position: absolute;
   inset: -28px -34px;
   z-index: -1;
-  color: #ffa245;
+  color: #f45f77;
   content: "✦  ✶     ✦  ✸";
   font-size: 34px;
   letter-spacing: 24px;
@@ -1696,14 +1761,14 @@ button {
   pointer-events: none;
   text-shadow:
     58px 22px 0 #f45f77,
-    190px 6px 0 #ffa245,
-    320px 28px 0 #f0c163,
+    190px 6px 0 #f45f77,
+    320px 28px 0 #f45f77,
     460px 10px 0 #f45f77,
-    620px 30px 0 #ffa245,
-    90px 178px 0 #f0c163,
+    620px 30px 0 #f45f77,
+    90px 178px 0 #f45f77,
     260px 158px 0 #f45f77,
-    420px 184px 0 #ffa245,
-    600px 166px 0 #f0c163;
+    420px 184px 0 #f45f77,
+    600px 166px 0 #f45f77;
   transform: scale(0.82);
   transition: opacity 180ms ease, transform 220ms ease;
 }
@@ -1720,7 +1785,7 @@ button {
 .commission-sparkle {
   position: absolute;
   z-index: -1;
-  color: #ffa245;
+  color: #f45f77;
   font-size: 22px;
   line-height: 1;
   pointer-events: none;
@@ -1734,7 +1799,7 @@ button {
 }
 
 .commission-sparkle:nth-of-type(3n + 1) {
-  color: #f0c163;
+  color: #f45f77;
 }
 
 @keyframes commission-sparkle-flight {
@@ -2155,7 +2220,7 @@ button {
     width: 96px;
     height: 96px;
     margin: 0;
-    border: 1px solid #cdbfa7;
+    border: 1px solid #f45f77;
   }
 
   .commission-type-copy {
@@ -2352,5 +2417,41 @@ button {
   .activity-stars {
     margin-left: 0;
     font-size: 8px;
+  }
+}
+
+@media (max-width: 900px) {
+  .layout.sidebar-collapsed {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-shell {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 280ms ease;
+  }
+
+  .sidebar-collapsed .sidebar-shell {
+    grid-template-rows: 0fr;
+  }
+
+  .sidebar-shell .sidebar {
+    width: auto;
+    height: auto;
+    min-height: 0;
+    overflow: hidden;
+    transition: transform 280ms ease, padding 280ms ease, border-width 280ms ease, visibility 0s;
+  }
+
+  .sidebar-collapsed .sidebar {
+    padding-block: 0;
+    border-bottom-width: 0;
+    transition: transform 280ms ease, padding 280ms ease, border-width 280ms ease, visibility 0s 280ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layout, .sidebar-shell, .sidebar-shell .sidebar {
+    transition: none;
   }
 }

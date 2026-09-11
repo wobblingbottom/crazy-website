@@ -1341,9 +1341,9 @@ app.get("/commission/:token", async (req, res) => {
         justify-content: center;
         min-width: 140px;
         min-height: 38px;
-        border: 1px solid #574d44;
+        border: 1px solid #f45f77;
         border-radius: 7px;
-        background: #fbfffe;
+        background: #fff5f7;
         color: #1b1b1b;
         font: inherit;
         text-decoration: none;
@@ -1429,9 +1429,9 @@ app.get("/commission/:token", async (req, res) => {
         justify-content: center;
         min-width: 103px;
         height: 29px;
-        border: 1px solid #574d44;
+        border: 1px solid #f45f77;
         border-radius: 7px;
-        background: #fbfffe;
+        background: #fff5f7;
         color: #1b1b1b;
         font: inherit;
         text-decoration: none;
@@ -1471,31 +1471,31 @@ app.get("/commission/:token", async (req, res) => {
       .description { margin: 0 0 24px; line-height: 1.6; color: #5d5047; }
       .notice { margin: 0 0 24px; color: #5d5047; }
       .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
-      .grid img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border: 1px solid #cdbfa7; border-radius: 12px; background: #ececeb; }
-      .chat { display: flex; flex-direction: column; height: min(560px, calc(100vh - 32px)); min-height: 440px; margin-top: 42px; padding: 24px 10px; background: #f8fffd; border: 0; border-radius: 14px; }
+      .grid img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border: 1px solid #f45f77; border-radius: 12px; background: #ececeb; }
+      .chat { display: flex; flex-direction: column; height: min(560px, calc(100vh - 32px)); min-height: 440px; margin-top: 42px; padding: 24px 10px; background: #fff5f7; border: 0; border-radius: 14px; }
       .chat h2 { margin: 0 10px 18px; font-size: 28px; color: #5d5047; }
-      .payment { margin-top: 28px; padding: 24px 20px; background: #f8fffd; border: 0; border-radius: 14px; }
-      .feedback-form { display: grid; gap: 10px; margin: 0 0 18px; padding: 0 10px 18px; border-bottom: 1px solid #dccfb9; }
+      .payment { margin-top: 28px; padding: 24px 20px; background: #fff5f7; border: 0; border-radius: 14px; }
+      .feedback-form { display: grid; gap: 10px; margin: 0 0 18px; padding: 0 10px 18px; border-bottom: 1px solid #f45f77; }
       .feedback-form[hidden] { display: none; }
       .feedback-form label { display: grid; gap: 5px; font-size: 13px; }
-      .feedback-form textarea { width: 100%; min-height: 70px; border: 1px solid #cdbfa7; border-radius: 10px; background: #fbfffe; color: #1b1b1b; font: inherit; padding: 7px; resize: vertical; }
+      .feedback-form textarea { width: 100%; min-height: 70px; border: 1px solid #f45f77; border-radius: 10px; background: #fff5f7; color: #1b1b1b; font: inherit; padding: 7px; resize: vertical; }
       .feedback-form button { justify-self: start; min-height: 30px; border: 1px solid #1b1b1b; border-radius: 7px; background: #ffffff; color: #000000; cursor: pointer; font: inherit; padding: 0 12px; }
       .chat-toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
       .chat-image-input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
       .chat-tool-button { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; border: 1px solid #1b1b1b; border-radius: 8px; background: #ffffff; color: #000000; cursor: pointer; font: inherit; padding: 0 10px; }
       .chat-tool-button svg { width: 20px; height: 20px; flex: 0 0 auto; }
       .chat-image-chip[hidden] { display: none; }
-      .chat-image-chip { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; max-width: 100%; border: 1px solid #cdbfa7; border-radius: 999px; background: #f8f3ef; color: #5d5047; font-size: 13px; padding: 0 8px 0 12px; }
+      .chat-image-chip { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; max-width: 100%; border: 1px solid #f45f77; border-radius: 999px; background: #f8f3ef; color: #5d5047; font-size: 13px; padding: 0 8px 0 12px; }
       .chat-image-chip span { max-width: min(260px, 52vw); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
       .chat-image-clear { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; min-height: 0; border: 0; border-radius: 999px; background: rgba(244, 95, 119, 0.12); color: #b74a5b; cursor: pointer; font: inherit; line-height: 1; padding: 0; }
       .feedback-message, .activity-empty { margin: 0 10px 14px; color: #555555; font-size: 13px; }
       .feedback-message a { text-decoration: underline; color: inherit; }
       #chat-list { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
-      .activity-row { display: flex; gap: 10px; align-items: flex-start; min-height: 44px; padding: 10px; border-bottom: 1px solid #dccfb9; font-size: 15px; line-height: 1.28; }
+      .activity-row { display: flex; gap: 10px; align-items: flex-start; min-height: 44px; padding: 10px; border-bottom: 1px solid #f45f77; font-size: 15px; line-height: 1.28; }
       .activity-row:last-child { border-bottom: 0; }
       .activity-text { min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
       .activity-content { min-width: 0; display: grid; gap: 8px; }
-      .chat-image { display: block; max-width: min(260px, 100%); border: 1px solid #cdbfa7; border-radius: 12px; background: #ececeb; }
+      .chat-image { display: block; max-width: min(260px, 100%); border: 1px solid #f45f77; border-radius: 12px; background: #ececeb; }
       .activity-row time { flex: 0 0 auto; margin-left: auto; padding-left: 8px; color: #808080; font-size: 12px; white-space: nowrap; }
       .mention { color: #f45f77; }
       @media (max-width: 720px) { .shell { width: calc(100vw - 24px); margin: 16px auto; } .panel, .chat { padding: 18px; } .activity-row { flex-direction: column; } .activity-row time { margin-left: 0; padding-left: 0; } }
@@ -2004,16 +2004,16 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         gap: 8px;
         align-content: start;
         padding: 12px;
-        border: 1px solid #cdbfa7;
+        border: 1px solid #f45f77;
         border-radius: 12px;
-        background: #fbfffe;
+        background: #fff5f7;
       }
       .offering-image-thumb {
         position: relative;
         display: block;
         width: 100%;
         aspect-ratio: 1;
-        border: 1px solid #cdbfa7;
+        border: 1px solid #f45f77;
         border-radius: 10px;
         background: #ececeb;
         cursor: pointer;

@@ -10,12 +10,16 @@
   <body>
     <div class="frame">
       <header class="topbar">
+        <button class="sidebar-toggle" type="button" aria-controls="site-sidebar" aria-expanded="true" aria-label="Close navigation" data-sidebar-toggle>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+        </button>
         <h1 class="page-heading">Crazyland</h1>
         <a class="login-button" href="/login">Login</a>
       </header>
 
       <main class="layout">
-        <aside class="sidebar">
+        <div class="sidebar-shell">
+        <aside class="sidebar" id="site-sidebar">
           <nav class="sidebar-nav" aria-label="Sections">
             <button class="sidebar-link sidebar-link-active" type="button" data-view-target="posts">Posts</button>
             <button class="sidebar-link" type="button" data-view-target="comics">Comics</button>
@@ -31,6 +35,7 @@
             <a class="discord-widget-join" data-discord-widget-join href="https://discord.com/channels/950028939890413578" target="_blank" rel="noopener noreferrer">Join Discord</a>
           </section>
         </aside>
+        </div>
 
         <section class="content">
           <section class="content-view content-view-active" data-view="posts">
