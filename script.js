@@ -1,3 +1,27 @@
+const sidebarToggle = document.querySelector('[data-sidebar-toggle]');
+const siteSidebar = document.querySelector('#site-sidebar');
+const siteLayout = document.querySelector('.layout');
+
+if (sidebarToggle && siteSidebar && siteLayout) {
+  function setSidebarOpen(isOpen) {
+    siteSidebar.inert = !isOpen;
+    siteLayout.classList.toggle('sidebar-collapsed', !isOpen);
+    sidebarToggle.setAttribute('aria-expanded', String(isOpen));
+    sidebarToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+  }
+
+  sidebarToggle.addEventListener('click', () => {
+    setSidebarOpen(siteSidebar.inert);
+  });
+
+  siteSidebar.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      setSidebarOpen(false);
+      sidebarToggle.focus();
+    }
+  });
+}
+
 const navButtons = document.querySelectorAll('[data-view-target]');
 const contentViews = document.querySelectorAll('[data-view]');
 const postsGallery = document.querySelector('[data-posts-gallery]');
