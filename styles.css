@@ -2377,6 +2377,10 @@ button {
 }
 .narrator-page h3 { margin: 0 0 12px; font-size: 1.25rem; font-weight: 400; }
 .narrator-page p { margin: 0 0 16px; }
+[data-view="narrator"] strong,
+[data-view="narrator"] b {
+  color: #f45f77;
+}
 .narrator-link {
   display: inline-flex;
   align-items: center;
@@ -2389,6 +2393,13 @@ button {
 .narrator-link:hover { background: #fff0f3; color: #a82d43; }
 .narrator-link:focus-visible { outline: 2px solid #f45f77; outline-offset: 3px; }
 .narrator-invite { margin-left: auto; min-height: 29px; padding: 4px 12px; white-space: nowrap; background: #fff0f3; color: #a82d43; }
+.narrator-support { min-height: 29px; padding: 4px 12px; white-space: nowrap; }
+[data-view="narrator"] .view-grid { grid-template-rows: auto minmax(0, 1fr); }
+[data-view="narrator"] .content-toolbar { height: auto; min-height: 29px; flex-wrap: wrap; gap: 8px 16px; }
+@media (max-width: 600px) {
+  [data-view="narrator"] .section-title { flex-basis: 100%; }
+  .narrator-invite { margin-left: 0; }
+}
 .narrator-section { margin-top: 28px; }
 .narrator-tutorial { margin: 0 0 16px; }
 .narrator-tutorial-link { display: block; max-width: 800px; border-radius: 12px; cursor: zoom-in; }
@@ -2402,24 +2413,24 @@ button {
   border-radius: 12px;
 }
 .narrator-tutorial figcaption { margin-top: 10px; font-size: .9rem; }
-.narrator-features, .narrator-commands { margin: 0; }
+.narrator-features { margin: 0; }
 .narrator-features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 .narrator-features dt { margin-bottom: 6px; color: #a82d43; }
 .narrator-page dd { margin: 0; }
-.narrator-commands > div {
-  display: grid;
-  grid-template-columns: minmax(160px, 1fr) 2fr;
-  gap: 16px;
-  padding: 12px 0;
+.narrator-steps { margin: 0; padding-left: 28px; }
+.narrator-steps > li {
+  padding: 16px 0 16px 8px;
   border-bottom: 1px solid #f45f77;
 }
-.narrator-page code { overflow-wrap: anywhere; font-size: .9em; }
+.narrator-steps > li::marker { color: #a82d43; }
+.narrator-steps h4 { margin: 0 0 10px; font-size: 1.05rem; font-weight: 400; }
+.narrator-steps p:last-child { margin-bottom: 0; }
+.narrator-page code { overflow-wrap: anywhere; font-size: .9em; color: #f45f77; }
 @media (max-width: 900px) {
   .narrator-page { padding: 0 0 24px; }
 }
 @media (max-width: 600px) {
-  .narrator-features, .narrator-commands > div { grid-template-columns: 1fr; }
-  .narrator-commands > div { gap: 4px; }
+  .narrator-features { grid-template-columns: 1fr; }
 }
 /* Keep the outer frame inside short screens; only its contents scroll. */
 @media (max-width: 900px), (max-height: 650px) {

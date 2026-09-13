@@ -79,6 +79,7 @@
               <div class="content-toolbar">
                 <h2 class="section-title" id="narrator-title">Narrator Bot</h2>
                 <a class="narrator-link narrator-invite" href="https://discord.com/oauth2/authorize?client_id=1472909892799959141" target="_blank" rel="noopener noreferrer">Invite bot</a>
+                <a class="narrator-link narrator-support" href="https://discord.gg/sjw9XSNP8B" target="_blank" rel="noopener noreferrer">Support Discord</a>
               </div>
               <div class="view-body narrator-page">
                 <section class="narrator-section" aria-labelledby="narrator-features">
@@ -91,17 +92,39 @@
                   </dl>
                 </section>
                 <section class="narrator-section" aria-labelledby="narrator-commands">
-                  <h3 id="narrator-commands">Command guide</h3>
-                  <p>In a server with Narrator, start by choosing a character, then use <code>/say</code> to speak as them.</p>
-                  <dl class="narrator-commands">
-                    <div><dt><code>/character pick</code></dt><dd>Choose your character.</dd></div>
-                    <div><dt><code>/character profile</code></dt><dd>View a character's profile and visual card.</dd></div>
-                    <div><dt><code>/say</code></dt><dd>Send a message as your selected character.</dd></div>
-                    <div><dt><code>/wallet</code></dt><dd>Check your points.</dd></div>
-                    <div><dt><code>/shop</code></dt><dd>Browse upgrades and role items.</dd></div>
-                    <div><dt><code>/leaderboard</code></dt><dd>Check the rankings.</dd></div>
-                    <div><dt><code>/setup panel</code></dt><dd>Configure Narrator for your server (admins).</dd></div>
-                  </dl>
+                  <h3 id="narrator-commands">Getting started</h3>
+                  <p>Follow Narrator's six-step guide below, or run <code>/tutorial</code> in Discord to follow along with the bot.</p>
+                  <ol class="narrator-steps">
+                    <li>
+                      <h4>Create your first character</h4>
+                      <p>Run <code>/character create-and-assign</code> and fill in at least <code>id</code> and <code>name</code>. Your new character is assigned to you immediately.</p>
+                      <p>Use <code>/character list</code> to confirm the assignment, or <code>/lookup character:&lt;id&gt;</code> to check who owns a character.</p>
+                    </li>
+                    <li>
+                      <h4>Pick the character you want to speak as</h4>
+                      <p>Run <code>/character pick character:&lt;id&gt;</code>. You can switch characters anytime by running <code>/character pick</code> again.</p>
+                      <p>Not sure who owns a character? Use <code>/lookup</code>.</p>
+                    </li>
+                    <li>
+                      <h4>Start roleplaying with /say</h4>
+                      <p>Run <code>/say message:&lt;text&gt;</code> to speak as your picked character. You can also add <code>image</code>, <code>reply_to</code>, and <code>ping</code> options. Pings are on by default.</p>
+                      <p>Fix a typo with <code>/say-edit message_id:&lt;id&gt; message:&lt;text&gt;</code>. You earn points through normal chat and <code>/say</code>.</p>
+                    </li>
+                    <li>
+                      <h4>Use wallets and upgrades</h4>
+                      <p>Check user and character balances with <code>/wallet</code>. Visit <code>/shop</code> for slot and character upgrades, and track your progress with <code>/points</code> and <code>/leaderboard</code>.</p>
+                    </li>
+                    <li>
+                      <h4>View and customize your character</h4>
+                      <p>Use <code>/character profile</code> to view your card. Open <code>/character edit</code> to change your biography, personality, backstory, card style, accent color, or selected title.</p>
+                      <p>Premium users can also set a custom card background image.</p>
+                    </li>
+                    <li>
+                      <h4>Inventory, items, and titles</h4>
+                      <p>Use <code>/inventory</code> to check items and carry weight, <code>/use-item</code> to consume an item, <code>/gift-item</code> to give one away, and <code>/trade propose</code> to start a trade.</p>
+                      <p>Buy titles in <code>/shop</code> and select them through <code>/character edit</code>. Titles belong to your user, so you can use a purchased title on any of your characters.</p>
+                    </li>
+                  </ol>
                 </section>
                 <section class="narrator-section" aria-labelledby="narrator-image-tutorial">
                   <h3 id="narrator-image-tutorial">How to get an image URL from Discord</h3>
