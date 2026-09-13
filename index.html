@@ -24,16 +24,8 @@
             <button class="sidebar-link sidebar-link-active" type="button" data-view-target="posts">Posts</button>
             <button class="sidebar-link" type="button" data-view-target="comics">Comics</button>
             <button class="sidebar-link" type="button" data-view-target="commissions">Commissions</button>
+            <button class="sidebar-link" type="button" data-view-target="narrator">Narrator Bot</button>
           </nav>
-          <section class="discord-widget" data-discord-widget aria-labelledby="discord-widget-title">
-            <div class="discord-widget-heading">
-              <span class="discord-widget-mark" aria-hidden="true">✦</span>
-              <h2 id="discord-widget-title">Crazyland Discord</h2>
-            </div>
-            <p class="discord-widget-status" data-discord-widget-status>Loading server...</p>
-            <div class="discord-widget-members" data-discord-widget-members aria-label="Online members"></div>
-            <a class="discord-widget-join" data-discord-widget-join href="https://discord.com/channels/950028939890413578" target="_blank" rel="noopener noreferrer">Join Discord</a>
-          </section>
         </aside>
         </div>
 
@@ -80,6 +72,48 @@
                 </div>
               </div>
               <button class="commission-next-button" type="button" data-commission-next disabled>Next</button>
+            </div>
+          </section>
+          <section class="content-view" data-view="narrator" aria-labelledby="narrator-title">
+            <div class="view-grid">
+              <div class="content-toolbar">
+                <h2 class="section-title" id="narrator-title">Narrator Bot</h2>
+                <a class="narrator-link narrator-invite" href="https://discord.com/oauth2/authorize?client_id=1472909892799959141" target="_blank" rel="noopener noreferrer">Invite bot</a>
+              </div>
+              <div class="view-body narrator-page">
+                <section class="narrator-section" aria-labelledby="narrator-features">
+                  <h3 id="narrator-features">What Narrator can do</h3>
+                  <dl class="narrator-features">
+                    <div><dt>Character profiles</dt><dd>Keep character identities, biographies, and profile cards together, with ownership and character selection.</dd></div>
+                    <div><dt>Speak in character</dt><dd>Use <code>/say</code> to send a message as your selected character, with an optional image or reply.</dd></div>
+                    <div><dt>Points &amp; progression</dt><dd>User and character wallets, levels, leaderboards, shop upgrades, and role shop items.</dd></div>
+                    <div><dt>Server controls</dt><dd>An admin setup panel, logging, and separately configurable user and character level-up alerts.</dd></div>
+                  </dl>
+                </section>
+                <section class="narrator-section" aria-labelledby="narrator-commands">
+                  <h3 id="narrator-commands">Command guide</h3>
+                  <p>In a server with Narrator, start by choosing a character, then use <code>/say</code> to speak as them.</p>
+                  <dl class="narrator-commands">
+                    <div><dt><code>/character pick</code></dt><dd>Choose your character.</dd></div>
+                    <div><dt><code>/character profile</code></dt><dd>View a character's profile and visual card.</dd></div>
+                    <div><dt><code>/say</code></dt><dd>Send a message as your selected character.</dd></div>
+                    <div><dt><code>/wallet</code></dt><dd>Check your points.</dd></div>
+                    <div><dt><code>/shop</code></dt><dd>Browse upgrades and role items.</dd></div>
+                    <div><dt><code>/leaderboard</code></dt><dd>Check the rankings.</dd></div>
+                    <div><dt><code>/setup panel</code></dt><dd>Configure Narrator for your server (admins).</dd></div>
+                  </dl>
+                </section>
+                <section class="narrator-section" aria-labelledby="narrator-image-tutorial">
+                  <h3 id="narrator-image-tutorial">How to get an image URL from Discord</h3>
+                  <p>Need a profile picture or an image for another field? This tutorial shows how to copy an image's URL from Discord and use it in Narrator.</p>
+                  <figure class="narrator-tutorial">
+                    <a class="narrator-tutorial-link" href="assets/narrator-discord-image-url.gif" target="_blank" rel="noopener noreferrer" aria-label="Open image URL tutorial at full size in a new tab">
+                      <img src="assets/narrator-discord-image-url.gif" width="800" height="450" loading="lazy" alt="Animated tutorial demonstrating how to get a Discord image URL and use it when editing a Narrator character." />
+                    </a>
+                    <figcaption>Copy the image link, then paste it into the image URL field you want to update.</figcaption>
+                  </figure>
+                </section>
+              </div>
             </div>
           </section>
         </section>

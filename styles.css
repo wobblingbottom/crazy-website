@@ -8,11 +8,12 @@
 
 html,
 body {
-  min-height: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 html {
-  overflow-y: scroll;
+  overflow: hidden;
 }
 
 body {
@@ -79,8 +80,11 @@ button {
 
 .frame {
   width: min(1260px, calc(100vw - 70px));
-  min-height: 625px;
+  height: calc(100dvh - 108px);
+  min-height: 0;
   margin: 54px auto;
+  display: flex;
+  flex-direction: column;
   background: #ffffff;
   border: 0;
   border-radius: 10px;
@@ -89,6 +93,7 @@ button {
 
 .topbar {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
   padding: 10px 28px 10px 28px;
@@ -204,7 +209,9 @@ button {
 .layout {
   display: grid;
   grid-template-columns: 223px minmax(0, 1fr);
-  min-height: 575px;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
   transition: grid-template-columns 280ms ease;
 }
 
@@ -259,7 +266,7 @@ button {
 .content {
   position: relative;
   padding: 14px 22px 28px 22px;
-  min-height: 575px;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -809,99 +816,6 @@ button {
   margin: 0 auto;
   user-select: none;
   -webkit-user-drag: none;
-}
-
-.discord-widget {
-  width: 100%;
-  margin-top: auto;
-  border: 1px solid #f45f77;
-  border-radius: 12px;
-  background: #fff5f7;
-  padding: 12px;
-}
-
-.discord-widget-heading {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.discord-widget-heading h2 {
-  margin: 0;
-  color: #000000;
-  font-size: 0.875rem;
-  font-weight: 400;
-}
-
-.discord-widget-mark {
-  display: grid;
-  width: 21px;
-  height: 21px;
-  border-radius: 7px;
-  place-items: center;
-  background: #bdb3ab;
-  color: #000000;
-  font-size: 0.7rem;
-}
-
-.discord-widget-status {
-  margin: 8px 0;
-  color: #5d5047;
-  font-size: 0.75rem;
-}
-
-.discord-widget-members {
-  display: flex;
-  min-height: 26px;
-  align-items: center;
-}
-
-.discord-widget-avatar,
-.discord-widget-more {
-  width: 26px;
-  height: 26px;
-  border: 2px solid #fff5f7;
-  border-radius: 999px;
-  background: #bdb3ab;
-}
-
-.discord-widget-avatar + .discord-widget-avatar,
-.discord-widget-more {
-  margin-left: -7px;
-}
-
-.discord-widget-avatar {
-  object-fit: cover;
-}
-
-.discord-widget-more {
-  display: grid;
-  place-items: center;
-  color: #ffffff;
-  font-size: 0.625rem;
-}
-
-.discord-widget-join {
-  display: flex;
-  min-height: 30px;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-  border: 1px solid #f45f77;
-  border-radius: 7px;
-  background: #fff5f7;
-  color: #000000;
-  font-size: 0.75rem;
-}
-
-.discord-widget-join:hover,
-.discord-widget-join:focus-visible {
-  background: #bdb3ab;
-}
-
-.discord-widget-join:focus-visible {
-  outline: 1px solid #f45f77;
-  outline-offset: 2px;
 }
 
 .comic-reader-header {
@@ -1946,6 +1860,7 @@ button {
 @media (max-width: 900px) {
   .layout {
     grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
   }
 
   .sidebar {
@@ -1963,13 +1878,13 @@ button {
   }
 
   .content {
-    min-height: auto;
-    overflow: visible;
+    min-height: 0;
+    overflow: hidden;
   }
 
   .content-view {
-    position: static;
-    inset: auto;
+    position: absolute;
+    inset: 14px 22px 28px;
     display: none;
     visibility: visible;
     pointer-events: auto;
@@ -1980,13 +1895,14 @@ button {
   }
 
   .view-grid {
-    display: block;
-    height: auto;
+    display: grid;
+    height: 100%;
   }
 
   .view-body {
-    overflow: visible;
-    padding-bottom: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-bottom: 46px;
   }
 
   .gallery {
@@ -2454,4 +2370,62 @@ button {
   .layout, .sidebar-shell, .sidebar-shell .sidebar {
     transition: none;
   }
+}
+.narrator-page {
+  padding: var(--content-top) var(--content-left) 32px;
+  line-height: 1.55;
+}
+.narrator-page h3 { margin: 0 0 12px; font-size: 1.25rem; font-weight: 400; }
+.narrator-page p { margin: 0 0 16px; }
+.narrator-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid #f45f77;
+  border-radius: 7px;
+  background: #ffffff;
+}
+.narrator-link:hover { background: #fff0f3; color: #a82d43; }
+.narrator-link:focus-visible { outline: 2px solid #f45f77; outline-offset: 3px; }
+.narrator-invite { margin-left: auto; min-height: 29px; padding: 4px 12px; white-space: nowrap; background: #fff0f3; color: #a82d43; }
+.narrator-section { margin-top: 28px; }
+.narrator-tutorial { margin: 0 0 16px; }
+.narrator-tutorial-link { display: block; max-width: 800px; border-radius: 12px; cursor: zoom-in; }
+.narrator-tutorial-link:focus-visible { outline: 2px solid #f45f77; outline-offset: 3px; }
+.narrator-tutorial img {
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  border: 1px solid #f45f77;
+  border-radius: 12px;
+}
+.narrator-tutorial figcaption { margin-top: 10px; font-size: .9rem; }
+.narrator-features, .narrator-commands { margin: 0; }
+.narrator-features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.narrator-features dt { margin-bottom: 6px; color: #a82d43; }
+.narrator-page dd { margin: 0; }
+.narrator-commands > div {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) 2fr;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f45f77;
+}
+.narrator-page code { overflow-wrap: anywhere; font-size: .9em; }
+@media (max-width: 900px) {
+  .narrator-page { padding: 0 0 24px; }
+}
+@media (max-width: 600px) {
+  .narrator-features, .narrator-commands > div { grid-template-columns: 1fr; }
+  .narrator-commands > div { gap: 4px; }
+}
+/* Keep the outer frame inside short screens; only its contents scroll. */
+@media (max-width: 900px), (max-height: 650px) {
+  .frame { height: calc(100dvh - 32px); margin-block: 16px; }
+}
+.sidebar-shell .sidebar { overflow-y: auto; scrollbar-width: thin; scrollbar-color: #f45f77 transparent; }
+@media (max-width: 900px) {
+  .sidebar-shell { max-height: 35dvh; }
 }
