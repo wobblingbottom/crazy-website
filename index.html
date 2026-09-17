@@ -10,16 +10,16 @@
   <body>
     <div class="frame">
       <header class="topbar">
-        <button class="sidebar-toggle" type="button" aria-controls="site-sidebar" aria-expanded="true" aria-label="Close navigation" data-sidebar-toggle>
+        <button class="sidebar-toggle" type="button" aria-controls="site-sidebar" aria-expanded="false" aria-label="Open navigation" data-sidebar-toggle>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
         </button>
         <h1 class="page-heading">Crazyland</h1>
         <a class="login-button" href="/login">Login</a>
       </header>
 
-      <main class="layout">
+      <main class="layout sidebar-collapsed">
         <div class="sidebar-shell">
-        <aside class="sidebar" id="site-sidebar">
+        <aside class="sidebar" id="site-sidebar" inert>
           <nav class="sidebar-nav" aria-label="Sections">
             <button class="sidebar-link sidebar-link-active" type="button" data-view-target="posts">Posts</button>
             <button class="sidebar-link" type="button" data-view-target="comics">Comics</button>

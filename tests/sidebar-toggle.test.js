@@ -5,6 +5,13 @@ const vm = require('node:vm');
 
 const source = readFileSync(require.resolve('../script.js'), 'utf8').split('const navButtons =')[0];
 
+test('sidebar is closed by default in the page markup', () => {
+  const html = readFileSync(require.resolve('../index.html'), 'utf8');
+  assert.match(html, /<main class="layout sidebar-collapsed">/);
+  assert.match(html, /<aside class="sidebar" id="site-sidebar" inert>/);
+  assert.match(html, /aria-expanded="false" aria-label="Open navigation"/);
+});
+
 function setup() {
   const events = {};
   const attributes = {};

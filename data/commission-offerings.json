@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "id": "test-commission-portrait",
+    "title": "[Test] Character Portrait",
+    "description": "A sample portrait commission for testing pricing, selection, and the request form.",
+    "estimatePrice": "From €35",
+    "notes": "Sample listing only — no real order will be fulfilled.",
+    "exampleImageUrl": "/assets/favicon.png",
+    "exampleImageUrls": [
+      "/assets/favicon.png",
+      "/assets/crazyland-watermark.png"
+    ],
+    "status": "open",
+    "createdAt": "2026-09-16T12:10:00.000Z",
+    "updatedAt": "2026-09-16T12:10:00.000Z"
+  },
+  {
+    "id": "test-commission-scene",
+    "title": "[Test] Full Scene",
+    "description": "A sample full-scene commission for checking longer descriptions and card spacing.",
+    "estimatePrice": "From €90",
+    "notes": "Sample listing only — final pricing normally depends on complexity.",
+    "exampleImageUrl": "/assets/comic-reader-top.jpg",
+    "exampleImageUrls": [
+      "/assets/comic-reader-top.jpg",
+      "/assets/comic-reader-bottom.jpg"
+    ],
+    "status": "open",
+    "createdAt": "2026-09-16T12:15:00.000Z",
+    "updatedAt": "2026-09-16T12:15:00.000Z"
+  }
+]

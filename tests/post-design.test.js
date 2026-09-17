@@ -1,0 +1,87 @@
+const assert = require('node:assert/strict');
+const { readFileSync } = require('node:fs');
+const { test } = require('node:test');
+
+test('post cards render without decorative borders', () => {
+  const script = readFileSync(require.resolve('../script.js'), 'utf8');
+  const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
+
+  assert.doesNotMatch(script, /post-frame/);
+  assert.doesNotMatch(styles, /\.post-frame/);
+  assert.match(styles, /\.post-card\s*\{[^}]*border:\s*0;/s);
+});
+
+test('rectangular controls and surfaces use minimally rounded corners', () => {
+  const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
+  const nonCircularRadii = [...styles.matchAll(/border-radius:\s*([^;]+);/g)]
+    .map(([, radius]) => radius.trim())
+    .filter((radius) => radius !== '0' && radius !== '2px' && radius !== '999px' && radius !== 'inherit');
+
+  assert.deepEqual(nonCircularRadii, []);
+});
+
+test('commission information panel displays the page background', () => {
+  const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
+
+  assert.match(styles, /body\s*\{[^}]*background:\s*var\(--page-background\);/s);
+  assert.match(styles, /\.commission-policy\s*\{[^}]*linear-gradient\(rgba\(255, 255, 255, 0\.72\)[^}]*var\(--page-background\);[^}]*background-attachment:\s*fixed, fixed;/s);
+  assert.match(styles, /\.commission-policy\s*\{[^}]*color:\s*#f45f77;/s);
+  assert.match(styles, /\.commission-policy-tos\s*\{[^}]*color:\s*#f45f77;/s);
+  const policyStyles = styles.match(/\.commission-policy\s*\{([^}]*)\}/s)?.[1] || '';
+  assert.doesNotMatch(policyStyles, /(?:box|text)-shadow/);
+});
+
+test('commission offering cards match the information panel without a glow', () => {
+  const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
+
+  assert.match(styles, /\.commission-type-copy\s*\{[^}]*var\(--page-background\);[^}]*color:\s*#f45f77;/s);
+  assert.match(styles, /\.commission-type-card-selected\s*\{[^}]*box-shadow:\s*none;[^}]*transform:\s*none;/s);
+  const offeringStyles = styles.match(/\.commission-type-copy\s*\{([^}]*)\}/s)?.[1] || '';
+  assert.doesNotMatch(offeringStyles, /(?:box|text)-shadow/);
+});
+
+test('comic information boxes use the flat page-background treatment', () => {
+  const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
+  const comicStyles = styles.match(/\.comic-copy\s*\{([^}]*)\}/s)?.[1] || '';
+
+  assert.match(comicStyles, /var\(--page-background\)/);
+  assert.match(comicStyles, /color:\s*#f45f77/);
+  assert.match(comicStyles, /box-shadow:\s*none/);
+  assert.doesNotMatch(comicStyles, /text-shadow/);
+  assert.match(comicStyles, /height:\s*var\(--commission-card-height\)/);
+  assert.match(comicStyles, /padding:\s*8px 16px/);
+  assert.match(styles, /\.comic-image\s*\{[^}]*height:\s*var\(--commission-card-height\)/s);
+  assert.match(styles, /\.comic-text\s*\{[^}]*-webkit-line-clamp:\s*2;/s);
+});
+
+test('commission form fields match the flat information-box treatment', () => {
+  const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
+  const fieldStyles = styles.match(/\.commission-form input,\s*\.commission-form textarea\s*\{([^}]*)\}/s)?.[1] || '';
+
+  assert.match(fieldStyles, /var\(--page-background\)/);
+  assert.match(fieldStyles, /color:\s*#f45f77/);
+  assert.match(fieldStyles, /font-family:\s*"Rayman"/);
+  assert.match(fieldStyles, /font-synthesis:\s*none/);
+  assert.match(fieldStyles, /font-weight:\s*400/);
+  assert.doesNotMatch(fieldStyles, /(?:box|text)-shadow/);
+  assert.match(styles, /\.commission-form input\[type="file"\]::file-selector-button\s*\{[^}]*color:\s*#f45f77/s);
+  assert.match(styles, /\.commission-form input:focus,\s*\.commission-form textarea:focus\s*\{[^}]*border-color:\s*#1b1b1b;[^}]*color:\s*#1b1b1b;/s);
+});
+
+test('Rayman font is available for commission form fields', () => {
+  const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
+
+  assert.match(styles, /@font-face\s*\{[^}]*font-family:\s*"Rayman";[^}]*fonts\/rayman3\.ttf/s);
+});
+
+test('JMH Typewriter is the primary font for body copy and headings', () => {
+  const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
+
+  assert.match(styles, /@font-face\s*\{[^}]*font-family:\s*"JMH Typewriter";[^}]*fonts\/jmh-typewriter\.otf/s);
+  assert.match(styles, /body\s*\{[^}]*font-family:\s*"JMH Typewriter"/s);
+  assert.match(styles, /body\s*\{[^}]*font-size:\s*1rem;[^}]*line-height:\s*1\.6;[^}]*letter-spacing:\s*0\.01em;/s);
+  assert.match(styles, /:root\s*\{[^}]*font-size:\s*16px;/s);
+  assert.match(styles, /\.modal-episode p,[\s\S]*\.commission-type-description\s*\{\s*font-size:\s*0\.875rem;\s*line-height:\s*1\.5;\s*letter-spacing:\s*0\.02em;/);
+  assert.match(styles, /\.narrator-page,\s*\.narrator-page code\s*\{\s*letter-spacing:\s*0\.01em;/);
+  assert.match(styles, /\.narrator-page\s*\{[^}]*line-height:\s*1\.55;/s);
+});
