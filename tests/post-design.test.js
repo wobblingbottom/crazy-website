@@ -68,6 +68,14 @@ test('commission form fields match the flat information-box treatment', () => {
   assert.match(styles, /\.commission-form input:focus,\s*\.commission-form textarea:focus\s*\{[^}]*border-color:\s*#1b1b1b;[^}]*color:\s*#1b1b1b;/s);
 });
 
+test('commission preview images remain intact on small screens', () => {
+  const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
+
+  assert.match(styles, /@media \(max-width: 900px\)[\s\S]*?\.commission-type-card\s*\{[^}]*height:\s*auto;[^}]*min-height:\s*0;/s);
+  assert.match(styles, /@media \(max-width: 900px\)[\s\S]*?\.commission-type-image\s*\{[^}]*aspect-ratio:\s*16 \/ 9;/s);
+  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.commission-type-image\s*\{[^}]*grid-column:\s*1;[^}]*grid-row:\s*1;/s);
+});
+
 test('Rayman font is available for commission form fields', () => {
   const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
 
