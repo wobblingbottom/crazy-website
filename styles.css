@@ -2522,3 +2522,54 @@ button {
 @media (max-width: 900px) {
   .sidebar-shell { max-height: 35dvh; }
 }
+
+/* Keep commission previews readable instead of squeezing them into a fixed square. */
+@media (max-width: 900px) {
+  .commission-type-card {
+    grid-template-columns: minmax(0, 1fr) clamp(130px, 28vw, 220px);
+    grid-template-rows: auto auto auto;
+    height: auto;
+    min-height: 0;
+  }
+
+  .commission-type-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .commission-type-image img {
+    object-fit: contain;
+  }
+}
+
+@media (max-width: 600px) {
+  .commission-type-card {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto;
+  }
+
+  .commission-type-image {
+    grid-column: 1;
+    grid-row: 1;
+    max-width: none;
+  }
+
+  .commission-type-heading {
+    grid-column: 1;
+    grid-row: 2;
+    margin-top: 14px;
+  }
+
+  .commission-price {
+    grid-column: 1;
+    grid-row: 3;
+    margin-top: 8px;
+  }
+
+  .commission-type-description-title,
+  .commission-type-description {
+    grid-column: 1;
+    grid-row: 4;
+  }
+}
