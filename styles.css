@@ -2525,15 +2525,18 @@ button {
 
 /* Keep commission previews readable instead of squeezing them into a fixed square. */
 @media (max-width: 900px) {
-  .commission-policy,
-  .commission-types {
+  .commission-policy {
     width: calc(100% - 40px);
     margin-right: auto;
     margin-left: auto;
+    margin-bottom: 20px;
   }
 
-  .commission-policy {
-    margin-bottom: 20px;
+  .commission-types {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+    padding: 0 20px 70px;
   }
 
   .commission-type-card {
@@ -2555,9 +2558,14 @@ button {
 }
 
 @media (max-width: 600px) {
-  .commission-policy,
-  .commission-types {
+  .commission-policy {
     width: calc(100% - 24px);
+  }
+
+  .commission-types {
+    width: 100%;
+    padding-right: 12px;
+    padding-left: 12px;
   }
 
   .commission-type-card {
