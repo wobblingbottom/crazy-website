@@ -2509,20 +2509,6 @@ button {
 
 /* Keep commission previews readable instead of squeezing them into a fixed square. */
 @media (max-width: 900px) {
-  .commission-policy {
-    width: calc(100% - 40px);
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: 20px;
-  }
-
-  .commission-types {
-    width: 100%;
-    margin-right: 0;
-    margin-left: 0;
-    padding: 0 20px 70px;
-  }
-
   .commission-type-card {
     grid-template-columns: minmax(0, 1fr) clamp(130px, 28vw, 220px);
     grid-template-rows: auto auto auto;
@@ -2542,33 +2528,9 @@ button {
 }
 
 @media (max-width: 600px) {
-  .content-view[data-view="commissions"] {
-    right: 0;
-    left: 0;
-  }
-
-  .content-view[data-view="commissions"] .content-toolbar {
-    margin-right: 24px;
-    margin-left: 24px;
-  }
-
-  .content-view[data-view="commissions"] .view-body {
-    width: 100%;
-  }
-
-  .commission-policy {
-    width: auto;
-    margin-right: 24px;
-    margin-left: 24px;
-  }
-
   .commission-types {
     width: auto;
     min-width: 0;
-    margin-right: 24px;
-    margin-left: 24px;
-    padding-right: 0;
-    padding-left: 0;
   }
 
   .commission-type-card {
