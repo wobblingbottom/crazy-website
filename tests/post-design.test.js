@@ -60,7 +60,7 @@ test('commission form fields match the flat information-box treatment', () => {
 
   assert.match(fieldStyles, /var\(--page-background\)/);
   assert.match(fieldStyles, /color:\s*#f45f77/);
-  assert.match(fieldStyles, /font-family:\s*"Rayman"/);
+  assert.match(fieldStyles, /font-family:\s*inherit/);
   assert.match(fieldStyles, /font-synthesis:\s*none/);
   assert.match(fieldStyles, /font-weight:\s*400/);
   assert.doesNotMatch(fieldStyles, /(?:box|text)-shadow/);
@@ -84,17 +84,11 @@ test('commission content stays centered with white space on small screens', () =
   assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.commission-types\s*\{[^}]*width:\s*100%;[^}]*padding-right:\s*12px;[^}]*padding-left:\s*12px;/s);
 });
 
-test('Rayman font is available for commission form fields', () => {
+test('a readable system font is used consistently across the site', () => {
   const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
 
-  assert.match(styles, /@font-face\s*\{[^}]*font-family:\s*"Rayman";[^}]*fonts\/rayman3\.ttf/s);
-});
-
-test('JMH Typewriter is the primary font for body copy and headings', () => {
-  const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
-
-  assert.match(styles, /@font-face\s*\{[^}]*font-family:\s*"JMH Typewriter";[^}]*fonts\/jmh-typewriter\.otf/s);
-  assert.match(styles, /body\s*\{[^}]*font-family:\s*"JMH Typewriter"/s);
+  assert.match(styles, /body\s*\{[^}]*font-family:\s*system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;/s);
+  assert.doesNotMatch(styles, /font-family:\s*"(?:JMH Typewriter|Rayman)"/);
   assert.match(styles, /body\s*\{[^}]*font-size:\s*1rem;[^}]*line-height:\s*1\.6;[^}]*letter-spacing:\s*0\.01em;/s);
   assert.match(styles, /:root\s*\{[^}]*font-size:\s*16px;/s);
   assert.match(styles, /\.modal-episode p,[\s\S]*\.commission-type-description\s*\{\s*font-size:\s*0\.875rem;\s*line-height:\s*1\.5;\s*letter-spacing:\s*0\.02em;/);
