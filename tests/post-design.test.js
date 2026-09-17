@@ -81,7 +81,7 @@ test('commission content stays centered with white space on small screens', () =
 
   assert.match(styles, /@media \(max-width: 900px\)[\s\S]*?\.commission-policy\s*\{[^}]*width:\s*calc\(100% - 40px\);[^}]*margin-right:\s*auto;[^}]*margin-left:\s*auto;/s);
   assert.match(styles, /@media \(max-width: 900px\)[\s\S]*?\.commission-types\s*\{[^}]*width:\s*100%;[^}]*margin-right:\s*0;[^}]*margin-left:\s*0;[^}]*padding:\s*0 20px 70px;/s);
-  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.content-view\[data-view="commissions"\]\s*\{[^}]*right:\s*24px;[^}]*left:\s*0;/s);
+  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.content-view\[data-view="commissions"\]\s*\{[^}]*right:\s*48px;[^}]*left:\s*0;/s);
   assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.commission-policy\s*\{[^}]*width:\s*auto;[^}]*margin-right:\s*24px;[^}]*margin-left:\s*24px;/s);
   assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.commission-types\s*\{[^}]*width:\s*auto;[^}]*margin-right:\s*24px;[^}]*margin-left:\s*24px;[^}]*padding-right:\s*0;[^}]*padding-left:\s*0;/s);
 });
