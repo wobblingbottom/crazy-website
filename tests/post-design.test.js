@@ -79,8 +79,9 @@ test('commission preview images remain intact on small screens', () => {
 test('commission content stays centered with white space on small screens', () => {
   const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
 
-  assert.match(styles, /@media \(max-width: 900px\)[\s\S]*?\.commission-policy,\s*\.commission-types\s*\{[^}]*width:\s*calc\(100% - 40px\);[^}]*margin-right:\s*auto;[^}]*margin-left:\s*auto;/s);
-  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.commission-policy,\s*\.commission-types\s*\{[^}]*width:\s*calc\(100% - 24px\);/s);
+  assert.match(styles, /@media \(max-width: 900px\)[\s\S]*?\.commission-policy\s*\{[^}]*width:\s*calc\(100% - 40px\);[^}]*margin-right:\s*auto;[^}]*margin-left:\s*auto;/s);
+  assert.match(styles, /@media \(max-width: 900px\)[\s\S]*?\.commission-types\s*\{[^}]*width:\s*100%;[^}]*margin-right:\s*0;[^}]*margin-left:\s*0;[^}]*padding:\s*0 20px 70px;/s);
+  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.commission-types\s*\{[^}]*width:\s*100%;[^}]*padding-right:\s*12px;[^}]*padding-left:\s*12px;/s);
 });
 
 test('Rayman font is available for commission form fields', () => {
