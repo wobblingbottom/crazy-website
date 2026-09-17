@@ -81,7 +81,9 @@ test('commission content stays centered with white space on small screens', () =
 
   assert.match(styles, /@media \(max-width: 900px\)[\s\S]*?\.commission-policy\s*\{[^}]*width:\s*calc\(100% - 40px\);[^}]*margin-right:\s*auto;[^}]*margin-left:\s*auto;/s);
   assert.match(styles, /@media \(max-width: 900px\)[\s\S]*?\.commission-types\s*\{[^}]*width:\s*100%;[^}]*margin-right:\s*0;[^}]*margin-left:\s*0;[^}]*padding:\s*0 20px 70px;/s);
-  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.commission-types\s*\{[^}]*width:\s*100%;[^}]*padding-right:\s*12px;[^}]*padding-left:\s*12px;/s);
+  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.content-view\[data-view="commissions"\]\s*\{[^}]*right:\s*0;[^}]*left:\s*0;/s);
+  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.commission-policy\s*\{[^}]*width:\s*calc\(100% - 48px\);/s);
+  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.commission-types\s*\{[^}]*width:\s*100%;[^}]*padding-right:\s*24px;[^}]*padding-left:\s*24px;/s);
 });
 
 test('a readable system font is used consistently across the site', () => {

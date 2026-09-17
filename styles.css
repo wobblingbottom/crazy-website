@@ -2542,14 +2542,28 @@ button {
 }
 
 @media (max-width: 600px) {
+  .content-view[data-view="commissions"] {
+    right: 0;
+    left: 0;
+  }
+
+  .content-view[data-view="commissions"] .content-toolbar {
+    margin-right: 24px;
+    margin-left: 24px;
+  }
+
+  .content-view[data-view="commissions"] .view-body {
+    width: 100%;
+  }
+
   .commission-policy {
-    width: calc(100% - 24px);
+    width: calc(100% - 48px);
   }
 
   .commission-types {
     width: 100%;
-    padding-right: 12px;
-    padding-left: 12px;
+    padding-right: 24px;
+    padding-left: 24px;
   }
 
   .commission-type-card {
