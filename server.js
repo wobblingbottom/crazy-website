@@ -694,12 +694,24 @@ app.get("/health", (req, res) => {
   });
 });
 
-app.get("/login", ensureConfigured, (req, res) => {
+app.get("/login", ensureConfigured, async (req, res) => {
+  const callbackOrigin = new URL(DISCORD_REDIRECT_URI).origin;
+  if (isProduction && getRequestOrigin(req) !== callbackOrigin) {
+    res.redirect(new URL(req.originalUrl, callbackOrigin).toString());
+    return;
+  }
+
   const state = crypto.randomUUID();
   const returnTo = getSafeReturnPath(req.query.returnTo);
   req.session.oauthState = state;
   req.session.returnTo = returnTo;
-  res.redirect(buildDiscordAuthUrl(state));
+
+  try {
+    await saveSession(req);
+    res.redirect(buildDiscordAuthUrl(state));
+  } catch {
+    res.status(503).send("<h1>Login temporarily unavailable</h1><p>Please try again.</p>");
+  }
 });
 
 app.get("/auth/discord/callback", ensureConfigured, async (req, res) => {

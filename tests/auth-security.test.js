@@ -16,9 +16,17 @@ test('authentication uses persistent sessions and secure response headers', () =
 });
 
 test('OAuth callback rotates and saves the authenticated session', () => {
+  assert.match(server, /app\.get\("\/login", ensureConfigured, async/);
+  assert.match(server, /req\.session\.oauthState = state;[\s\S]*await saveSession\(req\);[\s\S]*res\.redirect\(buildDiscordAuthUrl\(state\)\)/);
   assert.match(server, /await regenerateSession\(req\)/);
   assert.match(server, /await saveSession\(req\)/);
   assert.match(server, /state !== req\.session\.oauthState/);
+});
+
+test('OAuth login starts on the same public origin as its callback', () => {
+  assert.match(server, /const callbackOrigin = new URL\(DISCORD_REDIRECT_URI\)\.origin/);
+  assert.match(server, /isProduction && getRequestOrigin\(req\) !== callbackOrigin/);
+  assert.match(server, /new URL\(req\.originalUrl, callbackOrigin\)/);
 });
 
 test('return paths cannot redirect outside Crazyland', () => {
