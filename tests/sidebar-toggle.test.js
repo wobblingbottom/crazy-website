@@ -64,3 +64,12 @@ test('Escape inside the sidebar closes it and returns keyboard focus to the togg
   assert.equal(state.sidebar.inert, true);
   assert.equal(state.button.focused, true);
 });
+
+test('selecting a navigation view closes the sidebar', () => {
+  const fullScript = readFileSync(require.resolve('../script.js'), 'utf8');
+
+  assert.match(
+    fullScript,
+    /navButtons\.forEach[\s\S]*setActiveView\(viewName\);\s*setSidebarOpen\(false\);/
+  );
+});
