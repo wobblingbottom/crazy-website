@@ -1,4 +1,12 @@
 @font-face {
+  font-family: "JMH Typewriter";
+  src: url("fonts/jmh-typewriter.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Rayman";
   src: url("fonts/rayman3.ttf") format("truetype");
   font-weight: 400;
@@ -18,7 +26,24 @@ html {
 
 body {
   margin: 0;
-  background:
+  background: var(--page-background);
+  color: #1b1b1b;
+  font-family: "JMH Typewriter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --page-background:
     repeating-linear-gradient(
       90deg,
       #e98f9a 0 32px,
@@ -31,25 +56,12 @@ body {
       #c9b2d5 578px 705px,
       #e98f9a 705px 760px
     );
-  color: #1b1b1b;
-  font-family: "Rayman", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body.modal-open {
-  overflow: hidden;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-:root {
   --content-left: 33px;
   --content-top: 18px;
   --placeholder-size: 193px;
   --commission-card-height: 96px;
   --placeholder-gap: 39px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 a {
@@ -58,7 +70,10 @@ a {
 }
 
 button,
-select {
+input,
+select,
+textarea,
+code {
   font: inherit;
 }
 
@@ -87,7 +102,7 @@ button {
   flex-direction: column;
   background: #ffffff;
   border: 0;
-  border-radius: 10px;
+  border-radius: 2px;
   overflow: hidden;
 }
 
@@ -104,8 +119,10 @@ button {
 .page-heading {
   margin: 0;
   color: #000000;
-  font-size: 1.125rem;
+  font-size: 1.5rem;
   font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
 }
 
 .topbar .page-heading {
@@ -121,7 +138,7 @@ button {
   margin-right: 10px;
   padding: 0;
   border: 0;
-  border-radius: 7px;
+  border-radius:2px;
   background: transparent;
   cursor: pointer;
 }
@@ -177,7 +194,7 @@ button {
   min-width: 103px;
   height: 29px;
   border: 1px solid #f45f77;
-  border-radius: 7px;
+  border-radius:2px;
   background: #fff5f7;
   font-size: 1rem;
   cursor: pointer;
@@ -238,7 +255,7 @@ button {
   min-height: 29px;
   padding: 0 10px;
   border: 0;
-  border-radius: 10px;
+  border-radius:2px;
   background: transparent;
   color: #000000;
   font-size: 1rem;
@@ -339,7 +356,8 @@ button {
   color: #000000;
   font-size: 1.375rem;
   font-weight: 400;
-  line-height: 29px;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
 }
 
 .gallery {
@@ -410,7 +428,7 @@ button {
   width: 100%;
   height: 100%;
   background: #e2dad4;
-  border-radius: 8px;
+  border-radius:2px;
   object-fit: contain;
   pointer-events: none;
   transition: transform 220ms cubic-bezier(0.22, 0.75, 0.3, 1);
@@ -425,17 +443,6 @@ button {
   animation: post-image-develop 720ms ease-out both;
 }
 
-.post-frame {
-  position: absolute;
-  inset: -20%;
-  z-index: 1;
-  width: 140%;
-  height: 140%;
-  object-fit: cover;
-  pointer-events: none;
-  transition: transform 220ms cubic-bezier(0.22, 0.75, 0.3, 1);
-}
-
 .post-media .post-image {
   position: absolute;
   inset: 0;
@@ -444,11 +451,6 @@ button {
   height: 100%;
   border-radius: 0;
   object-fit: cover;
-}
-
-.post-card:hover .post-frame,
-.post-card:focus-visible .post-frame {
-  transform: scale(1.025);
 }
 
 @keyframes post-image-develop-overlay {
@@ -604,7 +606,7 @@ button {
   margin: 0;
   background: #fff5f7;
   border: 1px solid #f45f77;
-  border-radius: 16px;
+  border-radius: 2px;
   overflow: hidden;
 }
 
@@ -695,7 +697,7 @@ button {
   min-height: 26px;
   margin-top: 14px;
   border: 1px solid #f45f77;
-  border-radius: 7px;
+  border-radius: 2px;
   background: #f45f77;
   color: #1b1b1b;
   cursor: pointer;
@@ -711,7 +713,7 @@ button {
   align-items: center;
   width: 100%;
   border: 1px solid #f45f77;
-  border-radius: 10px;
+  border-radius: 2px;
   background: #fff5f7;
   color: inherit;
   cursor: pointer;
@@ -730,7 +732,7 @@ button {
   width: 56px;
   height: 56px;
   background: #f0eadf;
-  border-radius: 8px;
+  border-radius: 2px;
   overflow: hidden;
 }
 
@@ -768,7 +770,7 @@ button {
   display: block;
   width: 100%;
   height: 100%;
-  border-radius: 14px;
+  border-radius: 2px;
   object-fit: cover;
 }
 
@@ -805,7 +807,7 @@ button {
   padding: 24px;
   background: #fff5f7;
   border: 1px solid #f45f77;
-  border-radius: 14px;
+  border-radius: 2px;
 }
 
 .comic-reader-header,
@@ -819,7 +821,7 @@ button {
 }
 
 .comic-reader-header {
-  border-radius: 8px 8px 0 0;
+  border-radius: 2px;
 }
 
 .comic-reader-header,
@@ -833,11 +835,11 @@ button {
 }
 
 .comic-reader-panel:last-child {
-  border-radius: 0 0 8px 8px;
+  border-radius: 2px;
 }
 
 .comic-reader-footer {
-  border-radius: 0 0 8px 8px;
+  border-radius: 2px;
 }
 
 .comic-reader-empty {
@@ -852,7 +854,7 @@ button {
   padding: 24px 10px;
   background: #fff5f7;
   border: 1px solid #f45f77;
-  border-radius: 14px;
+  border-radius: 2px;
 }
 
 .feedback-form {
@@ -876,7 +878,7 @@ button {
 .feedback-form textarea {
   width: 100%;
   border: 1px solid #f45f77;
-  border-radius: 10px;
+  border-radius: 2px;
   background: #fff5f7;
   color: #1b1b1b;
   font: inherit;
@@ -929,7 +931,7 @@ button {
   justify-self: start;
   min-height: 30px;
   border: 1px solid #f45f77;
-  border-radius: 7px;
+  border-radius: 2px;
   background: #f45f77;
   cursor: pointer;
   font: inherit;
@@ -1013,7 +1015,7 @@ button {
 .activity-action {
   min-height: 24px;
   border: 1px solid #f45f77;
-  border-radius: 7px;
+  border-radius: 2px;
   background: #f45f77;
   color: #1b1b1b;
   cursor: pointer;
@@ -1059,7 +1061,7 @@ button {
 .comic-image {
   position: relative;
   width: var(--placeholder-size);
-  height: var(--placeholder-size);
+  height: var(--commission-card-height);
   flex: 0 0 var(--placeholder-size);
   overflow: visible;
 }
@@ -1073,26 +1075,39 @@ button {
 
 .comic-copy {
   border: 1px solid #f45f77;
-  border-radius: 10px;
-  background: #ffffff;
-  color: #000000;
-  padding: 14px 22px 14px 22px;
+  border-radius: 2px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.72)),
+    var(--page-background);
+  background-attachment: fixed, fixed;
+  color: #f45f77;
+  box-shadow: none;
+  padding: 8px 16px;
   width: 100%;
-  height: 193px;
+  height: var(--commission-card-height);
+  min-width: 0;
   max-width: none;
   overflow: hidden;
 }
 
 .comic-heading {
-  margin: 0 0 14px;
-  font-size: 1.5rem;
+  margin: 0 0 4px;
+  overflow: hidden;
+  font-size: 1.125rem;
   font-weight: 400;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .comic-text {
+  display: -webkit-box;
   margin: 0;
-  font-size: 0.8125rem;
-  line-height: 1.32;
+  overflow: hidden;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .commission-types {
@@ -1105,10 +1120,13 @@ button {
 
 .commission-policy {
   margin: var(--content-top) var(--content-left) 0;
-  border: 1px solid #f45f77;
-  border-radius: 12px;
-  background: #fff5f7;
-  color: #000000;
+  border: 1px solid #ff7890;
+  border-radius: 2px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.72)),
+    var(--page-background);
+  background-attachment: fixed, fixed;
+  color: #f45f77;
   padding: 14px 18px;
 }
 
@@ -1130,7 +1148,7 @@ button {
 
 .commission-policy-tos {
   margin-top: 8px !important;
-  color: #5d5047;
+  color: #f45f77;
 }
 
 .commission-modal[hidden] {
@@ -1154,7 +1172,7 @@ button {
   margin: 0;
   background: #fff5f7;
   border: 1px solid #f45f77;
-  border-radius: 16px;
+  border-radius: 2px;
   overflow: hidden;
 }
 
@@ -1192,7 +1210,7 @@ button {
   width: 100%;
   min-height: 0;
   flex: 1 1 auto;
-  border-radius: 14px;
+  border-radius: 2px;
 }
 
 .commission-modal-preview[hidden],
@@ -1238,7 +1256,7 @@ button {
   height: 76px;
   flex: 0 0 auto;
   border: 2px solid #f45f77;
-  border-radius: 10px;
+  border-radius: 2px;
   background: #ffffff;
   cursor: pointer;
   overflow: hidden;
@@ -1275,7 +1293,7 @@ button {
   display: block;
   max-width: min(92vw, 760px);
   max-height: 86vh;
-  border-radius: 16px;
+  border-radius: 2px;
   background: #e2dad4;
   object-fit: contain;
 }
@@ -1303,7 +1321,7 @@ button {
 .commission-submit-button {
   min-height: 42px;
   border: 0;
-  border-radius: 12px;
+  border-radius: 2px;
   background: #f45f77;
   color: #ffffff;
   cursor: pointer;
@@ -1363,11 +1381,36 @@ button {
 .commission-form textarea {
   width: 100%;
   border: 1px solid #f45f77;
-  border-radius: 10px;
-  background: #fff5f7;
-  color: #1b1b1b;
-  font: inherit;
+  border-radius: 2px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.72)),
+    var(--page-background);
+  background-attachment: fixed, fixed;
+  color: #f45f77;
+  font-family: "Rayman", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1rem;
+  font-style: normal;
+  font-synthesis: none;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
   padding: 10px 12px;
+}
+
+.commission-form input::placeholder,
+.commission-form textarea::placeholder {
+  color: #b74a5b;
+  opacity: 1;
+}
+
+.commission-form input:focus,
+.commission-form textarea:focus {
+  border-color: #1b1b1b;
+  color: #1b1b1b;
+  font-style: normal;
+  font-weight: 400;
+  outline: 2px solid #1b1b1b;
+  outline-offset: 0;
 }
 
 .commission-form textarea {
@@ -1377,7 +1420,17 @@ button {
 
 .commission-form input[type="file"] {
   padding: 10px;
-  background: #f8f3ef;
+}
+
+.commission-form input[type="file"]::file-selector-button {
+  margin-right: 10px;
+  border: 1px solid #f45f77;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #f45f77;
+  cursor: pointer;
+  font: inherit;
+  padding: 6px 10px;
 }
 
 .commission-reference-preview {
@@ -1386,7 +1439,7 @@ button {
   margin-top: -4px;
   padding: 16px;
   border: 1px solid #f45f77;
-  border-radius: 12px;
+  border-radius: 2px;
   background: #fff5f7;
 }
 
@@ -1416,7 +1469,7 @@ button {
   width: 100%;
   aspect-ratio: 1 / 1;
   border: 1px solid #f45f77;
-  border-radius: 10px;
+  border-radius: 2px;
   background: #ececeb;
   object-fit: cover;
 }
@@ -1491,7 +1544,7 @@ button {
   gap: 10px;
   align-items: center;
   padding: 12px 14px;
-  border-radius: 999px;
+  border-radius:2px;
   background: #f4f2f0;
 }
 
@@ -1507,7 +1560,7 @@ button {
 .commission-success-copy-button {
   min-height: 40px;
   border: 0;
-  border-radius: 10px;
+  border-radius: 2px;
   background: #d9cec6;
   color: #5d5047;
   cursor: pointer;
@@ -1538,11 +1591,9 @@ button {
 }
 
 .commission-type-card-selected {
-  border-radius: 18px;
-  box-shadow:
-    0 0 18px rgba(244, 95, 119, 0.24),
-    0 0 34px rgba(244, 95, 119, 0.16);
-  transform: translateY(-2px);
+  border-radius: 2px;
+  box-shadow: none;
+  transform: none;
 }
 
 .commission-type-card-selected .commission-type-copy,
@@ -1552,7 +1603,7 @@ button {
 
 .commission-type-card:hover .commission-type-heading,
 .commission-type-card-selected .commission-type-heading {
-  color: #000000;
+  color: #f45f77;
 }
 
 .commission-type-image {
@@ -1561,7 +1612,7 @@ button {
   overflow: hidden;
   width: var(--placeholder-size);
   height: var(--commission-card-height);
-  border-radius: 10px;
+  border-radius: 2px;
   background: #e2dad4;
 }
 
@@ -1650,9 +1701,12 @@ button {
   grid-template-rows: auto minmax(0, 1fr);
   gap: 8px 16px;
   border: 1px solid #f45f77;
-  border-radius: 10px;
-  background: #ffffff;
-  color: #000000;
+  border-radius: 2px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.72)),
+    var(--page-background);
+  background-attachment: fixed, fixed;
+  color: #f45f77;
   min-width: 0;
   width: 100%;
   height: var(--commission-card-height);
@@ -1743,7 +1797,7 @@ button {
   grid-row: 1;
   margin: 0;
   padding: 0;
-  color: #000000;
+  color: #f45f77;
   font-size: 1.5rem;
   font-weight: 400;
 }
@@ -1757,7 +1811,7 @@ button {
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  border-radius: 10px;
+  border-radius: 2px;
   background: #f45f77;
   color: #ffffff;
   font-size: 0.95rem;
@@ -1775,7 +1829,7 @@ button {
   margin: 0;
   max-height: none;
   overflow: hidden;
-  color: #000000;
+  color: #f45f77;
   font-size: 0.85rem;
   line-height: 1.38;
   -webkit-box-orient: vertical;
@@ -1804,7 +1858,7 @@ button {
   transform: translateX(-50%);
   min-height: 42px;
   border: 0;
-  border-radius: 12px;
+  border-radius: 2px;
   background: #f45f77;
   color: #ffffff;
   cursor: pointer;
@@ -2006,7 +2060,7 @@ button {
     height: 88px;
     min-height: 0;
     flex: 0 0 auto;
-    border-radius: 10px;
+    border-radius: 2px;
     object-fit: cover;
   }
 
@@ -2087,7 +2141,7 @@ button {
     width: 34px;
     height: 34px;
     border-width: 1px;
-    border-radius: 7px;
+    border-radius: 2px;
   }
 
   .commission-form {
@@ -2123,9 +2177,12 @@ button {
     align-items: start;
     width: auto;
     border: 1px solid #f45f77;
-    border-radius: 14px;
-    background: #ffffff;
-    box-shadow: 0 0 28px rgba(244, 95, 119, 0.12);
+    border-radius: 2px;
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.72)),
+      var(--page-background);
+    background-attachment: fixed, fixed;
+    box-shadow: none;
     overflow: hidden;
     padding: 18px;
   }
@@ -2375,7 +2432,7 @@ button {
   padding: var(--content-top) var(--content-left) 32px;
   line-height: 1.55;
 }
-.narrator-page h3 { margin: 0 0 12px; font-size: 1.25rem; font-weight: 400; }
+.narrator-page h3 { margin: 0 0 12px; font-size: 1.25rem; font-weight: 400; line-height: 1.3; letter-spacing: 0.02em; }
 .narrator-page p { margin: 0 0 16px; }
 [data-view="narrator"] strong,
 [data-view="narrator"] b {
@@ -2387,7 +2444,7 @@ button {
   min-height: 42px;
   padding: 8px 12px;
   border: 1px solid #f45f77;
-  border-radius: 7px;
+  border-radius: 2px;
   background: #ffffff;
 }
 .narrator-link:hover { background: #fff0f3; color: #a82d43; }
@@ -2402,7 +2459,7 @@ button {
 }
 .narrator-section { margin-top: 28px; }
 .narrator-tutorial { margin: 0 0 16px; }
-.narrator-tutorial-link { display: block; max-width: 800px; border-radius: 12px; cursor: zoom-in; }
+.narrator-tutorial-link { display: block; max-width: 800px; border-radius: 2px; cursor: zoom-in; }
 .narrator-tutorial-link:focus-visible { outline: 2px solid #f45f77; outline-offset: 3px; }
 .narrator-tutorial img {
   display: block;
@@ -2410,9 +2467,9 @@ button {
   max-width: 800px;
   height: auto;
   border: 1px solid #f45f77;
-  border-radius: 12px;
+  border-radius: 2px;
 }
-.narrator-tutorial figcaption { margin-top: 10px; font-size: .9rem; }
+.narrator-tutorial figcaption { margin-top: 10px; font-size: .875rem; line-height: 1.5; }
 .narrator-features { margin: 0; }
 .narrator-features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 .narrator-features dt { margin-bottom: 6px; color: #a82d43; }
@@ -2423,9 +2480,34 @@ button {
   border-bottom: 1px solid #f45f77;
 }
 .narrator-steps > li::marker { color: #a82d43; }
-.narrator-steps h4 { margin: 0 0 10px; font-size: 1.05rem; font-weight: 400; }
+.narrator-steps h4 { margin: 0 0 10px; font-size: 1.125rem; font-weight: 400; line-height: 1.35; letter-spacing: 0.02em; }
 .narrator-steps p:last-child { margin-bottom: 0; }
 .narrator-page code { overflow-wrap: anywhere; font-size: .9em; color: #f45f77; }
+
+.modal-episode p,
+.feedback-form label,
+.feedback-message,
+.activity-empty,
+.activity-action,
+.commission-request-kicker,
+.commission-request-price,
+.commission-form label,
+.commission-reference-preview-title,
+.commission-reference-item figcaption,
+.commission-type-description {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+.narrator-page,
+.narrator-page code {
+  letter-spacing: 0.01em;
+}
+
+.narrator-page code {
+  font-size: 0.9375em;
+}
 @media (max-width: 900px) {
   .narrator-page { padding: 0 0 24px; }
 }

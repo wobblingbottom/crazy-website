@@ -87,7 +87,6 @@ const MUSIC_FADE_STEP_MS = 80;
 const MUSIC_FADE_DURATION_MS = 1200;
 const VALID_VIEWS = new Set(['posts', 'comics', 'commissions', 'narrator']);
 const WATERMARK_IMAGE_URL = 'assets/crazyland-watermark.png';
-const POST_FRAME_IMAGE_URL = 'assets/post-frame.png';
 const POST_OPEN_FLASH_DURATION_MS = 720;
 
 function getDashboardPath() {
@@ -103,7 +102,7 @@ function updateLoginTarget() {
     return;
   }
 
-  loginButton.href = currentUserIsAdmin ? getDashboardPath() : '/logout';
+  loginButton.href = currentUserIsAdmin ? getDashboardPath() : '#logout';
 }
 
 function setLogoutConfirmation(isPending) {
@@ -492,7 +491,16 @@ if (loginButton) {
     if (!logoutPending) {
       event.preventDefault();
       setLogoutConfirmation(true);
+      return;
     }
+
+    event.preventDefault();
+    fetch('/logout', { method: 'POST' })
+      .then((response) => {
+        if (!response.ok) throw new Error('Logout failed');
+        window.location.assign('/');
+      })
+      .catch(() => setLogoutConfirmation(false));
   });
 }
 
@@ -737,13 +745,6 @@ function createPostCard(post) {
     image.src = post.imageUrl;
     image.alt = post.imageAlt || post.title;
     media.appendChild(image);
-
-    const frame = document.createElement('img');
-    frame.className = 'post-frame';
-    frame.src = POST_FRAME_IMAGE_URL;
-    frame.alt = '';
-    frame.setAttribute('aria-hidden', 'true');
-    media.appendChild(frame);
   }
 
   media.appendChild(createImageWatermark());

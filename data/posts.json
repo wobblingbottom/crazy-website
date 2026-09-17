@@ -1,1 +1,124 @@
-[]
+[
+  {
+    "id": "test-post-1",
+    "title": "[Test] Mascot preview",
+    "description": "Test post using the existing Crazyland mascot. Open this post to check the image, rating stars, and comment layout.",
+    "status": "published",
+    "imageUrl": "/assets/favicon.png",
+    "imageAlt": "Crazyland mascot",
+    "musicUrl": "",
+    "comments": [
+      {
+        "id": "test-comment-1",
+        "userId": "test-reader",
+        "username": "Test reader",
+        "text": "Sample comment for checking the feedback layout.",
+        "createdAt": "2026-09-11T15:22:52.791Z"
+      }
+    ],
+    "ratings": [
+      {
+        "id": "test-rating-0",
+        "userId": "test-reader",
+        "username": "Test reader",
+        "rating": 5,
+        "createdAt": "2026-09-11T15:22:52.791Z",
+        "updatedAt": "2026-09-11T15:22:52.791Z"
+      }
+    ],
+    "createdAt": "2026-09-11T15:22:52.791Z",
+    "updatedAt": "2026-09-11T15:22:52.791Z"
+  },
+  {
+    "id": "test-post-2",
+    "title": "[Test] Logo preview",
+    "description": "Test post using the Crazyland logo. This checks a wide, transparent image in the square gallery frame.",
+    "status": "published",
+    "imageUrl": "/assets/crazyland-watermark.png",
+    "imageAlt": "Crazyland logo",
+    "musicUrl": "",
+    "comments": [],
+    "ratings": [
+      {
+        "id": "test-rating-1",
+        "userId": "test-reader",
+        "username": "Test reader",
+        "rating": 4,
+        "createdAt": "2026-09-11T15:22:52.791Z",
+        "updatedAt": "2026-09-11T15:22:52.791Z"
+      }
+    ],
+    "createdAt": "2026-09-11T15:22:52.791Z",
+    "updatedAt": "2026-09-11T15:22:52.791Z"
+  },
+  {
+    "id": "test-post-3",
+    "title": "[Test] Reader artwork",
+    "description": "Test post using the existing comic reader artwork. Check how the image fits inside the post dialog.",
+    "status": "published",
+    "imageUrl": "/assets/comic-reader-top.jpg",
+    "imageAlt": "Comic reader header artwork",
+    "musicUrl": "",
+    "comments": [],
+    "ratings": [
+      {
+        "id": "test-rating-2",
+        "userId": "test-reader",
+        "username": "Test reader",
+        "rating": 3,
+        "createdAt": "2026-09-11T15:22:52.791Z",
+        "updatedAt": "2026-09-11T15:22:52.791Z"
+      }
+    ],
+    "createdAt": "2026-09-11T15:22:52.791Z",
+    "updatedAt": "2026-09-11T15:22:52.791Z"
+  },
+  {
+    "id": "test-post-4",
+    "title": "[Test] Long description",
+    "description": "Test paragraph 1: This longer description lets you check scrolling, spacing, and readability in the post dialog. The image and feedback should remain accessible while you browse.\n\nTest paragraph 2: This longer description lets you check scrolling, spacing, and readability in the post dialog. The image and feedback should remain accessible while you browse.\n\nTest paragraph 3: This longer description lets you check scrolling, spacing, and readability in the post dialog. The image and feedback should remain accessible while you browse.\n\nTest paragraph 4: This longer description lets you check scrolling, spacing, and readability in the post dialog. The image and feedback should remain accessible while you browse.\n\nTest paragraph 5: This longer description lets you check scrolling, spacing, and readability in the post dialog. The image and feedback should remain accessible while you browse.\n\nTest paragraph 6: This longer description lets you check scrolling, spacing, and readability in the post dialog. The image and feedback should remain accessible while you browse.\n\nTest paragraph 7: This longer description lets you check scrolling, spacing, and readability in the post dialog. The image and feedback should remain accessible while you browse.\n\nTest paragraph 8: This longer description lets you check scrolling, spacing, and readability in the post dialog. The image and feedback should remain accessible while you browse.\n\nTest paragraph 9: This longer description lets you check scrolling, spacing, and readability in the post dialog. The image and feedback should remain accessible while you browse.\n\nTest paragraph 10: This longer description lets you check scrolling, spacing, and readability in the post dialog. The image and feedback should remain accessible while you browse.\n\nTest paragraph 11: This longer description lets you check scrolling, spacing, and readability in the post dialog. The image and feedback should remain accessible while you browse.\n\nTest paragraph 12: This longer description lets you check scrolling, spacing, and readability in the post dialog. The image and feedback should remain accessible while you browse.",
+    "status": "published",
+    "imageUrl": "/assets/comic-reader-bottom.jpg",
+    "imageAlt": "Comic reader footer artwork",
+    "musicUrl": "",
+    "comments": [],
+    "ratings": [
+      {
+        "id": "test-rating-3",
+        "userId": "test-reader",
+        "username": "Test reader",
+        "rating": 2,
+        "createdAt": "2026-09-11T15:22:52.791Z",
+        "updatedAt": "2026-09-11T15:22:52.791Z"
+      }
+    ],
+    "createdAt": "2026-09-11T15:22:52.791Z",
+    "updatedAt": "2026-09-11T15:22:52.791Z"
+  },
+  {
+    "id": "test-post-5",
+    "title": "[Test] No image",
+    "description": "Test post without an uploaded image. The gallery should show its built-in placeholder.",
+    "status": "published",
+    "imageUrl": "",
+    "imageAlt": "Placeholder image",
+    "musicUrl": "",
+    "comments": [],
+    "ratings": [],
+    "createdAt": "2026-09-11T15:22:52.791Z",
+    "updatedAt": "2026-09-11T15:22:52.791Z"
+  },
+  {
+    "id": "test-post-6",
+    "title": "[Test] Fresh post",
+    "description": "Test post with no comments or ratings yet. Use it to check the empty feedback state.",
+    "status": "published",
+    "imageUrl": "/assets/commission-slide-hand.png",
+    "imageAlt": "Commission navigation hand",
+    "musicUrl": "",
+    "comments": [],
+    "ratings": [],
+    "createdAt": "2026-09-11T15:22:52.791Z",
+    "updatedAt": "2026-09-11T15:22:52.791Z"
+  }
+]

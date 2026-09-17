@@ -6,6 +6,7 @@ const express = require("express");
 const session = require("express-session");
 const multer = require("multer");
 const dotenv = require("dotenv");
+const helmet = require("helmet");
 
 dotenv.config();
 
@@ -18,9 +19,11 @@ const comicsFile = path.join(dataDir, "comics.json");
 const commissionsFile = path.join(dataDir, "commissions.json");
 const commissionOfferingsFile = path.join(dataDir, "commission-offerings.json");
 const uploadsDir = process.env.UPLOADS_DIR || (storageDir ? path.join(storageDir, "uploads") : path.join(__dirname, "uploads"));
+const sessionsDir = process.env.SESSIONS_DIR || (storageDir ? path.join(storageDir, "sessions") : path.join(__dirname, "data", "sessions"));
 const COMMENT_MAX_LENGTH = 240;
 
 fsSync.mkdirSync(uploadsDir, { recursive: true });
+fsSync.mkdirSync(sessionsDir, { recursive: true });
 
 const {
   DISCORD_CLIENT_ID,
@@ -47,16 +50,86 @@ const placeholderValues = new Set([
   "replace-with-a-long-random-secret"
 ]);
 
+class FileSessionStore extends session.Store {
+  constructor(directory) {
+    super();
+    this.directory = directory;
+  }
+
+  getSessionPath(sessionId) {
+    const filename = crypto.createHash("sha256").update(sessionId).digest("hex");
+    return path.join(this.directory, `${filename}.json`);
+  }
+
+  get(sessionId, callback) {
+    fs.readFile(this.getSessionPath(sessionId), "utf8")
+      .then((contents) => JSON.parse(contents))
+      .then(async (storedSession) => {
+        const expiresAt = Date.parse(storedSession?.cookie?.expires || "");
+        if (Number.isFinite(expiresAt) && expiresAt <= Date.now()) {
+          await fs.rm(this.getSessionPath(sessionId), { force: true });
+          callback(null, null);
+          return;
+        }
+        callback(null, storedSession);
+      })
+      .catch((error) => callback(error.code === "ENOENT" ? null : error, null));
+  }
+
+  set(sessionId, storedSession, callback = () => {}) {
+    const sessionPath = this.getSessionPath(sessionId);
+    const temporaryPath = `${sessionPath}.${crypto.randomUUID()}.tmp`;
+    fs.writeFile(temporaryPath, JSON.stringify(storedSession), { mode: 0o600 })
+      .then(() => fs.rename(temporaryPath, sessionPath))
+      .then(() => callback(null))
+      .catch(callback);
+  }
+
+  destroy(sessionId, callback = () => {}) {
+    fs.rm(this.getSessionPath(sessionId), { force: true }).then(() => callback(null)).catch(callback);
+  }
+
+  touch(sessionId, storedSession, callback = () => {}) {
+    this.set(sessionId, storedSession, callback);
+  }
+}
+
+const isProduction = process.env.NODE_ENV === "production";
+if (isProduction) {
+  app.set("trust proxy", 1);
+}
+
+app.disable("x-powered-by");
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:", "https://cdn.discordapp.com"],
+        connectSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        frameAncestors: ["'none'"],
+        baseUri: ["'self'"],
+        formAction: ["'self'"]
+      }
+    },
+    crossOriginEmbedderPolicy: false
+  })
+);
+
 app.use(
   session({
     name: "crazyland.sid",
     secret: SESSION_SECRET || "replace-me-in-production",
     resave: false,
     saveUninitialized: false,
+    store: new FileSessionStore(sessionsDir),
     cookie: {
       httpOnly: true,
       sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+      secure: isProduction,
       maxAge: 1000 * 60 * 60 * 24 * 7
     }
   })
@@ -64,6 +137,35 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+function getRequestOrigin(req) {
+  return `${req.protocol}://${req.get("host")}`;
+}
+
+app.use((req, res, next) => {
+  if (["GET", "HEAD", "OPTIONS"].includes(req.method)) {
+    next();
+    return;
+  }
+
+  const source = req.get("origin") || req.get("referer");
+  if (!source) {
+    res.status(403).json({ error: "Request origin is required." });
+    return;
+  }
+
+  try {
+    if (new URL(source).origin !== getRequestOrigin(req)) {
+      res.status(403).json({ error: "Cross-site request blocked." });
+      return;
+    }
+  } catch {
+    res.status(403).json({ error: "Invalid request origin." });
+    return;
+  }
+
+  next();
+});
 app.use(express.static(path.join(__dirname)));
 app.use("/uploads", express.static(uploadsDir));
 
@@ -112,14 +214,24 @@ function getPlaceholderEnv() {
   return requiredEnv.filter((key) => placeholderValues.has(String(process.env[key] || "")));
 }
 
+function getUnsafeProductionEnv() {
+  if (!isProduction) return [];
+  const issues = [];
+  if (String(SESSION_SECRET || "").length < 32) issues.push("SESSION_SECRET must contain at least 32 characters");
+  if (!String(DISCORD_REDIRECT_URI || "").startsWith("https://")) issues.push("DISCORD_REDIRECT_URI must use HTTPS");
+  return issues;
+}
+
 function ensureConfigured(req, res, next) {
   const missing = getMissingEnv();
   const placeholders = getPlaceholderEnv();
+  const unsafeProduction = getUnsafeProductionEnv();
 
-  if (missing.length > 0 || placeholders.length > 0) {
+  if (missing.length > 0 || placeholders.length > 0 || unsafeProduction.length > 0) {
     const issues = [
       missing.length > 0 ? `Missing:\n${missing.join("\n")}` : "",
-      placeholders.length > 0 ? `Placeholder values still set:\n${placeholders.join("\n")}` : ""
+      placeholders.length > 0 ? `Placeholder values still set:\n${placeholders.join("\n")}` : "",
+      unsafeProduction.length > 0 ? `Unsafe production settings:\n${unsafeProduction.join("\n")}` : ""
     ]
       .filter(Boolean)
       .join("\n\n");
@@ -500,6 +612,31 @@ function buildDiscordAuthUrl(state) {
   return `https://discord.com/oauth2/authorize?${params.toString()}`;
 }
 
+function getSafeReturnPath(value) {
+  if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//") || value.startsWith("/\\")) {
+    return "/";
+  }
+
+  try {
+    const parsed = new URL(value, "https://crazyland.invalid");
+    return parsed.origin === "https://crazyland.invalid" ? `${parsed.pathname}${parsed.search}${parsed.hash}` : "/";
+  } catch {
+    return "/";
+  }
+}
+
+function regenerateSession(req) {
+  return new Promise((resolve, reject) => {
+    req.session.regenerate((error) => (error ? reject(error) : resolve()));
+  });
+}
+
+function saveSession(req) {
+  return new Promise((resolve, reject) => {
+    req.session.save((error) => (error ? reject(error) : resolve()));
+  });
+}
+
 function getDiscordAvatarUrl(user) {
   if (!user) {
     return "";
@@ -553,15 +690,15 @@ async function fetchDiscordUser(accessToken) {
 app.get("/health", (req, res) => {
   res.json({
     ok: true,
-    configured: getMissingEnv().length === 0 && getPlaceholderEnv().length === 0
+    configured: getMissingEnv().length === 0 && getPlaceholderEnv().length === 0 && getUnsafeProductionEnv().length === 0
   });
 });
 
 app.get("/login", ensureConfigured, (req, res) => {
   const state = crypto.randomUUID();
-  const returnTo = typeof req.query.returnTo === "string" ? req.query.returnTo : "/";
+  const returnTo = getSafeReturnPath(req.query.returnTo);
   req.session.oauthState = state;
-  req.session.returnTo = returnTo.startsWith("/") ? returnTo : "/";
+  req.session.returnTo = returnTo;
   res.redirect(buildDiscordAuthUrl(state));
 });
 
@@ -576,17 +713,17 @@ app.get("/auth/discord/callback", ensureConfigured, async (req, res) => {
   delete req.session.oauthState;
 
   try {
+    const returnTo = getSafeReturnPath(req.session.returnTo);
     const token = await exchangeCodeForToken(String(code));
     const user = await fetchDiscordUser(token.access_token);
 
+    await regenerateSession(req);
     req.session.user = {
       id: user.id,
       username: user.username,
       avatar: user.avatar
     };
-
-    const returnTo = req.session.returnTo || "/";
-    delete req.session.returnTo;
+    await saveSession(req);
     res.redirect(returnTo);
   } catch (error) {
     res.status(500).send(
@@ -595,8 +732,13 @@ app.get("/auth/discord/callback", ensureConfigured, async (req, res) => {
   }
 });
 
-app.get("/logout", (req, res) => {
+app.post("/logout", (req, res) => {
   req.session.destroy(() => {
+    res.clearCookie("crazyland.sid", {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: isProduction
+    });
     res.redirect("/");
   });
 });
@@ -1368,10 +1510,10 @@ app.get("/commission/:token", async (req, res) => {
 
   const returnTo = `/commission/${commission.accessToken}`;
   const loginButtonMarkup = req.session.user
-    ? `<a class="login-button login-button-user" href="/logout" aria-label="Signed in as ${escapeHtml(req.session.user.username)}">
+    ? `<form method="post" action="/logout" class="logout-form"><button class="login-button login-button-user" type="submit" aria-label="Signed in as ${escapeHtml(req.session.user.username)}">
         <img class="login-avatar" src="${escapeHtml(getDiscordAvatarUrl(req.session.user))}" alt="" aria-hidden="true" />
         <span class="login-username">${escapeHtml(req.session.user.username)}</span>
-      </a>`
+      </button></form>`
     : `<a class="login-button" href="/login?returnTo=${encodeURIComponent(returnTo)}">Login with Discord</a>`;
 
   res.send(`<!DOCTYPE html>
@@ -2118,7 +2260,7 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         </div>
         <div class="top-actions">
           <a class="button secondary" href="/">Back to site</a>
-          <a class="button secondary" href="/logout">Log out</a>
+          <form method="post" action="/logout"><button class="button secondary" type="submit">Log out</button></form>
         </div>
       </header>
 
@@ -2951,7 +3093,7 @@ app.get(["/admin", "/admin/posts", "/admin/comics"], ensureConfigured, requireAd
         </div>
         <div class="top-actions">
           <a class="button secondary" href="/">Back to site</a>
-          <a class="button secondary" href="/logout">Log out</a>
+          <form method="post" action="/logout"><button class="button secondary" type="submit">Log out</button></form>
         </div>
       </header>
 

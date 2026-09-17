@@ -1,1 +1,63 @@
-[]
+[
+  {
+    "id": "test-comic-1",
+    "title": "[Test] Crazyland Stories",
+    "description": "A sample comic series for testing cover art, episode selection, ratings, and the reader layout.",
+    "status": "published",
+    "imageUrl": "/assets/comictop.png",
+    "imageAlt": "Crazyland Stories sample comic cover",
+    "musicUrl": "",
+    "episodes": [
+      {
+        "id": "test-episode-1",
+        "title": "[Test] Episode One",
+        "description": "A sample episode that exercises the full comic-reader experience.",
+        "imageUrl": "/assets/comic-reader-top.jpg",
+        "imageAlt": "Sample comic episode cover",
+        "panels": [
+          {
+            "id": "test-panel-1",
+            "imageUrl": "/assets/comic-reader-top.jpg",
+            "imageAlt": "Sample comic opening panel",
+            "order": 0
+          },
+          {
+            "id": "test-panel-2",
+            "imageUrl": "/assets/comic-reader-bottom.jpg",
+            "imageAlt": "Sample comic closing panel",
+            "order": 1
+          }
+        ],
+        "createdAt": "2026-09-16T12:00:00.000Z",
+        "updatedAt": "2026-09-16T12:00:00.000Z"
+      }
+    ],
+    "comments": [],
+    "ratings": [
+      {
+        "id": "test-comic-rating-1",
+        "userId": "test-reader",
+        "username": "Test reader",
+        "rating": 5,
+        "createdAt": "2026-09-16T12:00:00.000Z",
+        "updatedAt": "2026-09-16T12:00:00.000Z"
+      }
+    ],
+    "createdAt": "2026-09-16T12:00:00.000Z",
+    "updatedAt": "2026-09-16T12:00:00.000Z"
+  },
+  {
+    "id": "test-comic-2",
+    "title": "[Test] Upcoming Comic",
+    "description": "A sample series without episodes for checking the empty-series state.",
+    "status": "published",
+    "imageUrl": "/assets/favicon.png",
+    "imageAlt": "Crazyland mascot sample cover",
+    "musicUrl": "",
+    "episodes": [],
+    "comments": [],
+    "ratings": [],
+    "createdAt": "2026-09-16T12:05:00.000Z",
+    "updatedAt": "2026-09-16T12:05:00.000Z"
+  }
+]
