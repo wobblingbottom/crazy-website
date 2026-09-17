@@ -81,9 +81,11 @@ test('commission content stays centered with white space on small screens', () =
 
   assert.match(styles, /@media \(max-width: 900px\)[\s\S]*?\.commission-policy\s*\{[^}]*width:\s*calc\(100% - 40px\);[^}]*margin-right:\s*auto;[^}]*margin-left:\s*auto;/s);
   assert.match(styles, /@media \(max-width: 900px\)[\s\S]*?\.commission-types\s*\{[^}]*width:\s*100%;[^}]*margin-right:\s*0;[^}]*margin-left:\s*0;[^}]*padding:\s*0 20px 70px;/s);
-  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.content-view\[data-view="commissions"\]\s*\{[^}]*right:\s*24px;[^}]*left:\s*24px;/s);
+  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.content-view\[data-view="commissions"\]\s*\{[^}]*right:\s*0;[^}]*left:\s*0;/s);
   assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.commission-policy\s*\{[^}]*width:\s*auto;[^}]*margin-right:\s*24px;[^}]*margin-left:\s*24px;/s);
-  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.commission-types\s*\{[^}]*width:\s*auto;[^}]*margin-right:\s*24px;[^}]*margin-left:\s*24px;[^}]*padding-right:\s*0;[^}]*padding-left:\s*0;/s);
+  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.commission-types\s*\{[^}]*width:\s*auto;[^}]*min-width:\s*0;[^}]*margin-right:\s*24px;[^}]*margin-left:\s*24px;[^}]*padding-right:\s*0;[^}]*padding-left:\s*0;/s);
+  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.commission-type-card\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*max-width:\s*100%;/s);
+  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.commission-type-description\s*\{[^}]*min-width:\s*0;[^}]*overflow-wrap:\s*anywhere;/s);
 });
 
 test('a readable system font is used consistently across the site', () => {

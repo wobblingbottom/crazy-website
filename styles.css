@@ -2543,8 +2543,8 @@ button {
 
 @media (max-width: 600px) {
   .content-view[data-view="commissions"] {
-    right: 24px;
-    left: 24px;
+    right: 0;
+    left: 0;
   }
 
   .content-view[data-view="commissions"] .content-toolbar {
@@ -2564,6 +2564,7 @@ button {
 
   .commission-types {
     width: auto;
+    min-width: 0;
     margin-right: 24px;
     margin-left: 24px;
     padding-right: 0;
@@ -2573,12 +2574,16 @@ button {
   .commission-type-card {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto auto;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
   }
 
   .commission-type-image {
     grid-column: 1;
     grid-row: 1;
     max-width: none;
+    min-width: 0;
   }
 
   .commission-type-heading {
@@ -2597,5 +2602,10 @@ button {
   .commission-type-description {
     grid-column: 1;
     grid-row: 4;
+  }
+
+  .commission-type-description {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 }
