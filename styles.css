@@ -2557,13 +2557,17 @@ button {
   }
 
   .commission-policy {
-    width: calc(100% - 48px);
+    width: auto;
+    margin-right: 24px;
+    margin-left: 24px;
   }
 
   .commission-types {
-    width: 100%;
-    padding-right: 24px;
-    padding-left: 24px;
+    width: auto;
+    margin-right: 24px;
+    margin-left: 24px;
+    padding-right: 0;
+    padding-left: 0;
   }
 
   .commission-type-card {
