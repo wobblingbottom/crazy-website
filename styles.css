@@ -2543,7 +2543,7 @@ button {
 
 @media (max-width: 600px) {
   .content-view[data-view="commissions"] {
-    right: 0;
+    right: 24px;
     left: 0;
   }
 
