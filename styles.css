@@ -2525,6 +2525,17 @@ button {
 
 /* Keep commission previews readable instead of squeezing them into a fixed square. */
 @media (max-width: 900px) {
+  .commission-policy,
+  .commission-types {
+    width: calc(100% - 40px);
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .commission-policy {
+    margin-bottom: 20px;
+  }
+
   .commission-type-card {
     grid-template-columns: minmax(0, 1fr) clamp(130px, 28vw, 220px);
     grid-template-rows: auto auto auto;
@@ -2544,6 +2555,11 @@ button {
 }
 
 @media (max-width: 600px) {
+  .commission-policy,
+  .commission-types {
+    width: calc(100% - 24px);
+  }
+
   .commission-type-card {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto auto;
