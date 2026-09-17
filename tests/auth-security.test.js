@@ -15,6 +15,10 @@ test('authentication uses persistent sessions and secure response headers', () =
   assert.match(server, /app\.set\("trust proxy", 1\)/);
 });
 
+test('health response identifies the deployed Railway revision', () => {
+  assert.match(server, /revision: String\(process\.env\.RAILWAY_GIT_COMMIT_SHA \|\| "development"\)\.slice\(0, 7\)/);
+});
+
 test('OAuth callback rotates and saves the authenticated session', () => {
   assert.match(server, /app\.get\("\/login", ensureConfigured, async/);
   assert.match(server, /req\.session\.oauthState = state;[\s\S]*await saveSession\(req\);[\s\S]*res\.redirect\(buildDiscordAuthUrl\(state\)\)/);

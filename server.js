@@ -690,7 +690,8 @@ async function fetchDiscordUser(accessToken) {
 app.get("/health", (req, res) => {
   res.json({
     ok: true,
-    configured: getMissingEnv().length === 0 && getPlaceholderEnv().length === 0 && getUnsafeProductionEnv().length === 0
+    configured: getMissingEnv().length === 0 && getPlaceholderEnv().length === 0 && getUnsafeProductionEnv().length === 0,
+    revision: String(process.env.RAILWAY_GIT_COMMIT_SHA || "development").slice(0, 7)
   });
 });
 
