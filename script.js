@@ -2,14 +2,18 @@ const sidebarToggle = document.querySelector('[data-sidebar-toggle]');
 const siteSidebar = document.querySelector('#site-sidebar');
 const siteLayout = document.querySelector('.layout');
 
-if (sidebarToggle && siteSidebar && siteLayout) {
-  function setSidebarOpen(isOpen) {
-    siteSidebar.inert = !isOpen;
-    siteLayout.classList.toggle('sidebar-collapsed', !isOpen);
-    sidebarToggle.setAttribute('aria-expanded', String(isOpen));
-    sidebarToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+function setSidebarOpen(isOpen) {
+  if (!sidebarToggle || !siteSidebar || !siteLayout) {
+    return;
   }
 
+  siteSidebar.inert = !isOpen;
+  siteLayout.classList.toggle('sidebar-collapsed', !isOpen);
+  sidebarToggle.setAttribute('aria-expanded', String(isOpen));
+  sidebarToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+}
+
+if (sidebarToggle && siteSidebar && siteLayout) {
   sidebarToggle.addEventListener('click', () => {
     setSidebarOpen(siteSidebar.inert);
   });
@@ -478,6 +482,7 @@ navButtons.forEach((button) => {
 
     if (viewName) {
       setActiveView(viewName);
+      setSidebarOpen(false);
     }
   });
 });
