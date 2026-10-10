@@ -1,31 +1,3 @@
-const sidebarToggle = document.querySelector('[data-sidebar-toggle]');
-const siteSidebar = document.querySelector('#site-sidebar');
-const siteLayout = document.querySelector('.layout');
-
-function setSidebarOpen(isOpen) {
-  if (!sidebarToggle || !siteSidebar || !siteLayout) {
-    return;
-  }
-
-  siteSidebar.inert = !isOpen;
-  siteLayout.classList.toggle('sidebar-collapsed', !isOpen);
-  sidebarToggle.setAttribute('aria-expanded', String(isOpen));
-  sidebarToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
-}
-
-if (sidebarToggle && siteSidebar && siteLayout) {
-  sidebarToggle.addEventListener('click', () => {
-    setSidebarOpen(siteSidebar.inert);
-  });
-
-  siteSidebar.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      setSidebarOpen(false);
-      sidebarToggle.focus();
-    }
-  });
-}
-
 const navButtons = document.querySelectorAll('[data-view-target]');
 const contentViews = document.querySelectorAll('[data-view]');
 const postsGallery = document.querySelector('[data-posts-gallery]');
@@ -54,6 +26,7 @@ const commissionSuccessNote = document.querySelector('[data-commission-success-n
 const commissionCopyLinkButton = document.querySelector('[data-commission-copy-link]');
 const commissionSuccessClose = document.querySelector('[data-commission-success-close]');
 const loginButton = document.querySelector('.login-button');
+const loginStatus = document.querySelector('[data-login-status]');
 const postModal = document.querySelector('[data-post-modal]');
 const postModalTitle = document.querySelector('[data-post-modal] .post-modal-title');
 const postModalDescription = document.querySelector('[data-post-modal-description]');
@@ -115,15 +88,15 @@ function setLogoutConfirmation(isPending) {
   }
 
   logoutPending = isPending;
-  const username = loginButton.querySelector('.login-username');
+  const username = loginStatus;
 
   if (username) {
-    username.textContent = logoutPending ? 'Log out?' : currentUser.username;
+    username.textContent = logoutPending ? 'Click power again to log out' : `Logged in as: ${currentUser.username}`;
   }
 
   loginButton.setAttribute(
     'aria-label',
-    logoutPending ? 'Click again to log out' : `Signed in as ${currentUser.username}`
+    logoutPending ? 'Click again to log out' : `Log out ${currentUser.username}`
   );
 }
 
@@ -144,13 +117,12 @@ function renderLoginUserButton() {
     return;
   }
 
-  const avatarUrl = getDiscordAvatarUrl(currentUser);
-  loginButton.innerHTML = `
-    <img class="login-avatar" src="${avatarUrl}" alt="" aria-hidden="true" />
-    <span class="login-username">${currentUser.username}</span>
-  `;
-  loginButton.setAttribute('aria-label', `Signed in as ${currentUser.username}`);
-  loginButton.classList.add('login-button-user');
+  if (loginStatus) {
+    loginStatus.textContent = `Logged in as: ${currentUser.username}`;
+  }
+  const action = currentUserIsAdmin ? 'Open dashboard' : 'Log out';
+  loginButton.setAttribute('aria-label', action);
+  loginButton.setAttribute('title', action);
   logoutPending = false;
   updateLoginTarget();
 }
@@ -169,6 +141,11 @@ function setActiveView(viewName) {
   navButtons.forEach((button) => {
     const isActive = button.getAttribute('data-view-target') === viewName;
     button.classList.toggle('sidebar-link-active', isActive);
+    if (isActive) {
+      button.setAttribute?.('aria-current', 'page');
+    } else {
+      button.removeAttribute?.('aria-current');
+    }
   });
 
   contentViews.forEach((view) => {
@@ -482,7 +459,6 @@ navButtons.forEach((button) => {
 
     if (viewName) {
       setActiveView(viewName);
-      setSidebarOpen(false);
     }
   });
 });
