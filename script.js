@@ -61,7 +61,7 @@ const postModalEpisodes = document.querySelector('[data-post-modal-episodes]');
 const seriesBackButton = document.querySelector('[data-series-back]');
 const postModalRating = document.querySelector('[data-post-modal-rating]');
 const postModalImage = document.querySelector('.post-modal-image');
-const postModalCloseTargets = document.querySelectorAll('[data-post-close]');
+let postModalHistoryActive = false;
 const comicReader = document.querySelector('[data-comic-reader]');
 const activityList = document.querySelector('[data-activity-list]');
 const feedbackForm = document.querySelector('[data-feedback-form]');
@@ -1474,6 +1474,7 @@ function openPostModal(card, keepMusicPlaying = false) {
     renderModalEpisodes(null);
   }
 
+  rememberPostModalHistory();
   postModal.hidden = false;
   postModal.classList.toggle('comics-modal', currentContentType === 'comics');
   document.body.classList.add('modal-open');
@@ -1483,12 +1484,36 @@ function openPostModal(card, keepMusicPlaying = false) {
   }
 }
 
-function closePostModal() {
+function rememberPostModalHistory() {
+  if (postModal.hidden && !postModalHistoryActive) {
+    window.history.pushState({ ...window.history.state, postModal: true }, '', window.location.href);
+    postModalHistoryActive = true;
+  }
+}
+
+function handlePostModalBackdropClick(event) {
+  if (!event.target.closest('.post-modal-panel, .post-activity, .comic-reader')) {
+    closePostModal();
+  }
+}
+
+function handlePostModalBack() {
+  postModalHistoryActive = false;
+  if (postModal && !postModal.hidden) {
+    closePostModal(false);
+  }
+}
+
+function closePostModal(restoreHistory = true) {
   if (postModal) {
     postModal.hidden = true;
     postModal.classList.remove('comics-modal');
     document.body.classList.remove('modal-open');
     stopPostMusic();
+    if (restoreHistory && postModalHistoryActive) {
+      postModalHistoryActive = false;
+      window.history.back();
+    }
   }
 }
 
@@ -1697,9 +1722,10 @@ if (commissionSuccessClose) {
   commissionSuccessClose.addEventListener('click', closeCommissionModal);
 }
 
-postModalCloseTargets.forEach((target) => {
-  target.addEventListener('click', closePostModal);
-});
+if (postModal) {
+  postModal.addEventListener('click', handlePostModalBackdropClick);
+}
+window.addEventListener('popstate', handlePostModalBack);
 
 if (postModalDescription) {
   postModalDescription.addEventListener('scroll', updatePostDescriptionScrollIndicator, { passive: true });

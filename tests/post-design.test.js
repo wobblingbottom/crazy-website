@@ -113,10 +113,11 @@ test('public reader and both dashboard templates load the shared visual system',
   assert.match(shared, /\.offering-card, \.commission-card/);
 });
 
-test('post reading has a visible close control, flowing descriptions and uncropped artwork', () => {
+test('post reading hides close controls and scrollbars while preserving readable content', () => {
   const html = readFileSync(require.resolve('../index.html'), 'utf8');
   const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
-  assert.match(html, /<button class="post-close-button" type="button" data-post-close>Close post<\/button>/);
+  assert.doesNotMatch(html, /post-close-button/);
+  assert.match(styles, /\.post-modal-scroll::-webkit-scrollbar \{ display: none; \}/);
   const lastRule = selector => [...styles.matchAll(new RegExp(selector + '\\s*\\{([^}]*)\\}', 'g'))].at(-1)[1];
   const description = lastRule('\\.post-modal-description');
   assert.match(description, /max-height: none/);
@@ -124,4 +125,57 @@ test('post reading has a visible close control, flowing descriptions and uncropp
   assert.match(description, /line-height: 1\.65/);
   assert.match(description, /word-spacing: normal/);
   assert.match(lastRule('\\.post-image-large'), /object-fit: contain/);
+});
+
+
+function setupPostDismissal() {
+  const vm = require('node:vm');
+  const source = readFileSync(require.resolve('../script.js'), 'utf8');
+  const calls = { pushes: 0, backs: 0, stops: 0 };
+  const modal = { hidden: true, classList: { remove() {} } };
+  const context = {
+    postModal: modal, postModalHistoryActive: false,
+    window: {
+      history: { state: { existing: 'preserved' }, pushState(state) { calls.pushes++; calls.state = state; }, back() { calls.backs++; } },
+      location: { href: 'https://example.test/#posts' }
+    },
+    document: { body: { classList: { remove() {} } } },
+    stopPostMusic() { calls.stops++; }
+  };
+  vm.createContext(context);
+  vm.runInContext(source.slice(source.indexOf('function rememberPostModalHistory('), source.indexOf('function openPostWithFlash(')), context);
+  return { calls, modal, context };
+}
+
+test('browser back closes the post without navigating back a second time', () => {
+  const { calls, modal, context } = setupPostDismissal();
+  context.rememberPostModalHistory();
+  modal.hidden = false;
+  context.rememberPostModalHistory();
+  assert.equal(calls.pushes, 1);
+  assert.equal(calls.state.existing, 'preserved');
+  context.handlePostModalBack();
+  assert.equal(modal.hidden, true);
+  assert.equal(calls.backs, 0);
+  assert.equal(calls.stops, 1);
+  context.handlePostModalBack();
+  assert.equal(calls.stops, 1);
+});
+
+test('clicking content keeps posts open; clicking outside or between areas closes them', () => {
+  for (const inside of [true, false]) {
+    const { calls, modal, context } = setupPostDismissal();
+    context.rememberPostModalHistory();
+    modal.hidden = false;
+    context.handlePostModalBackdropClick({ target: { closest(selector) {
+      assert.equal(selector, '.post-modal-panel, .post-activity, .comic-reader');
+      return inside ? {} : null;
+    } } });
+    assert.equal(modal.hidden, !inside);
+    assert.equal(calls.backs, inside ? 0 : 1);
+    if (!inside) {
+      context.closePostModal();
+      assert.equal(calls.backs, 1, 'repeated dismissal must not navigate twice');
+    }
+  }
 });
