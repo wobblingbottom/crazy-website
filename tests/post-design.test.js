@@ -2,20 +2,20 @@ const assert = require('node:assert/strict');
 const { readFileSync } = require('node:fs');
 const { test } = require('node:test');
 
-test('post cards render without decorative borders', () => {
+test('post cards use the mockup border without decorative image frames', () => {
   const script = readFileSync(require.resolve('../script.js'), 'utf8');
   const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
 
   assert.doesNotMatch(script, /post-frame/);
   assert.doesNotMatch(styles, /\.post-frame/);
-  assert.match(styles, /\.post-card\s*\{[^}]*border:\s*0;/s);
+  assert.match(styles, /\.frame \.post-card\s*\{[^}]*border:\s*1px solid #e2657a;/s);
 });
 
-test('rectangular controls and surfaces use minimally rounded corners', () => {
+test('corner radii follow the mockup and existing control styles', () => {
   const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
   const nonCircularRadii = [...styles.matchAll(/border-radius:\s*([^;]+);/g)]
     .map(([, radius]) => radius.trim())
-    .filter((radius) => radius !== '0' && radius !== '2px' && radius !== '999px' && radius !== 'inherit');
+    .filter((radius) => radius !== '0' && radius !== '2px' && radius !== '999px' && radius !== 'inherit' && radius !== '10px' && radius !== '20px' && radius !== '10px 0 0 0' && radius !== '0 10px 0 0');
 
   assert.deepEqual(nonCircularRadii, []);
 });

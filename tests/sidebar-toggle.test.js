@@ -3,73 +3,52 @@ const { readFileSync } = require('node:fs');
 const { test } = require('node:test');
 const vm = require('node:vm');
 
-const source = readFileSync(require.resolve('../script.js'), 'utf8').split('const navButtons =')[0];
-
-test('sidebar is closed by default in the page markup', () => {
+// Sidebar tests are replaced because the mockup uses permanently visible tabs.
+test('four horizontal tabs replace the collapsible sidebar', () => {
   const html = readFileSync(require.resolve('../index.html'), 'utf8');
-  assert.match(html, /<main class="layout sidebar-collapsed">/);
-  assert.match(html, /<aside class="sidebar" id="site-sidebar" inert>/);
-  assert.match(html, /aria-expanded="false" aria-label="Open navigation"/);
+  assert.doesNotMatch(html, /data-sidebar-toggle|id="site-sidebar"|sidebar-collapsed/);
+  const nav = html.match(/<nav class="section-navigation"[\s\S]*?<\/nav>/)[0];
+  assert.equal((nav.match(/data-view-target=/g) || []).length, 4);
+  assert.match(nav, /data-view-target="posts" aria-current="page">Posts/);
+  assert.match(nav, /data-view-target="narrator">Projects/);
 });
 
-function setup() {
-  const events = {};
-  const attributes = {};
-  const classes = new Set();
-  const sidebar = { inert: false, hidden: false, addEventListener: (name, handler) => { events[name] = handler; } };
-  const button = {
-    focused: false,
-    setAttribute: (name, value) => { attributes[name] = value; },
-    addEventListener: (name, handler) => { events[name] = handler; },
-    focus() { this.focused = true; }
-  };
-  const elements = {
-    '[data-sidebar-toggle]': button,
-    '#site-sidebar': sidebar,
-    '.layout': { classList: { toggle(name, enabled) { enabled ? classes.add(name) : classes.delete(name); } } }
-  };
-  vm.runInNewContext(source, { document: { querySelector: (selector) => elements[selector] } });
-  return { events, attributes, classes, sidebar, button };
-}
-
-test('hamburger closes and reopens the entire sidebar and releases its grid column', () => {
-  const state = setup();
-  state.events.click();
-  assert.equal(state.sidebar.inert, true);
-  assert.equal(state.sidebar.hidden, false, 'sidebar stays rendered so its exit can animate');
-  assert.equal(state.attributes['aria-expanded'], 'false');
-  assert.equal(state.attributes['aria-label'], 'Open navigation');
-  assert.ok(state.classes.has('sidebar-collapsed'));
-  state.events.click();
-  assert.equal(state.sidebar.inert, false);
-  assert.equal(state.attributes['aria-expanded'], 'true');
-  assert.equal(state.attributes['aria-label'], 'Close navigation');
-  assert.equal(state.classes.has('sidebar-collapsed'), false);
+test('tab changes update active styling and the accessible current page', () => {
+  const source = readFileSync(require.resolve('../script.js'), 'utf8');
+  const buttons = ['posts', 'comics', 'commissions', 'narrator'].map(name => ({
+    name, active: false, attrs: {},
+    getAttribute() { return this.name; },
+    classList: { toggle(_, active) { buttons.find(button => button.name === name).active = active; } },
+    setAttribute(key, value) { this.attrs[key] = value; },
+    removeAttribute(key) { delete this.attrs[key]; }
+  }));
+  const context = { VALID_VIEWS: new Set(buttons.map(button => button.name)), navButtons: buttons,
+    contentViews: [], window: { location: { hash: '#posts' } },
+    updateLoginTarget() {}, setLogoutConfirmation() {} };
+  vm.createContext(context);
+  vm.runInContext(source.slice(source.indexOf('function setActiveView('), source.indexOf('function getInitialView(')), context);
+  for (const name of ['comics', 'narrator', 'posts']) {
+    context.setActiveView(name);
+    assert.deepEqual(buttons.filter(button => button.active).map(button => button.name), [name]);
+    assert.deepEqual(buttons.filter(button => button.attrs['aria-current']).map(button => button.name), [name]);
+  }
 });
 
-test('rapid toggles reverse immediately without delayed state changes', () => {
-  const state = setup();
-  for (let click = 0; click < 5; click += 1) state.events.click();
-  assert.equal(state.sidebar.inert, true);
-  state.events.click();
-  assert.equal(state.sidebar.inert, false);
-  assert.equal(state.attributes['aria-expanded'], 'true');
-});
-
-test('Escape inside the sidebar closes it and returns keyboard focus to the toggle', () => {
-  const state = setup();
-  state.events.keydown({ key: 'ArrowDown' });
-  assert.equal(state.sidebar.inert, false);
-  state.events.keydown({ key: 'Escape' });
-  assert.equal(state.sidebar.inert, true);
-  assert.equal(state.button.focused, true);
-});
-
-test('selecting a navigation view closes the sidebar', () => {
-  const fullScript = readFileSync(require.resolve('../script.js'), 'utf8');
-
-  assert.match(
-    fullScript,
-    /navButtons\.forEach[\s\S]*setActiveView\(viewName\);\s*setSidebarOpen\(false\);/
-  );
+test('power login icon remains intact and usernames are rendered as text', () => {
+  const html = readFileSync(require.resolve('../index.html'), 'utf8');
+  const source = readFileSync(require.resolve('../script.js'), 'utf8');
+  assert.match(html, /class="login-button" href="\/login" aria-label="Log in with Discord"/);
+  assert.match(html, /class="power-icon"/);
+  const attrs = {};
+  const context = { loginButton: { setAttribute(key, value) { attrs[key] = value; } },
+    loginStatus: { textContent: '' }, currentUser: { username: '<test>' },
+    currentUserIsAdmin: false, updateLoginTarget() {} };
+  vm.createContext(context);
+  vm.runInContext(source.slice(source.indexOf('function renderLoginUserButton('), source.indexOf('function setActiveView(')), context);
+  context.renderLoginUserButton();
+  assert.equal(context.loginStatus.textContent, 'Logged in as: <test>');
+  assert.equal(attrs['aria-label'], 'Log out');
+  context.currentUserIsAdmin = true;
+  context.renderLoginUserButton();
+  assert.equal(attrs['aria-label'], 'Open dashboard');
 });
