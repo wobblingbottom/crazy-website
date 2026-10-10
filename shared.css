@@ -1,0 +1,121 @@
+:root {
+  --page-background:
+    repeating-linear-gradient(
+      90deg,
+      #e98f9a 0 32px,
+      #b8c3a0 32px 160px,
+      #e98f9a 160px 215px,
+      #b8bad3 215px 342px,
+      #e98f9a 342px 396px,
+      #efba82 396px 523px,
+      #e98f9a 523px 578px,
+      #c9b2d5 578px 705px,
+      #e98f9a 705px 760px
+    );
+  --surface-background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), var(--page-background);
+  --surface-border: #ebc3ca;
+  --text-color: #1b1b1b;
+  --muted-color: #65565a;
+  --accent-color: #a82d43;
+}
+
+/* One information-box treatment for content and dashboard panels. */
+.commission-policy,
+.commission-type-copy,
+.comic-copy,
+.post-modal-panel,
+.post-activity,
+.admin-dashboard :is(.panel, .post-item, .series-sub, .episode-item, .offering-card, .commission-card) {
+  background: var(--surface-background);
+  background-attachment: fixed;
+  color: var(--text-color);
+  border: 1px solid var(--surface-border);
+  border-radius: 2px;
+  box-shadow: none;
+}
+
+.admin-dashboard {
+  margin: 0;
+  background: var(--page-background);
+  color: var(--text-color);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+.admin-dashboard .shell {
+  width: min(1260px, calc(100% - 48px));
+  margin: 40px auto;
+  padding: 28px;
+  background: #ffffff;
+  border-radius: 2px;
+}
+.admin-dashboard :is(.eyebrow, .message, .post-meta, .post-description, .offering-meta, .offering-description, .commission-meta, .commission-description, .commission-link, .empty, .dashboard-note, .episode-panel-empty, label) {
+  color: var(--muted-color);
+}
+.admin-dashboard :is(input, textarea, select, .upload-row) {
+  border: 1px solid var(--surface-border);
+  border-radius: 2px;
+  background: #ffffff;
+  color: var(--text-color);
+  font: inherit;
+}
+.admin-dashboard :is(button, a.button, label.file-button) {
+  min-height: 40px;
+  border: 1px solid var(--accent-color);
+  border-radius: 2px;
+  background: var(--accent-color);
+  color: #ffffff;
+  font: inherit;
+}
+.admin-dashboard :is(button.secondary, a.secondary, .series-toggle, label.file-button, button.file-button) {
+  background: #ffffff;
+  color: var(--accent-color);
+}
+.admin-dashboard button.danger {
+  background: #fff0f3;
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+.admin-dashboard .section-tab-active {
+  background: var(--accent-color);
+  color: #ffffff;
+  border-color: var(--accent-color);
+}
+.admin-dashboard :is(button, a.button):hover {
+  filter: brightness(0.95);
+}
+.admin-dashboard :is(button, a, input, textarea, select, label.file-button):focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+}
+.admin-dashboard :is(.topbar, .top-actions, .dashboard-tabs, .section-tabs, .form-actions, .post-actions, .offering-actions, .commission-actions, .series-sub-actions) {
+  flex-wrap: wrap;
+}
+.admin-dashboard :is(.panel, .post-item, .series-sub, .offering-content) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.admin-dashboard :is(.post-item-details, .episode-panel) {
+  border-color: var(--surface-border);
+}
+@media (max-width: 900px) {
+  .admin-dashboard .dashboard-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 600px) {
+  .admin-dashboard .shell { width: calc(100% - 24px); margin: 12px auto; padding: 16px; }
+  .admin-dashboard :is(.post-item, .series-sub, .offering-card, .commission-card) { grid-template-columns: minmax(0, 1fr); }
+  .admin-dashboard .panel { padding: 16px; }
+}
+
+.admin-dashboard :is(.commission-link a) { color: var(--accent-color); }
+.admin-dashboard :is(.commission-reference, .offering-image, .offering-image-grid, .offering-image-thumb, .series-sub-preview, .episode-panel-thumb, .empty) {
+  border-radius: 2px;
+  border-color: var(--surface-border);
+}
+.admin-dashboard .offering-image-remove {
+  min-height: 24px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+}

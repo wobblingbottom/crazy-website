@@ -2263,8 +2263,9 @@ app.get("/admin/commissions", ensureConfigured, requireAdmin, (req, res) => {
         }
       }
     </style>
+    <link rel="stylesheet" href="/shared.css" />
   </head>
-  <body>
+  <body class="admin-dashboard">
     <main class="shell">
       <header class="topbar">
         <div>
@@ -3096,8 +3097,9 @@ app.get(["/admin", "/admin/posts", "/admin/comics"], ensureConfigured, requireAd
         }
       }
     </style>
+    <link rel="stylesheet" href="/shared.css" />
   </head>
-  <body>
+  <body class="admin-dashboard">
     <main class="shell">
       <header class="topbar">
         <div>

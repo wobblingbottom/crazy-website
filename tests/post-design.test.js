@@ -99,3 +99,29 @@ test('a readable system font is used consistently across the site', () => {
   assert.match(styles, /\.narrator-page,\s*\.narrator-page code\s*\{\s*letter-spacing:\s*0\.01em;/);
   assert.match(styles, /\.narrator-page\s*\{[^}]*line-height:\s*1\.55;/s);
 });
+
+
+test('public reader and both dashboard templates load the shared visual system', () => {
+  const html = readFileSync(require.resolve('../index.html'), 'utf8');
+  const server = readFileSync(require.resolve('../server.js'), 'utf8');
+  const shared = readFileSync(require.resolve('../shared.css'), 'utf8');
+  assert.match(html, /href="shared.css"/);
+  assert.equal((server.match(/href="\/shared.css"/g) || []).length, 2);
+  assert.equal((server.match(/<body class="admin-dashboard">/g) || []).length, 2);
+  assert.match(shared, /--page-background:/);
+  assert.match(shared, /\.post-modal-panel,[\s\S]*?\.admin-dashboard :is\([^}]*background: var\(--surface-background\)/);
+  assert.match(shared, /\.offering-card, \.commission-card/);
+});
+
+test('post reading has a visible close control, flowing descriptions and uncropped artwork', () => {
+  const html = readFileSync(require.resolve('../index.html'), 'utf8');
+  const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
+  assert.match(html, /<button class="post-close-button" type="button" data-post-close>Close post<\/button>/);
+  const lastRule = selector => [...styles.matchAll(new RegExp(selector + '\\s*\\{([^}]*)\\}', 'g'))].at(-1)[1];
+  const description = lastRule('\\.post-modal-description');
+  assert.match(description, /max-height: none/);
+  assert.match(description, /overflow: visible/);
+  assert.match(description, /line-height: 1\.65/);
+  assert.match(description, /word-spacing: normal/);
+  assert.match(lastRule('\\.post-image-large'), /object-fit: contain/);
+});

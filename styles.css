@@ -27,19 +27,6 @@ body.modal-open {
 }
 
 :root {
-  --page-background:
-    repeating-linear-gradient(
-      90deg,
-      #e98f9a 0 32px,
-      #b8c3a0 32px 160px,
-      #e98f9a 160px 215px,
-      #b8bad3 215px 342px,
-      #e98f9a 342px 396px,
-      #efba82 396px 523px,
-      #e98f9a 523px 578px,
-      #c9b2d5 578px 705px,
-      #e98f9a 705px 760px
-    );
   --content-left: 33px;
   --content-top: 18px;
   --placeholder-size: 193px;
@@ -2570,4 +2557,54 @@ button {
     min-width: 0;
     overflow-wrap: anywhere;
   }
+}
+
+/* Keep long post descriptions in the reader's main scroll area. */
+.post-modal-scrim { background: rgba(27, 27, 27, 0.65); }
+.post-modal-scroll {
+  width: min(1000px, calc(100vw - 48px));
+  max-height: calc(100dvh - 112px);
+  scrollbar-width: thin;
+  scrollbar-color: #f45f77 #ffffff;
+}
+.post-modal-scroll::-webkit-scrollbar { display: block; width: 8px; }
+.post-close-button {
+  display: block;
+  margin: 0 0 12px auto;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 1px solid var(--surface-border);
+  border-radius: 2px;
+  background: #ffffff;
+  color: var(--accent-color);
+  cursor: pointer;
+}
+.post-close-button:focus-visible { outline: 2px solid #f45f77; outline-offset: 2px; }
+.post-modal-panel {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  height: auto;
+  min-height: 420px;
+}
+.post-modal-copy { padding: 28px; min-width: 0; overflow-wrap: anywhere; }
+.post-modal-title { font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.25; text-align: left; }
+.post-modal-rating { justify-content: flex-start; }
+.post-modal-description {
+  max-height: none;
+  overflow: visible;
+  font-size: 1rem;
+  line-height: 1.65;
+  word-spacing: normal;
+  padding: 0;
+}
+.post-modal-description-shell.is-scrollable .post-modal-description-thumb { display: none; }
+.post-modal-image { height: 520px; background: transparent; padding: 20px; }
+.post-image-large { object-fit: contain; }
+.post-activity { min-height: 0; margin-top: 20px; padding: 24px; }
+.activity-row { line-height: 1.6; overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  .post-modal-scroll { width: calc(100% - 24px); max-height: calc(100dvh - 48px); }
+  .post-modal-panel { min-height: 0; }
+  .post-modal-description-shell { padding: 0 20px 20px; }
+  .post-modal-image { height: min(520px, calc(100vw - 48px)); min-height: 0; }
+  .post-activity { padding: 16px; }
 }
