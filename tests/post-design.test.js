@@ -8,7 +8,7 @@ test('post cards use the mockup border without decorative image frames', () => {
 
   assert.doesNotMatch(script, /post-frame/);
   assert.doesNotMatch(styles, /\.post-frame/);
-  assert.match(styles, /\.frame \.post-card\s*\{[^}]*border:\s*1px solid #e2657a;/s);
+  assert.match(styles, /\.frame \.post-card\s*\{[^}]*border:\s*1px solid #f45f77;/s);
 });
 
 test('corner radii follow the mockup and existing control styles', () => {
@@ -178,4 +178,18 @@ test('clicking content keeps posts open; clicking outside or between areas close
       assert.equal(calls.backs, 1, 'repeated dismissal must not navigate twice');
     }
   }
+});
+
+
+test('mockup title and tabs use the supplied font and exact palette', () => {
+  const styles = readFileSync(require.resolve('../styles.css'), 'utf8');
+  const reference = styles.slice(styles.indexOf('/* Reference layout:'));
+  assert.match(reference, /font-family: "New Amsterdam"/);
+  assert.match(reference, /src: url\("fonts\/NewAmsterdam-Regular\.ttf"\)/);
+  assert.doesNotMatch(reference, /rayman3|#e2657a|#e8e8e8/);
+  assert.match(reference, /background: #e6e6e6/);
+  const font = readFileSync(require.resolve('../fonts/NewAmsterdam-Regular.ttf'));
+  assert.equal(font.readUInt32BE(0), 0x00010000, 'font must be a TrueType file');
+  const license = readFileSync(require.resolve('../fonts/NewAmsterdam-OFL.txt'), 'utf8');
+  assert.match(license, /SIL OPEN FONT LICENSE/);
 });

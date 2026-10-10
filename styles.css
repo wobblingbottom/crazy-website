@@ -2598,16 +2598,18 @@ button {
 
 /* Reference layout: centered identity, four tabs, and a quiet white canvas. */
 @font-face {
-  font-family: "Crazyland Display";
-  src: url("fonts/rayman3.ttf") format("truetype");
+  font-family: "New Amsterdam";
+  src: url("fonts/NewAmsterdam-Regular.ttf") format("truetype");
   font-display: swap;
+  font-style: normal;
+  font-weight: 400;
 }
 body { background: #ffffff; }
 .frame {
   width: min(1260px, calc(100% - 64px));
   height: calc(100dvh - 64px);
   margin: 32px auto;
-  border: 1px solid #e2657a;
+  border: 1px solid #f45f77;
   border-radius: 20px;
 }
 .frame .topbar {
@@ -2621,13 +2623,13 @@ body { background: #ffffff; }
 .site-brand { min-width: 0; text-align: center; }
 .frame .page-heading {
   margin: 0;
-  font-family: "Crazyland Display", "Arial Narrow", system-ui, sans-serif;
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  color: #e2657a;
+  font-family: "New Amsterdam", "Arial Narrow", system-ui, sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: #f45f77;
   text-transform: uppercase;
   line-height: 1.2;
 }
-.login-status { margin: 2px 0 0; color: #767676; font-size: 1rem; overflow-wrap: anywhere; }
+.login-status { margin: 2px 0 0; color: #767676; font-size: 1.25rem; overflow-wrap: anywhere; }
 .frame .login-button {
   position: absolute;
   top: 20px;
@@ -2641,7 +2643,7 @@ body { background: #ffffff; }
   padding: 0;
   border: 0;
   background: transparent;
-  color: #e2657a;
+  color: #f45f77;
 }
 .frame .login-button:hover { background: #fff0f3; }
 .section-navigation {
@@ -2649,7 +2651,7 @@ body { background: #ffffff; }
   grid-template-columns: repeat(4, minmax(0, 1fr));
   margin: 0 28px;
   flex-shrink: 0;
-  border-bottom: 1px solid #e2657a;
+  border-bottom: 1px solid #f45f77;
   padding: 0 18px;
 }
 .section-navigation .sidebar-link {
@@ -2657,12 +2659,12 @@ body { background: #ffffff; }
   min-height: 48px;
   justify-content: center;
   padding: 8px;
-  border: 1px solid #e2657a;
+  border: 1px solid #f45f77;
   border-bottom: 0;
   border-radius: 0;
-  color: #c7445b;
-  font-family: "Crazyland Display", "Arial Narrow", system-ui, sans-serif;
-  font-size: 1.125rem;
+  color: #f45f77;
+  font-family: "New Amsterdam", "Arial Narrow", system-ui, sans-serif;
+  font-size: 1.5rem;
   text-transform: uppercase;
 }
 .section-navigation .sidebar-link + .sidebar-link { border-left: 0; }
@@ -2691,7 +2693,7 @@ body { background: #ffffff; }
   width: 100%;
   min-width: 0;
   padding: 9px;
-  border: 1px solid #e2657a;
+  border: 1px solid #f45f77;
   border-radius: 10px;
   background: #ffffff;
 }
@@ -2699,7 +2701,7 @@ body { background: #ffffff; }
   width: 100%;
   height: auto;
   aspect-ratio: 1;
-  background: #e8e8e8;
+  background: #e6e6e6;
   border-radius: 20px;
 }
 .frame .post-media .post-image { border-radius: inherit; object-fit: cover; }
@@ -2715,14 +2717,14 @@ body { background: #ffffff; }
   flex: 0 1 32px;
   width: 32px;
   height: 32px;
-  color: #e2657a;
+  color: #f45f77;
   background: currentColor;
   clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 94%, 50% 72%, 21% 94%, 32% 57%, 2% 35%, 39% 35%);
 }
 .frame .post-card .rating-overlay .star-empty { visibility: hidden; }
 .frame .post-card .rating-overlay .star img { opacity: 0; }
-.frame .post-card .placeholder-sun { top: 30%; right: 20%; width: 20%; height: 20%; background: #e2657a; }
-.frame .post-card .placeholder-mountain { bottom: 28%; background: #e2657a; }
+.frame .post-card .placeholder-sun { top: 30%; right: 20%; width: 20%; height: 20%; background: #f45f77; }
+.frame .post-card .placeholder-mountain { bottom: 28%; background: #f45f77; }
 .frame .post-card .placeholder-mountain-large { left: 19%; width: 48%; height: 40%; }
 .frame .post-card .placeholder-mountain-small { left: 35%; width: 33%; height: 30%; }
 .frame .post-card:hover, .frame .post-card:focus-visible { transform: translateY(-3px); }
