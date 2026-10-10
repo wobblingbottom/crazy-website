@@ -2564,22 +2564,9 @@ button {
 .post-modal-scroll {
   width: min(1000px, calc(100vw - 48px));
   max-height: calc(100dvh - 112px);
-  scrollbar-width: thin;
-  scrollbar-color: #f45f77 #ffffff;
+  scrollbar-width: none;
 }
-.post-modal-scroll::-webkit-scrollbar { display: block; width: 8px; }
-.post-close-button {
-  display: block;
-  margin: 0 0 12px auto;
-  min-height: 44px;
-  padding: 8px 16px;
-  border: 1px solid var(--surface-border);
-  border-radius: 2px;
-  background: #ffffff;
-  color: var(--accent-color);
-  cursor: pointer;
-}
-.post-close-button:focus-visible { outline: 2px solid #f45f77; outline-offset: 2px; }
+.post-modal-scroll::-webkit-scrollbar { display: none; }
 .post-modal-panel {
   grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
   height: auto;
